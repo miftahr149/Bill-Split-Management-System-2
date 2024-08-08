@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class BankData(models.Model):
   name = models.CharField(max_length=50)
   number = models.CharField(max_length=50)
-  # qr
+  qr = models.FileField(upload_to='qr/', blank=True)
   owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Tag(models.Model):
@@ -14,15 +14,16 @@ class Tag(models.Model):
 class UserAmount(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   amount = models.IntegerField()
-  #receipt
+  receipt = models.FileField(upload_to='receipt/', blank=True)
 
 class BillSplit(models.Model):
   name = models.CharField(max_length=50)
   host = models.ForeignKey(User, on_delete=models.CASCADE)
   tag = models.ManyToManyField(Tag, blank=True)
   description = models.TextField()
-  user_amount = models.ManyToManyField(UserAmount, on_delete=models.CASCADE)
-  status = models.TextChoices(
+  user_amount = models.ManyToManyField(UserAmount)
+  status = models.CharField(
+    max_length=30,
     choices=(
       ('Ongoing', 'Ongoing'),
       ('Pending', 'Pending')
