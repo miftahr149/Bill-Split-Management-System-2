@@ -1,0 +1,65 @@
+.login {
+  height: 100vh;
+  background-color: var(--login-bg-color);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.login--form {
+  height: 60vh;
+  width: 40vw;
+  background-color: white;
+}
+
+/* # Form Header */
+
+.form--header {
+  gap: 1rem;
+}
+
+.header--left img {
+  --size: 6rem;
+  height: var(--size);
+  width: var(--size);
+  border-radius: 50%;
+}
+
+.header--right h1 {
+  font-size: 2rem;
+}
+
+/* # Form body */
+
+/* ## Form Field */
+
+.form--body {
+  flex-grow: 1;
+}
+
+.login-button {
+  flex-grow: 1;
+}
+
+.form--body .field {
+  margin: 20px 0;
+  padding: 5px;
+  border-radius: var(--border-small);
+  border: 2px solid black
+}
+
+.form--body .field label {
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0 5px;
+  font-size: 0.75rem;
+}
+
+.form--body .field input {
+  border: 0;
+  padding: 0 5px;
+}
+
+.form--body .field input:focus {
+  /* background-color: red; */
+  outline: none;
+}
