@@ -7,6 +7,10 @@
   /* border-radius */
   --border-small: 15px;
   --border-round: 50%;
+
+  /* Header Font Size */
+  --font-size-sm: 1rem;
+  --font-size-m: 1.8rem; 
 }
 
 * {
@@ -18,6 +22,8 @@
 }
 
 /* # Utility Class */
+
+/* ##  */
 
 /* ## Box */
 .box {
