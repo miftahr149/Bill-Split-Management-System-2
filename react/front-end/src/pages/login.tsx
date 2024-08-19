@@ -1,20 +1,22 @@
 import "../assets/css/login.css";
 import favicon from "../assets/img/favicon.png";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import AuthContext from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 
-interface LoginFieldParam {
+interface LoginFieldParams {
   name: string;
   type: string;
   callback: (value: string) => void;
 }
 
-interface LoginBodyParam {
+interface LoginBodyParams {
   setUsername: (value: string) => void;
   setPassword: (value: string) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const LoginField = ({ name, type, callback }: LoginFieldParam) => {
+const LoginField = ({ name, type, callback }: LoginFieldParams) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     callback(e.target.value);
   };
@@ -50,9 +52,13 @@ const LoginBody = ({
   setUsername,
   setPassword,
   handleSubmit,
-}: LoginBodyParam) => {
+}: LoginBodyParams) => {
   return (
-    <form className="form--body d-flex flex-column" onSubmit={handleSubmit}>
+    <form
+      className="form--body d-flex flex-column"
+      method="POST"
+      onSubmit={handleSubmit}
+    >
       <LoginField name="username" type="text" callback={setUsername} />
       <LoginField name="password" type="password" callback={setPassword} />
       <div className="button-box d-flex justify-content-center align-items-end flex-grow-1">
@@ -69,39 +75,15 @@ const LoginBody = ({
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { loginFunction, authTokens } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const baseURL = "http://127.0.0.1:8000/api/token/"
-    const jsonData = {
-      "username": username,
-      "password": password
+  useEffect(() => {
+    if (authTokens.access !== "" && authTokens.refresh !== "") {
+      console.log('navigating to home page')
+      navigate("/");
     }
-    
-    try {
-      const myFetch = await fetch(baseURL, {
-        method: 'POST', 
-        body: JSON.stringify(jsonData),
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-  
-      if (!myFetch.ok) {
-        throw new Error(`Response status: ${myFetch.status}`)
-      }
-
-      const json = await myFetch.json()
-      console.log("Login Successful")
-      console.log(json)
-      
-    } catch (error) {
-      console.log(error)
-    }
-
-    
-  };
+  }, [authTokens]);
 
   return (
     <div className="login d-flex justify-content-center align-items-center">
@@ -110,7 +92,10 @@ const Login = () => {
         <LoginBody
           setUsername={setUsername}
           setPassword={setPassword}
-          handleSubmit={handleSubmit}
+          handleSubmit={loginFunction({
+            username: username,
+            password: password,
+          })}
         />
       </div>
     </div>
