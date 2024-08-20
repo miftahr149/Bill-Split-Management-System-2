@@ -21,6 +21,7 @@ interface AuthContextParams {
   loginFunction: (
     userData: userDataParams
   ) => (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  isUserValid: boolean;
 }
 
 const AuthContext = createContext<AuthContextParams>({
@@ -35,6 +36,7 @@ const AuthContext = createContext<AuthContextParams>({
       userData;
     };
   },
+  isUserValid: true,
 });
 
 export const AuthProvider = ({ children }: AuthProviderParams) => {
@@ -50,34 +52,33 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
       : { access: "", refresh: "" }
   );
 
+  const [isUserValid, setisUserValid] = useState(true);
+
   const loginFunction = (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const URL = "http://127.0.0.1:8000/api/token/";
 
-      try {
-        const response = await fetch(URL, {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        });
+      const response = await fetch(URL, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
 
-        if (!response.ok) {
-          throw new Error("Response is not ok");
-        }
-
-        const data = await response.json();
-        setAuthTokens(data);
-        setUsername(userData.username);
-        localStorage.setItem("authTokens", JSON.stringify(data));
-        localStorage.setItem("user", JSON.stringify(jwtDecode(data.access)));
-        console.log("Login Successful");
-      } catch (error) {
-        alert(error);
+      if (!response.ok) {
+        setisUserValid(false);
+        return;
       }
+
+      const data = await response.json();
+      setAuthTokens(data);
+      setUsername(userData.username);
+      localStorage.setItem("authTokens", JSON.stringify(data));
+      localStorage.setItem("user", JSON.stringify(jwtDecode(data.access)));
+      console.log("Login Successful");
     };
   };
 
@@ -85,6 +86,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     authTokens: authTokens,
     username: username,
     loginFunction: loginFunction,
+    isUserValid: isUserValid,
   };
 
   return (

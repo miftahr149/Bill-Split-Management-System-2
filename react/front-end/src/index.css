@@ -3,6 +3,8 @@
 :root {
   /* color */
   --login-bg-color: #135D66;
+  --alert-color-bg: #f488885e;
+  --alert-color: #f48888;
 
   /* border-radius */
   --border-small: 15px;

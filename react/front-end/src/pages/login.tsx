@@ -3,6 +3,7 @@ import favicon from "../assets/img/favicon.png";
 import { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/authContext";
 import { useNavigate } from "react-router-dom";
+import alertImage from "../assets/img/alert.png";
 
 interface LoginFieldParams {
   name: string;
@@ -36,7 +37,7 @@ const LoginField = ({ name, type, callback }: LoginFieldParams) => {
 
 const LoginHeader = () => {
   return (
-    <div className="form--header d-flex">
+    <div className="form--header d-flex box">
       <div className="header--left d-flex align-items-center justify-content-center">
         <img src={favicon} alt="" />
       </div>
@@ -55,7 +56,7 @@ const LoginBody = ({
 }: LoginBodyParams) => {
   return (
     <form
-      className="form--body d-flex flex-column"
+      className="form--body box d-flex flex-column"
       method="POST"
       onSubmit={handleSubmit}
     >
@@ -75,20 +76,35 @@ const LoginBody = ({
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loginFunction, authTokens } = useContext(AuthContext);
+  const { loginFunction, authTokens, isUserValid } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (authTokens.access !== "" && authTokens.refresh !== "") {
-      console.log('navigating to home page')
+      console.log("navigating to home page");
       navigate("/");
     }
   }, [authTokens]);
 
   return (
     <div className="login d-flex justify-content-center align-items-center">
-      <div className="login--form box d-flex flex-column">
+      <div className="login--form d-flex flex-column">
         <LoginHeader />
+
+        {!isUserValid && (
+          <div className="login-alert d-flex">
+            <div className="login-alert--img-wrapper d-flex justify-content-center align-items-center">
+              <img src={alertImage} alt="" />
+            </div>
+            <div className="login-alert--message d-flex flex-column justify-content-center">
+              <p className="login-alert-warning">Warning!!</p>
+              <p className="login-alert-message">
+                Incorect Username or Password
+              </p>
+            </div>
+          </div>
+        )}
+
         <LoginBody
           setUsername={setUsername}
           setPassword={setPassword}
