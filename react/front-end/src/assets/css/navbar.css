@@ -1,0 +1,18 @@
+.my-navbar {
+  background-color: #77B0AA;
+  color: white;
+  padding: 1rem 1.1rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.my-navbar__title {
+  margin: 0;
+  text-align: center;
+}
+
+.my-navbar__logout-button {
+  background-color: transparent;
+  border: 0;
+}

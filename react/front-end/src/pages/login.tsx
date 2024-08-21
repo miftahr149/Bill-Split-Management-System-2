@@ -37,11 +37,11 @@ const LoginField = ({ name, type, callback }: LoginFieldParams) => {
 
 const LoginHeader = () => {
   return (
-    <div className="form--header d-flex box">
-      <div className="header--left d-flex align-items-center justify-content-center">
+    <div className="form__header d-flex box">
+      <div className="header__left d-flex align-items-center justify-content-center">
         <img src={favicon} alt="" />
       </div>
-      <div className="header--right d-flex">
+      <div className="header__right d-flex justify-content-center">
         <h1>Bill Split Management System</h1>
         <p>Login Page</p>
       </div>
@@ -56,7 +56,7 @@ const LoginBody = ({
 }: LoginBodyParams) => {
   return (
     <form
-      className="form--body box d-flex flex-column"
+      className="form__body box d-flex flex-column"
       method="POST"
       onSubmit={handleSubmit}
     >
@@ -87,16 +87,16 @@ const Login = () => {
   }, [authTokens]);
 
   return (
-    <div className="login d-flex justify-content-center align-items-center">
-      <div className="login--form d-flex flex-column">
+    <div className="login pages d-flex justify-content-center align-items-center">
+      <div className="login__form d-flex flex-column">
         <LoginHeader />
 
         {!isUserValid && (
           <div className="login-alert d-flex">
-            <div className="login-alert--img-wrapper d-flex justify-content-center align-items-center">
+            <div className="login-alert__img-wrapper d-flex justify-content-center align-items-center">
               <img src={alertImage} alt="" />
             </div>
-            <div className="login-alert--message d-flex flex-column justify-content-center">
+            <div className="login-alert__message d-flex flex-column justify-content-center">
               <p className="login-alert-warning">Warning!!</p>
               <p className="login-alert-message">
                 Incorect Username or Password

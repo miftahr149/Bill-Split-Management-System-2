@@ -1,43 +1,42 @@
 .login {
-  min-height: 100vh;
-  background-color: var(--login-bg-color);
+  background-color: var(--login-pages-bg-color);
 }
 
-.login--form {
-  width: min(500px, 80%);
+.login__form {
+  min-width: min(500px, 80%);
   background-color: white;
   border-radius: var(--border-small);
 }
 
 /* # Form Header */
 
-.form--header {
+.form__header {
   gap: 1.3rem;
   flex-direction: column;
 }
 
-.header--left {
+.header__left {
   flex-grow: 1;
 }
 
-.header--left img {
+.header__left img {
   --size: 6rem;
   height: var(--size);
   width: var(--size);
   border-radius: 50%;
 }
 
-.header--right {
+.header__right {
   flex-direction: column-reverse;
 }
 
-.header--right h1,
-.header--right p {
+.header__right h1,
+.header__right p {
   margin: 0;
   text-align: center;
 }
 
-.header--right h1 {
+.header__right h1 {
   font-size: 1.2rem;
 }
 
@@ -49,25 +48,25 @@
   margin: 1.2rem 0;
 }
 
-.form--body .field {
+.form__body .field {
   margin: 10px 0;
   padding: 5px;
   border-radius: var(--border-small);
   border: 2px solid black;
 }
 
-.form--body .field label {
+.form__body .field label {
   color: rgba(0, 0, 0, 0.5);
   padding: 0 5px;
   font-size: 0.75rem;
 }
 
-.form--body .field input {
+.form__body .field input {
   border: 0;
   padding: 0 5px;
 }
 
-.form--body .field input:focus {
+.form__body .field input:focus {
   /* background-color: red; */
   outline: none;
 }
@@ -88,7 +87,6 @@
 }
 
 .login-alert--message p {
-  font-weight: bold;
   margin: 0;
 }
 
@@ -97,6 +95,7 @@
 }
 
 .login-alert-message {
+  font-weight: bold;
   font-size: 1rem;
 }
 
@@ -105,35 +104,35 @@
     min-width: 40vw;
   } */
 
-  .form--header {
+  .form__header {
     flex-direction: row;
     gap: 1.5rem;
   }
 
-  .header--right {
+  .header__right {
     flex-direction: column;
   }
 
-  .header--right h1,
-  .header--right p {
+  .header__right h1,
+  .header__right p {
     text-align: left;
   }
 
-  .header--right h1 {
+  .header__right h1 {
     font-size: var(--font-size-m);
   }
 
-  .form--body {
+  /* .form--body {
     margin: 1.5rem 0;
-  }
+  } */
 
   /* Alert */
   .login-alert {
     gap: 0;
   }
 
-  .login-alert--img-wrapper img {
-    --size: 6rem;
+  .login-alert__img-wrapper img {
+    --size: 4rem;
   }
 
   .login-alert-warning {
