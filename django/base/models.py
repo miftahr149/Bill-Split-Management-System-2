@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+import os
 
 # Create your models here.
 class BankData(models.Model):
@@ -34,9 +35,24 @@ class BillSplit(models.Model):
 
 class UserProfileImage(models.Model):
   image = models.ImageField(upload_to='image/', blank=True, null=True)
-  user = models.ForeignKey(
-    'auth.User', 
+  user = models.OneToOneField(
+    User,
     on_delete=models.CASCADE, 
     related_name='user_image',
     null=True,
   )
+  
+  def __str__(self):
+    return self.user.username
+  
+  def save(self, *args, **kwargs):
+    image_name = f'{self.user.username}.png'
+    
+    # Checking whether the image is already in there
+    folder_path = settings.MEDIA_ROOT / 'image'
+    if image_name in os.listdir(folder_path):
+      os.remove(folder_path / image_name)
+    
+    # Upload data to the database
+    self.image.name = image_name
+    return super().save(*args, **kwargs)
