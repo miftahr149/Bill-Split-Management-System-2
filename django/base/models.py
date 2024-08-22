@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 class BankData(models.Model):
   name = models.CharField(max_length=50)
   number = models.CharField(max_length=50)
-  qr = models.FileField(upload_to='qr/', blank=True)
+  qr = models.ImageField(upload_to='qr/', blank=True)
   owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Tag(models.Model):
@@ -30,4 +31,12 @@ class BillSplit(models.Model):
     ),
     default='Pending'
   )
-  
+
+class UserProfileImage(models.Model):
+  image = models.ImageField(upload_to='image/', blank=True, null=True)
+  user = models.ForeignKey(
+    'auth.User', 
+    on_delete=models.CASCADE, 
+    related_name='user_image',
+    null=True,
+  )

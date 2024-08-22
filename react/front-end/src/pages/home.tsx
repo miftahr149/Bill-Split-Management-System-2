@@ -7,7 +7,7 @@ const Home = () => {
       <Navbar title="Home" />
       <main className="home__main box box--white-text">
         <div className="greeting d-flex box">
-
+          
         </div>
       </main>
     </div>
