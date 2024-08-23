@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 interface AuthProviderParams {
@@ -22,13 +22,19 @@ interface AuthContextParams {
     userData: userDataParams
   ) => (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   isUserValid: boolean;
+  logoutFunction: () => void;
+  updateToken: () => void; 
 }
 
+const nullAuthToken = { refresh: "", access: "" };
+
+const setLocalStorage = (authToken: AuthTokensParams) => {
+  localStorage.setItem("authTokens", JSON.stringify(authToken));
+  localStorage.setItem("user", JSON.stringify(jwtDecode(authToken.access)));
+};
+
 const AuthContext = createContext<AuthContextParams>({
-  authTokens: {
-    refresh: "",
-    access: "",
-  },
+  authTokens: nullAuthToken,
   username: "",
   loginFunction: (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,6 +43,8 @@ const AuthContext = createContext<AuthContextParams>({
     };
   },
   isUserValid: true,
+  logoutFunction: () => {},
+  updateToken: () => {}, 
 });
 
 export const AuthProvider = ({ children }: AuthProviderParams) => {
@@ -49,10 +57,10 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
   const [authTokens, setAuthTokens] = useState<AuthTokensParams>(
     localStorage.getItem("authTokens")
       ? JSON.parse(localStorage.getItem("authTokens") as string)
-      : { access: "", refresh: "" }
+      : nullAuthToken
   );
 
-  const [isUserValid, setisUserValid] = useState(true);
+  const [isUserValid, setIsUserValid] = useState(true);
 
   const loginFunction = (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
@@ -69,17 +77,50 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
       });
 
       if (!response.ok) {
-        setisUserValid(false);
+        setIsUserValid(false);
         return;
       }
 
       const data = await response.json();
       setAuthTokens(data);
       setUsername(userData.username);
-      localStorage.setItem("authTokens", JSON.stringify(data));
-      localStorage.setItem("user", JSON.stringify(jwtDecode(data.access)));
+      setLocalStorage(data);
       console.log("Login Successful");
     };
+  };
+
+  const logoutFunction = () => {
+    setAuthTokens(nullAuthToken);
+    setUsername("");
+    localStorage.removeItem("authTokens");
+    localStorage.removeItem("User");
+  };
+
+  const updateToken = async () => {
+    console.log("Updating Token");
+    const URL = "http://127.0.0.1:8000/api/token/refresh";
+
+    const response = await fetch(URL, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        refresh: authTokens.refresh,
+      }),
+      mode: "cors",
+      method: "POST",
+    });
+
+    // Logout the user if the request is invalid 
+    if (!response.ok) {
+      logoutFunction();
+      return;
+    }
+
+    const data = await response.json();
+    setAuthTokens(data);
+    setLocalStorage(data);
+    console.log("Successfully Updating Token");
   };
 
   const contextData = {
@@ -87,7 +128,21 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     username: username,
     loginFunction: loginFunction,
     isUserValid: isUserValid,
+    logoutFunction: logoutFunction,
+    updateToken: updateToken,
   };
+
+
+  // For Every 3 minutes, refresh user token
+  useEffect(() => {
+    const intervalTime = 3 * 60 * 1000;
+    const interval = setInterval(() => {
+      if (authTokens.access !== "" && authTokens.refresh !== "") {
+        updateToken();
+      }
+    }, intervalTime);
+    return () => clearInterval(interval);
+  }, [authTokens]);
 
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>

@@ -1,5 +1,5 @@
 .login {
-  background-color: var(--login-pages-bg-color);
+  background-color: var(--login-pages-bg-color) !important;
 }
 
 .login__form {

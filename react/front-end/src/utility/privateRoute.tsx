@@ -7,12 +7,13 @@ interface PrivateRouteParam {
 }
 
 const PrivateRoute = ({ component: RouteComponent }: PrivateRouteParam) => {
-  const { authTokens } = useContext(AuthContext);
+  const {authTokens, updateToken } = useContext(AuthContext);
 
-  const authenticated = authTokens.access !== '' && authTokens.refresh !== '';
-  if (!authenticated) {
+  // Checking whether both user's access and refresh token is none (a.k.a haven't sign up yet)
+  if (authTokens.access === "" && authTokens.refresh === "") {
     return <Navigate to="/login" />;
   }
+
   return RouteComponent;
 };
 

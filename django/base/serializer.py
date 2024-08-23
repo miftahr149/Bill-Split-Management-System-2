@@ -13,3 +13,8 @@ class UserProfileImageSerializer(serializers.ModelSerializer):
   class Meta:
     model = models.UserProfileImage
     fields = ['image']
+
+class TagSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.Tag
+    fields = '__all__'
