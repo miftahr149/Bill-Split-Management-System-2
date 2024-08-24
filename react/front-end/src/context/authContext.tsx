@@ -1,5 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import {
+  APIFetch,
+  setAuthorization,
+  setBackendURL,
+  tryCatchFetch,
+} from "../utility/utility";
 
 interface AuthProviderParams {
   children: JSX.Element[] | JSX.Element;
@@ -23,10 +29,10 @@ interface AuthContextParams {
   ) => (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   isUserValid: boolean;
   logoutFunction: () => void;
-  updateToken: () => void; 
+  updateToken: () => void;
 }
 
-const nullAuthToken = { refresh: "", access: "" };
+const nullAuthTokens = { refresh: "", access: "" };
 
 const setLocalStorage = (authToken: AuthTokensParams) => {
   localStorage.setItem("authTokens", JSON.stringify(authToken));
@@ -34,7 +40,7 @@ const setLocalStorage = (authToken: AuthTokensParams) => {
 };
 
 const AuthContext = createContext<AuthContextParams>({
-  authTokens: nullAuthToken,
+  authTokens: nullAuthTokens,
   username: "",
   loginFunction: (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +50,7 @@ const AuthContext = createContext<AuthContextParams>({
   },
   isUserValid: true,
   logoutFunction: () => {},
-  updateToken: () => {}, 
+  updateToken: () => {},
 });
 
 export const AuthProvider = ({ children }: AuthProviderParams) => {
@@ -57,7 +63,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
   const [authTokens, setAuthTokens] = useState<AuthTokensParams>(
     localStorage.getItem("authTokens")
       ? JSON.parse(localStorage.getItem("authTokens") as string)
-      : nullAuthToken
+      : nullAuthTokens
   );
 
   const [isUserValid, setIsUserValid] = useState(true);
@@ -65,32 +71,27 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
   const loginFunction = (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const URL = "http://127.0.0.1:8000/api/token/";
+      const URL = setBackendURL("token/");
 
-      const response = await fetch(URL, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
+      tryCatchFetch(async () => {
+        const data = await APIFetch({
+          URL: URL,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+        setAuthTokens(data);
+        setUsername(userData.username);
+        setLocalStorage(data);
+        console.log("Login Successful");
       });
-
-      if (!response.ok) {
-        setIsUserValid(false);
-        return;
-      }
-
-      const data = await response.json();
-      setAuthTokens(data);
-      setUsername(userData.username);
-      setLocalStorage(data);
-      console.log("Login Successful");
     };
   };
 
   const logoutFunction = () => {
-    setAuthTokens(nullAuthToken);
+    setAuthTokens(nullAuthTokens);
     setUsername("");
     localStorage.removeItem("authTokens");
     localStorage.removeItem("User");
@@ -98,29 +99,44 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
 
   const updateToken = async () => {
     console.log("Updating Token");
-    const URL = "http://127.0.0.1:8000/api/token/refresh";
+    const URL = setBackendURL("token/refresh");
 
-    const response = await fetch(URL, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        refresh: authTokens.refresh,
-      }),
-      mode: "cors",
-      method: "POST",
+    tryCatchFetch(async () => {
+      const data = await APIFetch({
+        URL: URL,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refresh: authTokens.refresh }),
+        errorCallback: logoutFunction,
+      });
+
+      setIsUserValid(true);
+      setAuthTokens(data);
+      setLocalStorage(data);
+      console.log("Successfully Updating Token");
     });
+  };
 
-    // Logout the user if the request is invalid 
-    if (!response.ok) {
-      logoutFunction();
+  /* ValidateToken return a boolean represent the state of a tokens, if true then the tokens is valid otherwise the token is invalid or expired */
+  const validateToken = async () => {
+    console.log("Using ValidateToken Function")
+    if (authTokens === nullAuthTokens) {
+      setIsUserValid(false);
       return;
     }
 
-    const data = await response.json();
-    setAuthTokens(data);
-    setLocalStorage(data);
-    console.log("Successfully Updating Token");
+    const response = await fetch(setBackendURL("token/validate"), {
+      headers: {
+        Authorization: setAuthorization(authTokens.access),
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+      mode: "cors",
+    });
+
+    setIsUserValid(response.ok)
   };
 
   const contextData = {
@@ -132,7 +148,6 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     updateToken: updateToken,
   };
 
-
   // For Every 3 minutes, refresh user token
   useEffect(() => {
     const intervalTime = 3 * 60 * 1000;
@@ -143,6 +158,10 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     }, intervalTime);
     return () => clearInterval(interval);
   }, [authTokens]);
+
+  useEffect(() => {
+    validateToken();
+  }, [])
 
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>

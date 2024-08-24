@@ -13,8 +13,9 @@
   --border-round: 50%;
 
   /* img Size */
-  --img-size: 6rem;
+  --img-size-xs: 3rem;
   --img-size-sm: 4rem;
+  --img-size: 6rem;
   --img-size-big: 8rem;
 
   /* header Font Size */
@@ -41,6 +42,10 @@
 
 .img--round {
   border-radius: 50%;
+}
+
+.img--xs {
+  --size: var(--img-size-xs)
 }
 
 .img--small {

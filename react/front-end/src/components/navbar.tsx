@@ -9,9 +9,10 @@ import { useContext } from "react";
 
 interface NavbarParams {
   title: string;
+  profileImage: string; 
 }
 
-const Navbar = ({ title }: NavbarParams) => {
+const Navbar = ({ title, profileImage }: NavbarParams) => {
   const { logoutFunction } = useContext(AuthContext);
   return (
     <nav className="my-navbar d-flex">
@@ -19,8 +20,9 @@ const Navbar = ({ title }: NavbarParams) => {
         <img src={favicon} alt="Logo" className="img img--small img--round" />
       </Link>
       <h1 className="my-navbar__title flex-grow-1">{title}</h1>
+      <img src={profileImage} alt="" className="img img--round img--small" />
       <button className="my-navbar__logout-button" onClick={logoutFunction}>
-        <img src={logoutIcon} alt="Logout" className="img img--small" />
+        <img src={logoutIcon} alt="Logout" className="img img--xs" />
       </button>
     </nav>
   );

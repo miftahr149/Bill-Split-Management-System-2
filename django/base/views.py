@@ -11,8 +11,10 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Create your views here.
 @api_view(['GET'])
@@ -47,3 +49,15 @@ class TagViews(APIView):
   def get(self, request: Request, format=None):
     tags = models.Tag.objects.all()
     return Response(serializer.TagSerializer(tags, many=True).data)
+
+class ValidateToken(APIView):
+  permission_classes = [IsAuthenticated]
+  
+  def get(self, request: Request, format=None):
+    JWT_authenticator = JWTAuthentication() 
+    response = JWT_authenticator.authenticate(request)
+    if response is not None:
+      user, token = response
+      print(user, token)
+      return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)

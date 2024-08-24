@@ -76,11 +76,17 @@ const LoginBody = ({
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loginFunction, authTokens, isUserValid } = useContext(AuthContext);
+  const { loginFunction, authTokens } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    loginFunction({username: username, password: password})(e)
+  }
+
   useEffect(() => {
-    if (authTokens.access !== "" && authTokens.refresh !== "") {
+    console.log("AuthTokens Changes")
+    if (authTokens.access !== "", authTokens.refresh !== "") {
+      console.log(authTokens)
       console.log("navigating to home page");
       navigate("/");
     }
@@ -91,10 +97,10 @@ const Login = () => {
       <div className="login__form d-flex flex-column">
         <LoginHeader />
 
-        {!isUserValid && (
+        {(authTokens.access !== "", authTokens.refresh !== "") && (
           <div className="login-alert d-flex">
             <div className="login-alert__img-wrapper d-flex justify-content-center align-items-center">
-              <img src={alertImage} alt="" />
+              <img src={alertImage} alt="" className="img img-small" />
             </div>
             <div className="login-alert__message d-flex flex-column justify-content-center">
               <p className="login-alert-warning">Warning!!</p>
@@ -108,10 +114,7 @@ const Login = () => {
         <LoginBody
           setUsername={setUsername}
           setPassword={setPassword}
-          handleSubmit={loginFunction({
-            username: username,
-            password: password,
-          })}
+          handleSubmit={handleSubmit}
         />
       </div>
     </div>
