@@ -57,7 +57,10 @@ const Home = () => {
     <div className="home pages">
       <Navbar title="Home" profileImage={image} />
       <main className="home__main box box--white-text">
-        <img src={image} alt="" className="img img--big" />
+        <div className="greeting">
+          <img src={image} alt="" className="img img--big" />
+          
+        </div>
       </main>
     </div>
   );
