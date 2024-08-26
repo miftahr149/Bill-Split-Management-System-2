@@ -17,10 +17,12 @@
   --img-size-sm: 4rem;
   --img-size: 6rem;
   --img-size-big: 8rem;
+  --img-size-xl: 10rem;
 
   /* header Font Size */
   --font-size-sm: 1rem;
-  --font-size-m: 1.8rem; 
+  --font-size-m: 1.8rem;
+  --font-size-l: 5rem; 
 }
 
 * {
@@ -54,6 +56,10 @@
 
 .img--big {
   --size: var(--img-size-big);
+}
+
+.img--xl {
+  --size: var(--img-size-xl);
 }
 
 

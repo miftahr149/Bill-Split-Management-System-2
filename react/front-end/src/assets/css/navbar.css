@@ -13,7 +13,26 @@
   text-align: center;
 }
 
+.my-navbar__option {
+  gap: 1rem;
+}
+
+/* This class is use to disable an element if not in a width of a desktop (min-width: 768px)  */
+.option__display-desktop {
+  display: none
+}
+
 .my-navbar__logout-button {
   background-color: transparent;
   border: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .option__display-mobile {
+    display: none;
+  }
+
+  .option__display-desktop {
+    display: block;
+  }
 }

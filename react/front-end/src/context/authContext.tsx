@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     setAuthTokens(nullAuthTokens);
     setUsername("");
     localStorage.removeItem("authTokens");
-    localStorage.removeItem("User");
+    localStorage.removeItem("user");
   };
 
   const updateToken = async () => {

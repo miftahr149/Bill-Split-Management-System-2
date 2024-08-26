@@ -1,6 +1,8 @@
 import Navbar from "../components/navbar";
 import "../assets/css/home.css";
 
+import { jwtDecode } from "jwt-decode";
+
 import AuthContext from "../context/authContext";
 import { setBackendURL, setAuthorization, APIFetch, tryCatchFetch } from "../utility/utility";
 import { useEffect, useState, useContext } from "react";
@@ -12,7 +14,7 @@ interface TagParams {
 
 const Home = () => {
   const [tags, setTags] = useState<TagParams[]>([]);
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens, username } = useContext(AuthContext);
   const [image, setImage] = useState<string>("");
 
   const getTags = async () => {
@@ -58,8 +60,14 @@ const Home = () => {
       <Navbar title="Home" profileImage={image} />
       <main className="home__main box box--white-text">
         <div className="greeting">
-          <img src={image} alt="" className="img img--big" />
-          
+          <div className="d-flex justify-content-center">
+            <img src={image} alt="" className="img img--xl img--round" />
+          </div>
+          <div className="d-flex flex-column justify-content-center">
+            <p className="greeting__text">Welcome Back!!</p>
+            <h1 className="greeting__username">{username}</h1>
+            <h1></h1>
+          </div>
         </div>
       </main>
     </div>
