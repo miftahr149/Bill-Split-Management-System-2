@@ -20,9 +20,14 @@
   --img-size-xl: 10rem;
 
   /* header Font Size */
-  --font-size-sm: 1rem;
-  --font-size-m: 1.8rem;
-  --font-size-l: 5rem; 
+  --header-font-size-sm: 1rem;
+  --header-font-size-m: 1.8rem;
+  --header-font-size-l: 5rem; 
+
+  /* text font size */
+  --font-size: 1.2rem;
+  --font-size-sm: 0.7rem;
+  --font-size-l: 1.8rem;
 }
 
 * {
@@ -73,8 +78,37 @@
   color: white;
 }
 
+/* Text */
+.my-text {
+  margin: 0;
+  font-size: var(--font-size);
+}
+
+.my-text--large {
+  font-size: var(--font-size-l);
+}
+
+.my-text--small {
+  font-size: var(--font-size-sm);
+}
+
+.my-text--text-align-center {
+  text-align: center;
+}
+
 /* ## Pages */
 .pages {
   min-height: 100vh;
   background-color: var(--default-pages-bg-color)
+}
+
+/* button */
+.my-button {
+  background-color: transparent;
+  border: 0;
+}
+
+/* ## Other */
+.none {
+  display: None !important;
 }

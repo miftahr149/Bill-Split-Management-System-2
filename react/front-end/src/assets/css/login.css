@@ -119,7 +119,7 @@
   }
 
   .header__right h1 {
-    font-size: var(--font-size-m);
+    font-size: var(--header-font-size-m);
   }
 
   /* .form--body {

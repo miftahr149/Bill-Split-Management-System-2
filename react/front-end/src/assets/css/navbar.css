@@ -1,11 +1,12 @@
-.my-navbar {
-  background-color: #77B0AA;
-  color: white;
-  padding: 1rem 1.1rem;
+.navbar-box {
   position: sticky;
   top: 0;
-  left: 0;
-  gap: 1rem;
+  left: 0;  
+}
+
+.my-navbar {
+  background-color: #77B0AA;
+  padding: 0.5rem 0.6rem;
 }
 
 .my-navbar__title {
@@ -27,7 +28,29 @@
   border: 0;
 }
 
+.my-navbar__menu-button {
+  background-color: transparent;
+  border: 0;
+}
+
+/* # menu */
+.my-menu {
+  background-color: #135D66;
+}
+
+.my-menu__elements {
+  padding: 0.5rem 0.5rem;
+  color: inherit;
+  gap: 1rem;
+  width: 100%;
+}
+
 @media screen and (min-width: 768px) {
+  .my-navbar {
+    padding: 1rem 1.1rem;
+    gap: 1rem;
+  }
+  
   .option__display-mobile {
     display: none;
   }
