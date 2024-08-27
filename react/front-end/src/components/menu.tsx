@@ -13,7 +13,7 @@ const MenuElement = ({
 }: MenuElementParams) => {
   
   const setImageClass = () => {
-    const defaultClass = "img img--small";
+    const defaultClass = "img img--sm";
     return imageRound ? defaultClass + " img--round" : defaultClass;
   };
 
@@ -24,7 +24,7 @@ const MenuElement = ({
     >
       <img src={imageURL} alt="" className={setImageClass()} />
       <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-        <p className="my-text my-text--text-align-center flex-grow-1">{name}</p>
+        <p className="my-text my-text--align-center flex-grow-1">{name}</p>
       </div>
     </button>
   );

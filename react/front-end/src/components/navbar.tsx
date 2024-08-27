@@ -36,16 +36,18 @@ const Navbar = ({ title, profileImage }: NavbarParams) => {
     <nav className="navbar-box box--white-text">
       <div className="my-navbar d-flex">
         <Link to="/">
-          <img src={favicon} alt="Logo" className="img img--small img--round" />
+          <img src={favicon} alt="Logo" className="img img--sm img--round" />
         </Link>
         <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-          <h1 className="my-navbar__title flex-grow-1">{title}</h1>
+          <h1 className="my-header my-text--align-center flex-grow-1">
+            {title}
+          </h1>
         </div>
         <div className="my-navbar__option d-flex">
           <img
             src={profileImage}
             alt=""
-            className="img img--round img--small option__display-desktop"
+            className="img img--round img--sm option__display-desktop"
           />
           <button
             className="my-navbar__logout-button option__display-desktop"
@@ -58,10 +60,11 @@ const Navbar = ({ title, profileImage }: NavbarParams) => {
             className="my-navbar__menu-button option__display-mobile"
             onClick={() => setIsMenuActive(!isMenuActive)}
           >
-            <img src={menuIcon} alt="" className="img img--small" />
+            <img src={menuIcon} alt="" className="img img--sm" />
           </button>
         </div>
       </div>
+
       <Menu>
         <MenuElement
           name="Profile"

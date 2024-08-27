@@ -4,7 +4,13 @@ import "../assets/css/home.css";
 import { jwtDecode } from "jwt-decode";
 
 import AuthContext from "../context/authContext";
-import { setBackendURL, setAuthorization, APIFetch, tryCatchFetch } from "../utility/utility";
+import {
+  setBackendURL,
+  setAuthorization,
+  APIFetch,
+  tryCatchFetch,
+} from "../utility/myapi";
+
 import { useEffect, useState, useContext } from "react";
 
 interface TagParams {
@@ -36,24 +42,24 @@ const Home = () => {
 
   const getImage = async () => {
     console.log("Fetching User's Photo Profile From the Backend");
-    
+
     tryCatchFetch(async () => {
-      const { image } = await APIFetch({
+      const { image } = (await APIFetch({
         URL: setBackendURL("userImage"),
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: setAuthorization(authTokens.access)
-        }
-      }) as {image : string}
-      setImage(setBackendURL(image.slice(1, )));
+          Authorization: setAuthorization(authTokens.access),
+        },
+      })) as { image: string };
+      setImage(setBackendURL(image.slice(1)));
     });
   };
 
   useEffect(() => {
-    getTags();
     getImage();
-  }, []);
+    getTags();
+  }, [])
 
   return (
     <div className="home pages">
@@ -64,8 +70,8 @@ const Home = () => {
             <img src={image} alt="" className="img img--xl img--round" />
           </div>
           <div className="d-flex flex-column justify-content-center">
-            <p className="greeting__text">Welcome Back!!</p>
-            <h1 className="greeting__username">{username}</h1>
+            <p className="my-text">Welcome Back!!</p>
+            <h1 className="my-header my-header--l">{username}</h1>
             <h1></h1>
           </div>
         </div>

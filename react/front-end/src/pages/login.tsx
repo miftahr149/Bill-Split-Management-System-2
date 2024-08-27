@@ -39,11 +39,11 @@ const LoginHeader = () => {
   return (
     <div className="form__header d-flex box">
       <div className="header__left d-flex align-items-center justify-content-center">
-        <img src={favicon} alt="" />
+        <img src={favicon} alt="" className="img img--round" />
       </div>
       <div className="header__right d-flex justify-content-center">
-        <h1>Bill Split Management System</h1>
-        <p>Login Page</p>
+        <h1 className="my-header">Bill Split Management System</h1>
+        <p className="my-text">Login Page</p>
       </div>
     </div>
   );
@@ -73,20 +73,34 @@ const LoginBody = ({
   );
 };
 
+const LoginAlert = () => {
+  return (
+    <div className="login-alert d-flex">
+      <div className="login-alert__img-wrapper d-flex justify-content-center align-items-center">
+        <img src={alertImage} alt="" className="img img-small" />
+      </div>
+      <div className="login-alert__message d-flex flex-column justify-content-center">
+        <p className="my-text">Warning!!</p>
+        <p className="my-text my-text--bold">Incorect Username or Password</p>
+      </div>
+    </div>
+  );
+};
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loginFunction, authTokens } = useContext(AuthContext);
+  const { loginFunction, authTokens, isUserValid } = useContext(AuthContext);
+  const [isAlreadySubmit, setIsAlreadySubmit] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    loginFunction({username: username, password: password})(e)
-  }
+    setIsAlreadySubmit(true);
+    loginFunction({ username: username, password: password })(e);
+  };
 
   useEffect(() => {
-    console.log("AuthTokens Changes")
-    if (authTokens.access !== "", authTokens.refresh !== "") {
-      console.log(authTokens)
+    if (isUserValid) {
       console.log("navigating to home page");
       navigate("/");
     }
@@ -97,19 +111,7 @@ const Login = () => {
       <div className="login__form d-flex flex-column">
         <LoginHeader />
 
-        {(authTokens.access !== "", authTokens.refresh !== "") && (
-          <div className="login-alert d-flex">
-            <div className="login-alert__img-wrapper d-flex justify-content-center align-items-center">
-              <img src={alertImage} alt="" className="img img-small" />
-            </div>
-            <div className="login-alert__message d-flex flex-column justify-content-center">
-              <p className="login-alert-warning">Warning!!</p>
-              <p className="login-alert-message">
-                Incorect Username or Password
-              </p>
-            </div>
-          </div>
-        )}
+        {!isUserValid && isAlreadySubmit && <LoginAlert />}
 
         <LoginBody
           setUsername={setUsername}

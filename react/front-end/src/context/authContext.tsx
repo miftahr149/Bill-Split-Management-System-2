@@ -1,11 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import {
-  APIFetch,
-  setAuthorization,
-  setBackendURL,
-  tryCatchFetch,
-} from "../utility/utility";
+import { APIFetch, setBackendURL, tryCatchFetch } from "../utility/myapi";
 
 interface AuthProviderParams {
   children: JSX.Element[] | JSX.Element;
@@ -66,7 +61,9 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
       : nullAuthTokens
   );
 
-  const [isUserValid, setIsUserValid] = useState(true);
+  const [isUserValid, setIsUserValid] = useState(
+    Boolean(localStorage.getItem("authTokens"))
+  );
 
   const loginFunction = (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,12 +82,14 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
         setAuthTokens(data);
         setUsername(userData.username);
         setLocalStorage(data);
+        setIsUserValid(true);
         console.log("Login Successful");
       });
     };
   };
 
   const logoutFunction = () => {
+    setIsUserValid(false);
     setAuthTokens(nullAuthTokens);
     setUsername("");
     localStorage.removeItem("authTokens");
@@ -119,26 +118,6 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     });
   };
 
-  /* ValidateToken return a boolean represent the state of a tokens, if true then the tokens is valid otherwise the token is invalid or expired */
-  const validateToken = async () => {
-    console.log("Using ValidateToken Function")
-    if (authTokens === nullAuthTokens) {
-      setIsUserValid(false);
-      return;
-    }
-
-    const response = await fetch(setBackendURL("token/validate"), {
-      headers: {
-        Authorization: setAuthorization(authTokens.access),
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-      mode: "cors",
-    });
-
-    setIsUserValid(response.ok)
-  };
-
   const contextData = {
     authTokens: authTokens,
     username: username,
@@ -160,8 +139,8 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
   }, [authTokens]);
 
   useEffect(() => {
-    validateToken();
-  }, [])
+    updateToken();
+  }, []);
 
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
