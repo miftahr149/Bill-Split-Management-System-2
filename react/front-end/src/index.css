@@ -7,6 +7,9 @@
   
   --login-pages-bg-color: #135D66;
   --default-pages-bg-color: #272727;
+  --black-bg-color: #5454545d;
+
+  --header-green-color: #77B0AA;
 
   /* border-radius */
   --border-sm: 15px;
@@ -78,6 +81,11 @@
   color: white;
 }
 
+.box--bg-black {
+  background-color: var(--black-bg-color);
+}
+
+/*  */
 .my-text, .my-header {
   margin: 0;
 }
@@ -120,16 +128,20 @@
   font-size: var(--header-font-size-sm);
 }
 
-/* ## Pages */
-.pages {
-  min-height: 100vh;
-  background-color: var(--default-pages-bg-color)
+.my-header--color-green {
+  color: var(--header-green-color);
 }
 
 /* button */
 .my-button {
-  background-color: transparent;
   border: 0;
+  background-color: transparent;
+}
+
+/* ## Pages */
+.pages {
+  min-height: 100vh;
+  background-color: var(--default-pages-bg-color)
 }
 
 /* ## Other */

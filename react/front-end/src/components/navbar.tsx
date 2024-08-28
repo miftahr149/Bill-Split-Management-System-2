@@ -4,7 +4,6 @@ import logoutIcon from "../assets/img/logout_157938.png";
 import menuIcon from "../assets/img/menu.png";
 
 import AuthContext from "../context/authContext";
-import MenuElement from "./menu";
 
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -16,65 +15,154 @@ interface NavbarParams {
 
 interface MenuParams {
   children: JSX.Element | JSX.Element[];
+  isActive: boolean;
 }
+
+interface MenuElementParams {
+  handleSubmit: () => void;
+  name: string;
+  src: string;
+  imageRound?: boolean;
+}
+
+interface BaseImageButtonParams {
+  src: string;
+  imageRound?: boolean;
+  alt: string;
+}
+
+interface LinkImageButtonParams extends BaseImageButtonParams {
+  to: string;
+}
+
+interface ImageButtonParams extends BaseImageButtonParams {
+  handleClick:
+    | (() => void)
+    | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void);
+  display: "desktop" | "mobile";
+}
+
+interface NavbarTitleParams {
+  title: string;
+}
+
+const Image = ({ imageRound, src, alt }: BaseImageButtonParams) => {
+  const setImageClass = () => {
+    const defaultClass = "img img--sm";
+    return imageRound ? defaultClass + " img--round" : defaultClass;
+  };
+
+  return <img src={src} alt={alt} className={setImageClass()} />;
+};
+
+const MenuElement = ({
+  handleSubmit,
+  name,
+  ...imageParams
+}: MenuElementParams) => {
+
+  return (
+    <button
+      className="my-menu__elements my-button d-flex align-items-center"
+      onClick={handleSubmit}
+    >
+      <Image {...imageParams} alt={name} />
+      <div className="d-flex flex-grow-1 justify-content-center align-items-center">
+        <p className="my-text my-text--align-center flex-grow-1">{name}</p>
+      </div>
+    </button>
+  );
+};
+
+const LinkImageButton = ({ to, ...imageParams }: LinkImageButtonParams) => {
+  return (
+    <Link to={to}>
+      <Image {...imageParams} />
+    </Link>
+  );
+};
+
+const ImageButton = ({
+  handleClick,
+  display,
+  ...imageParams
+}: ImageButtonParams) => {
+  const setButtonClass = () => {
+    const defaultClass = "my-button";
+    return (display === "desktop")
+      ? defaultClass + " option__display-desktop"
+      : defaultClass + " option__display-mobile";
+  };
+
+  return (
+    <button className={setButtonClass()}>
+      <Image {...imageParams} />
+    </button>
+  );
+};
+
+const NavbarTitle = ({ title }: NavbarTitleParams) => {
+  return (
+    <div className="d-flex flex-grow-1 justify-content-center align-items-center">
+      <h1 className="my-header my-text--align-center flex-grow-1">{title}</h1>
+    </div>
+  );
+};
+
+const Menu = ({ children, isActive }: MenuParams) => {
+  const setMenuClass = () => {
+    const defaultClass = "my-menu option__display-mobile";
+    return isActive ? defaultClass : defaultClass + " none";
+  };
+
+  return <div className={setMenuClass()}>{children}</div>;
+};
 
 const Navbar = ({ title, profileImage }: NavbarParams) => {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const { logoutFunction } = useContext(AuthContext);
 
-  /* This function is use to determine the class of a menu */
-  const setMenuClass = () => {
-    const defaultClass = "my-menu option__display-mobile";
-    return isMenuActive ? defaultClass : defaultClass + " none";
-  };
-
-  const Menu = ({ children }: MenuParams) => {
-    return <div className={setMenuClass()}>{children}</div>;
-  };
-
   return (
     <nav className="navbar-box box--white-text">
       <div className="my-navbar d-flex">
-        <Link to="/">
-          <img src={favicon} alt="Logo" className="img img--sm img--round" />
-        </Link>
-        <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-          <h1 className="my-header my-text--align-center flex-grow-1">
-            {title}
-          </h1>
-        </div>
+        <LinkImageButton to="/" src={favicon} alt="icon" imageRound={true} />
+        <NavbarTitle title={title} />
+        
         <div className="my-navbar__option d-flex">
-          <img
+          <ImageButton
+            handleClick={() => {}}
             src={profileImage}
-            alt=""
-            className="img img--round img--sm option__display-desktop"
+            alt="Profile"
+            imageRound={true}
+            display="desktop"
           />
-          <button
-            className="my-navbar__logout-button option__display-desktop"
-            onClick={logoutFunction}
-          >
-            <img src={logoutIcon} alt="Logout" className="img img--xs" />
-          </button>
 
-          <button
-            className="my-navbar__menu-button option__display-mobile"
-            onClick={() => setIsMenuActive(!isMenuActive)}
-          >
-            <img src={menuIcon} alt="" className="img img--sm" />
-          </button>
+          <ImageButton
+            handleClick={logoutFunction}
+            src={logoutIcon}
+            alt="Logout"
+            display="desktop"
+          />
+
+          <ImageButton
+            handleClick={() => setIsMenuActive(!isMenuActive)}
+            src={menuIcon}
+            alt="menu"
+            display="mobile"
+          />
         </div>
       </div>
 
-      <Menu>
+      <Menu isActive={isMenuActive}>
         <MenuElement
           name="Profile"
-          imageURL={profileImage}
+          src={profileImage}
           handleSubmit={() => {}}
           imageRound={true}
         />
         <MenuElement
           name="Logout"
-          imageURL={logoutIcon}
+          src={logoutIcon}
           handleSubmit={logoutFunction}
         />
       </Menu>

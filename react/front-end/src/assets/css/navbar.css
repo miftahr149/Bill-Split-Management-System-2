@@ -23,15 +23,6 @@
   display: none
 }
 
-.my-navbar__logout-button {
-  background-color: transparent;
-  border: 0;
-}
-
-.my-navbar__menu-button {
-  background-color: transparent;
-  border: 0;
-}
 
 /* # menu */
 .my-menu {
