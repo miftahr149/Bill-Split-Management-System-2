@@ -1,5 +1,6 @@
 import Navbar from "../components/navbar";
 import "../assets/css/home.css";
+import smallPlusIcon from "../assets/img/plus-small.png";
 
 import { jwtDecode } from "jwt-decode";
 
@@ -12,7 +13,6 @@ import {
 } from "../utility/myapi";
 
 import { useEffect, useState, useContext } from "react";
-
 
 interface TagParams {
   id: number;
@@ -27,8 +27,8 @@ interface TagsListParams {
   tags: TagParams[];
 }
 
-const TagElement = ({tag} : TagElementParams) => {
-  const {name} = tag;
+const TagElement = ({ tag }: TagElementParams) => {
+  const { name } = tag;
   return (
     <li className="tag-element d-flex">
       <div className="d-flex justify-content-center align-items-center">
@@ -36,16 +36,60 @@ const TagElement = ({tag} : TagElementParams) => {
       </div>
       <p className="my-text tag-element__counter">0</p>
     </li>
-  )
-}
+  );
+};
 
-const TagsList = ({tags} : TagsListParams) => {
+const TagsList = ({ tags }: TagsListParams) => {
   return (
-    <ul className="tags-list flex-grow-1">
-      {tags.map((tag: TagParams) => <TagElement tag={tag} />)}
+    <ul className="tags-list flex-grow-1 d-flex flex-column">
+      <TagElement tag={{ id: 4, name: "All" }} />
+      {tags.map((tag: TagParams) => (
+        <TagElement key={tag.id} tag={tag} />
+      ))}
     </ul>
-  )
-}
+  );
+};
+
+const BillSplitListHeader = () => {
+  return (
+    <div className="bill-split-list__header d-flex flex-center">
+      <h2 className="my-header my-header--color-green">Bill Split</h2>
+      <button className="create-bill-split-button box--white-text d-flex flex-center">
+        <img src={smallPlusIcon} alt="plus" className="img img--sm plus-icon" />
+        <p className="my-text my-text--bold my-text--align-center display-desktop">
+          Proposed Bill Split
+        </p>
+      </button>
+    </div>
+  );
+};
+
+const BillSplitCardTag = () => {
+  return <p className="bill-split-card__tag my-text my-text--bold">Test</p>;
+};
+
+const BillSplitCard = () => {
+  return (
+    <div className="box box--bg-black">
+      <div className="display-desktop">
+        <div className="d-flex bill-split-card__header flex-center">
+          <p className="my-text bill-split-card__name my-text--bold">
+            Hello World
+          </p>
+          <div className="bill-split-card__tag-list d-flex flex-center">
+            <BillSplitCardTag />
+          </div>
+        </div>
+
+        <div className="bill-split-card__content d-flex align-items center">
+          <p>Hi</p>
+          <p>Hello</p>
+        </div>
+      </div>
+      <div className="display-mobile"></div>
+    </div>
+  );
+};
 
 const Home = () => {
   const [tags, setTags] = useState<TagParams[]>([]);
@@ -88,12 +132,12 @@ const Home = () => {
   useEffect(() => {
     getImage();
     getTags();
-  }, [authTokens])
+  }, [authTokens]);
 
   return (
     <div className="home pages d-flex flex-column">
       <Navbar title="Home" profileImage={image} />
-      
+
       <main className="home__main box box--white-text flex-grow-1 d-flex flex-column">
         <div className="greeting">
           <div className="d-flex justify-content-center">
@@ -110,9 +154,11 @@ const Home = () => {
             <h2 className="my-header my-header--color-green">Tags</h2>
             <TagsList tags={tags} />
           </div>
-          <div className="bill-split-list box">Bill Split List</div>
+          <div className="bill-split-list box">
+            <BillSplitListHeader />
+            <BillSplitCard />
+          </div>
         </div>
-
       </main>
     </div>
   );

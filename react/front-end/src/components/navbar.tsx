@@ -95,7 +95,7 @@ const ImageButton = ({
   };
 
   return (
-    <button className={setButtonClass()}>
+    <button className={setButtonClass()} onClick={handleClick}>
       <Image {...imageParams} />
     </button>
   );
@@ -122,6 +122,8 @@ const Navbar = ({ title, profileImage }: NavbarParams) => {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const { logoutFunction } = useContext(AuthContext);
 
+  const handleMenuClick = () => setIsMenuActive(!isMenuActive);
+
   return (
     <nav className="navbar-box box--white-text">
       <div className="my-navbar d-flex">
@@ -145,7 +147,7 @@ const Navbar = ({ title, profileImage }: NavbarParams) => {
           />
 
           <ImageButton
-            handleClick={() => setIsMenuActive(!isMenuActive)}
+            handleClick={handleMenuClick}
             src={menuIcon}
             alt="menu"
             display="mobile"

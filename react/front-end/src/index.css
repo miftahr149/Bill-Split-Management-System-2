@@ -12,6 +12,7 @@
   --header-green-color: #77B0AA;
 
   /* border-radius */
+  --border-xs: 5px;
   --border-sm: 15px;
   --border-round: 50%;
 
@@ -147,4 +148,23 @@
 /* ## Other */
 .none {
   display: None !important;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.display-desktop {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .display-desktop { 
+    display: block;
+  }
+
+  .display-mobile {
+    display: None;
+  }
 }
