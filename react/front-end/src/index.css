@@ -17,7 +17,7 @@
   --border-round: 50%;
 
   /* img Size */
-  --img-size-xs: 3rem;
+  --img-size-xs: 1.6rem;
   --img-size-sm: 4rem;
   --img-size: 6rem;
   --img-size-l: 8rem;
@@ -32,6 +32,11 @@
   --font-size: 1.2rem;
   --font-size-sm: 0.7rem;
   --font-size-l: 1.8rem;
+
+  /* gap */
+  --gap: 1rem;
+  --gap-sm: 0.5rem;
+  --gap-l: 2rem;
 }
 
 * {
@@ -145,6 +150,19 @@
   background-color: var(--default-pages-bg-color)
 }
 
+/* gap */
+.gap {
+  gap: var(--gap);
+}
+
+.gap--l {
+  gap: var(--gap-l);
+}
+
+.gap--sm {
+  gap: var(--gap-sm);
+}
+
 /* ## Other */
 .none {
   display: None !important;
@@ -162,7 +180,7 @@
 @media screen and (min-width: 768px) {
   .display-desktop { 
     display: block;
-  }
+  } 
 
   .display-mobile {
     display: None;
