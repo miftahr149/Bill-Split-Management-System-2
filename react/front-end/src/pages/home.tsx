@@ -2,6 +2,7 @@ import "../assets/css/home.css";
 import smallPlusIcon from "../assets/img/plus-small.png";
 
 import Navbar from "../components/navbar";
+import {BillSplitParams} from "../components/billSplitCard";
 import BillSplitCard from "../components/billSplitCard";
 
 import { jwtDecode } from "jwt-decode";
@@ -12,12 +13,12 @@ import {
   setAuthorization,
   APIFetch,
   tryCatchFetch,
+  getImage
 } from "../utility/myapi";
 
 import { useEffect, useState, useContext } from "react";
 
 interface TagParams {
-  id: number;
   name: string;
 }
 
@@ -44,9 +45,9 @@ const TagElement = ({ tag }: TagElementParams) => {
 const TagsList = ({ tags }: TagsListParams) => {
   return (
     <ul className="tags-list flex-grow-1 d-flex flex-column">
-      <TagElement tag={{ id: 4, name: "All" }} />
+      <TagElement tag={{ name: "All" }} />
       {tags.map((tag: TagParams) => (
-        <TagElement key={tag.id} tag={tag} />
+        <TagElement key={tag.name} tag={tag} />
       ))}
     </ul>
   );
@@ -88,30 +89,31 @@ const Home = () => {
     console.log("Successfuly Fetching Tags");
   };
 
-  const getImage = async () => {
-    console.log("Fetching User's Photo Profile From the Backend");
-
+  const getBillSplit = async () => {
+    const URL = setBackendURL("billSplit/user");
     tryCatchFetch(async () => {
-      const { image } = (await APIFetch({
-        URL: setBackendURL("userImage"),
+      const data = await APIFetch({
+        URL: URL,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: setAuthorization(authTokens.access),
-        },
-      })) as { image: string };
-      setImage(setBackendURL(image.slice(1)));
-    });
-  };
+          Authorization: setAuthorization(authTokens.access)
+        }
+      }) as BillSplitParams[]
+
+      console.log(data);
+    })
+  }
 
   useEffect(() => {
-    getImage();
+    getImage(setImage, authTokens);
     getTags();
+    getBillSplit();
   }, [authTokens]);
 
   return (
     <div className="home pages d-flex flex-column">
-      <Navbar title="Home" profileImage={image} />
+      <Navbar title="Home" />
 
       <main className="home__main box box--white-text flex-grow-1 d-flex flex-column">
         <div className="greeting">

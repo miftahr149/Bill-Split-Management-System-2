@@ -50,6 +50,10 @@
 }
 
 /* ## Bill Split List */
+.bill-split-list {
+  padding: 0;
+}
+
 .bill-split-list__header {
   justify-content: space-between;
   margin-bottom: 1rem;
@@ -71,6 +75,9 @@
     padding: 0;
   }
   
+  .bill-split-list {
+    padding: 1.5rem;
+  }
   
   .greeting__username {
     font-size: 6rem;

@@ -17,4 +17,26 @@ class UserProfileImageSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
   class Meta:
     model = models.Tag
+    fields = ['name']
+
+
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.User
+    fields = ['username']
+
+class UserAmountSerializer(serializers.ModelSerializer):
+  user = UserSerializer()
+    
+  class Meta:
+    model = models.UserAmount
+    fields = ['user', 'amount', 'receipt']
+
+class BillSplitSerializer(serializers.ModelSerializer):
+  host = UserSerializer()
+  tag = TagSerializer(many=True)
+  user_amount = UserAmountSerializer(many=True)
+  
+  class Meta:
+    model = models.BillSplit
     fields = '__all__'

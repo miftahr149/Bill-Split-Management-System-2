@@ -6,11 +6,11 @@ import menuIcon from "../assets/img/menu.png";
 import AuthContext from "../context/authContext";
 
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { getImage } from "../utility/myapi";
 
 interface NavbarParams {
   title: string;
-  profileImage: string;
 }
 
 interface MenuParams {
@@ -118,11 +118,16 @@ const Menu = ({ children, isActive }: MenuParams) => {
   return <div className={setMenuClass()}>{children}</div>;
 };
 
-const Navbar = ({ title, profileImage }: NavbarParams) => {
+const Navbar = ({ title }: NavbarParams) => {
   const [isMenuActive, setIsMenuActive] = useState(false);
-  const { logoutFunction } = useContext(AuthContext);
+  const [image, setImage] = useState("");
+  const { logoutFunction, authTokens } = useContext(AuthContext);
 
   const handleMenuClick = () => setIsMenuActive(!isMenuActive);
+
+  useEffect(() => {
+    getImage(setImage, authTokens) 
+  }, [authTokens])
 
   return (
     <nav className="navbar-box box--white-text">
@@ -133,7 +138,7 @@ const Navbar = ({ title, profileImage }: NavbarParams) => {
         <div className="my-navbar__option d-flex">
           <ImageButton
             handleClick={() => {}}
-            src={profileImage}
+            src={image}
             alt="Profile"
             imageRound={true}
             display="desktop"
@@ -158,7 +163,7 @@ const Navbar = ({ title, profileImage }: NavbarParams) => {
       <Menu isActive={isMenuActive}>
         <MenuElement
           name="Profile"
-          src={profileImage}
+          src={image}
           handleSubmit={() => {}}
           imageRound={true}
         />

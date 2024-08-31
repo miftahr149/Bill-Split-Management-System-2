@@ -1,6 +1,20 @@
 import dollarIcon from "../assets/img/dollar.png";
 import "../assets/css/billSplitCard.css";
 
+export interface BillSplitParams {
+  id: number;
+  name: string;
+  description: string;
+  host: {username: string};
+  status: "Pending" | "Ongoing";
+  tag: {name: string}[];
+  user_amount: {
+    user: {username: string},
+    amount: number,
+    receipt: string,
+  }[];
+}
+
 interface BillSplitCardTagsParams {
   tag: string;
 }
@@ -15,7 +29,7 @@ const BillSplitCard = () => {
   const name = "Rent House";
   const host = "User";
   const price = 312.5;
-  const tagList = ["Hello World", "Hi", "Hi There"];
+  const tagList = ["Utility", "House", "Monthly"];
 
   const renderTag = () => {
     return tagList.map((element: string) => <BillSplitCardTag tag={element} />);
@@ -80,7 +94,7 @@ const BillSplitCard = () => {
               alt="userImage"
               className="img img--round img--xs"
             />
-            <p className="my-text my-text--bold my-text--sm">{name}</p>
+            <p className="my-text my-text--bold my-text--sm">{host}</p>
           </div>
           <div className="bill-split-card__tag-list d-flex gap--sm">
             {renderTag()}

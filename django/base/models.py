@@ -12,6 +12,9 @@ class BankData(models.Model):
 
 class Tag(models.Model):
   name = models.CharField(max_length=30)
+  
+  def __str__(self):
+    return self.name
 
 class UserAmount(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -32,6 +35,9 @@ class BillSplit(models.Model):
     ),
     default='Pending'
   )
+  
+  def __str__(self):
+    return self.name
 
 class UserProfileImage(models.Model):
   image = models.ImageField(upload_to='image/', blank=True, null=True)

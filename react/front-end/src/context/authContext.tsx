@@ -11,7 +11,7 @@ interface userDataParams {
   password: string;
 }
 
-interface AuthTokensParams {
+export interface AuthTokensParams {
   refresh: string;
   access: string;
 }

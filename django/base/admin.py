@@ -5,3 +5,4 @@ from . import models
 admin.site.register(models.UserProfileImage)
 admin.site.register(models.Tag)
 admin.site.register(models.BillSplit)
+admin.site.register(models.UserAmount)

@@ -15,6 +15,7 @@ urlpatterns = [
   path('token/validate', views.ValidateToken.as_view(), name='validate_token'),
   path('userImage/', views.UserProfileImageViews.as_view(), name='user_image'),
   path('tag', views.TagViews.as_view(), name='tag'),
+  path('billSplit/user', views.UserBillSplitView.as_view(), name='tag'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

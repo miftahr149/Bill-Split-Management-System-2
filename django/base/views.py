@@ -34,7 +34,6 @@ class UserProfileImageViews(APIView):
   permission_classes = [IsAuthenticated]
   
   def get(self, request: Request, format='jpg'):
-    print(request.user.username)
     user = models.User.objects.get(username=request.user.username)
     try:
       profile_image = models.UserProfileImage.objects.get(user=user)
@@ -61,3 +60,18 @@ class ValidateToken(APIView):
       print(user, token)
       return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class UserBillSplitView(APIView):
+  """ 
+  Use to return a list of bill split that involve the user
+  """
+  
+  permission_classes = [IsAuthenticated]
+  
+  def get(self, request: Request, format=None):
+    user = models.User.objects.get(username=request.user.username)
+    bill_splits = models.BillSplit.objects.filter(user_amount__user=user)
+    print(bill_splits)
+    bill_splits_serializer = serializer.BillSplitSerializer(
+      bill_splits, many=True)
+    return Response(bill_splits_serializer.data, status=status.HTTP_200_OK)
