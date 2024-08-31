@@ -1,7 +1,9 @@
-import Navbar from "../components/navbar";
 import "../assets/css/home.css";
 import smallPlusIcon from "../assets/img/plus-small.png";
-import dollarIcon from "../assets/img/dollar.png";
+
+import Navbar from "../components/navbar";
+import BillSplitCard from "../components/billSplitCard";
+
 import { jwtDecode } from "jwt-decode";
 
 import AuthContext from "../context/authContext";
@@ -25,11 +27,6 @@ interface TagElementParams {
 
 interface TagsListParams {
   tags: TagParams[];
-}
-
-interface BillSplitCardTagsParams {
-  size?: "small" | "default"
-  tag: string;
 }
 
 const TagElement = ({ tag }: TagElementParams) => {
@@ -65,84 +62,6 @@ const BillSplitListHeader = () => {
           Proposed Bill Split
         </p>
       </button>
-    </div>
-  );
-};
-
-const BillSplitCardTag = ({size, tag} : BillSplitCardTagsParams) => {
-  const setTagClass = () => {
-    const defaultClass = "bill-split-card__tag my-text my-text--bold";
-    return (size === "small") ? defaultClass + " my-text--sm" : defaultClass;
-  }
-  
-  return (
-    <p className={setTagClass()}>{tag}</p>
-  );
-};
-
-const BillSplitCard = () => {
-  const defaultUserImage =
-    "http://127.0.0.1:8000/api/media/image/defaultUserProfile.png";
-
-  return (
-    <div className="box box--bg-black">
-      <div className="display-desktop">
-        <div className="d-flex flex-column gap">
-          <div className="d-flex bill-split-card__header flex-center">
-            <p className="my-text bill-split-card__name my-text--bold">
-              Rent House
-            </p>
-            <div className="bill-split-card__tag-list d-flex flex-center">
-              <BillSplitCardTag tag="Hello World"/>
-            </div>
-          </div>
-
-          <div className="d-flex align-items-center gap--l">
-            <div className="d-flex gap--sm flex-center">
-              <img
-                src={defaultUserImage}
-                alt="userImage"
-                className="img img--round img--xs"
-              />
-              <p className="my-text my-text--bold">Bujang</p>
-            </div>
-            <img src="" alt="" className="ball" />
-            <div className="d-flex gap--sm flex-center">
-              <img
-                src={dollarIcon}
-                alt="userImage"
-                className="img img--round img--xs"
-              />
-              <p className="my-text my-text--bold">RM. 312.5</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="display-mobile">
-        <div className="d-flex flex-column gap">
-          <div className="bill-split-card__header d-flex flex-center">
-            <p className="bill-split-card__name my-text my-text--bold">
-              Rent House
-            </p>
-            <p className="my-text my-text--bold my-text--sm">RM. 312.5</p>
-          </div>
-
-          <div className="d-flex gap--sm align-items-center">
-            <img
-              src={defaultUserImage}
-              alt="userImage"
-              className="img img--round img--xs"
-            />
-            <p className="my-text my-text--bold my-text--sm">Bujang</p>
-          </div>
-          <div className="bill-split-card__tag-list d-flex gap--sm">
-            <BillSplitCardTag tag="Hi" size="small" />
-            <BillSplitCardTag tag="Test" size="small" />
-            <BillSplitCardTag tag="Hello World" size="small" />
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

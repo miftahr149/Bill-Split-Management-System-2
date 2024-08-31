@@ -1,0 +1,26 @@
+.bill-split-card__header {
+  justify-content: space-between;
+}
+
+.bill-split-card__tag {
+  background-color: var(--header-green-color);
+  border-radius: 4px;
+  padding: 3px 0.8rem;
+  font-size: clamp(var(--font-size-sm), 1vw, var(--font-size));
+}
+
+.bill-split-card__name {
+  font-size: 1.2rem;
+}
+
+.ball {
+  --ball-size: 5px;
+  height: var(--ball-size);
+  width: var(--ball-size);
+  border-radius: var(--border-round);
+  background-color: white;
+}
+
+.bill-split-card__tag-list {
+  flex-wrap: wrap;
+}
