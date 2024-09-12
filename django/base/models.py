@@ -22,31 +22,27 @@ class UserAmount(models.Model):
   receipt = models.FileField(upload_to='receipt/', blank=True)
 
 class BillSplit(models.Model):
+  status_choices = (
+    ('Ongoing', 'Ongoing'),
+    ('Pending', 'Pending')
+  )
+  
   name = models.CharField(max_length=50)
   host = models.ForeignKey(User, on_delete=models.CASCADE)
   tag = models.ManyToManyField(Tag, blank=True)
   description = models.TextField()
   user_amount = models.ManyToManyField(UserAmount)
-  status = models.CharField(
-    max_length=30,
-    choices=(
-      ('Ongoing', 'Ongoing'),
-      ('Pending', 'Pending')
-    ),
-    default='Pending'
-  )
+  status = models.CharField(max_length=30, choices=status_choices,
+                            default='Pending')
   
   def __str__(self):
     return self.name
 
 class UserProfileImage(models.Model):
-  image = models.ImageField(upload_to='image/', blank=True, null=True)
-  user = models.OneToOneField(
-    User,
-    on_delete=models.CASCADE, 
-    related_name='user_image',
-    null=True,
-  )
+  image = models.ImageField(upload_to='image/', blank=True, null=True, 
+                            default='image/defaultUserProfile.jpg')
+  user = models.OneToOneField(User, on_delete=models.CASCADE, 
+                              related_name='user_image', null=True)
   
   def __str__(self):
     return self.user.username

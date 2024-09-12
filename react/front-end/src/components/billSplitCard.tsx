@@ -1,18 +1,27 @@
 import dollarIcon from "../assets/img/dollar.png";
 import "../assets/css/billSplitCard.css";
+import AuthContext from "../context/authContext";
+import { useContext, useState, useEffect } from "react";
+import { getImage } from "../utility/myapi";
+
+interface UserAmountParams {
+  user: { username: string };
+  amount: number;
+  receipt: string;
+}
+
+export interface TagParams {
+  name: string;
+}
 
 export interface BillSplitParams {
   id: number;
   name: string;
   description: string;
-  host: {username: string};
+  host: { username: string };
   status: "Pending" | "Ongoing";
-  tag: {name: string}[];
-  user_amount: {
-    user: {username: string},
-    amount: number,
-    receipt: string,
-  }[];
+  tag: TagParams[];
+  user_amount: UserAmountParams[];
 }
 
 interface BillSplitCardTagsParams {
@@ -23,17 +32,35 @@ const BillSplitCardTag = ({ tag }: BillSplitCardTagsParams) => {
   return <p className={"bill-split-card__tag my-text my-text--bold"}>{tag}</p>;
 };
 
-const BillSplitCard = () => {
-  const defaultUserImage =
-    "http://127.0.0.1:8000/api/media/image/defaultUserProfile.png";
-  const name = "Rent House";
-  const host = "User";
-  const price = 312.5;
-  const tagList = ["Utility", "House", "Monthly"];
+const BillSplitCard = ({
+  name,
+  host: hostData,
+  user_amount,
+  tag,
+}: BillSplitParams) => {
+  const getPrice = () => {
+    const userAmount = user_amount.filter(
+      (value: UserAmountParams) => value.user.username === username
+    )[0];
+    return userAmount.amount;
+  };
 
   const renderTag = () => {
-    return tagList.map((element: string) => <BillSplitCardTag tag={element} />);
+    return tag.map((element: TagParams) => (
+      <BillSplitCardTag tag={element.name} />
+    ));
   };
+
+  const [hostImage, setHostImage] = useState("");
+
+  const { username, authTokens } = useContext(AuthContext);
+  const { username: host } = hostData;
+
+  const priceFormat = `RM. ${getPrice()}`;
+
+  useEffect(() => {
+    getImage(setHostImage, authTokens);
+  }, [])
 
   return (
     <div className="box box--bg-black">
@@ -51,8 +78,8 @@ const BillSplitCard = () => {
           <div className="d-flex align-items-center gap--l">
             <div className="d-flex gap--sm flex-center">
               <img
-                src={defaultUserImage}
-                alt="userImage"
+                src={hostImage}
+                alt="hostImage"
                 className="img img--round img--xs"
               />
               <p className="my-text my-text--bold">{host}</p>
@@ -61,10 +88,10 @@ const BillSplitCard = () => {
             <div className="d-flex gap--sm flex-center">
               <img
                 src={dollarIcon}
-                alt="userImage"
+                alt="dollaricon"
                 className="img img--round img--xs"
               />
-              <p className="my-text my-text--bold">{`RM. ${price}`}</p>
+              <p className="my-text my-text--bold">{priceFormat}</p>
             </div>
           </div>
         </div>
@@ -79,19 +106,17 @@ const BillSplitCard = () => {
             <div className="d-flex gap--sm flex-center">
               <img
                 src={dollarIcon}
-                alt="userImage"
+                alt="dollar"
                 className="img img--round img--xs"
               />
-              <p className="my-text my-text--bold my-text--sm">
-                {`RM. ${312.5}`}
-              </p>
+              <p className="my-text my-text--bold my-text--sm">{priceFormat}</p>
             </div>
           </div>
 
           <div className="d-flex gap--sm align-items-center">
             <img
-              src={defaultUserImage}
-              alt="userImage"
+              src={hostImage}
+              alt="hostImage"
               className="img img--round img--xs"
             />
             <p className="my-text my-text--bold my-text--sm">{host}</p>

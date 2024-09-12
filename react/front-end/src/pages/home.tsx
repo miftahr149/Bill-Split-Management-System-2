@@ -2,7 +2,7 @@ import "../assets/css/home.css";
 import smallPlusIcon from "../assets/img/plus-small.png";
 
 import Navbar from "../components/navbar";
-import {BillSplitParams} from "../components/billSplitCard";
+import { BillSplitParams, TagParams } from "../components/billSplitCard";
 import BillSplitCard from "../components/billSplitCard";
 
 import { jwtDecode } from "jwt-decode";
@@ -13,41 +13,44 @@ import {
   setAuthorization,
   APIFetch,
   tryCatchFetch,
-  getImage
+  getImage,
 } from "../utility/myapi";
 
 import { useEffect, useState, useContext } from "react";
 
-interface TagParams {
-  name: string;
-}
-
 interface TagElementParams {
   tag: TagParams;
+  count: number;
+}
+
+interface TagsCounterParams {
+  [tagName: string] : number;
 }
 
 interface TagsListParams {
   tags: TagParams[];
+  tagsCounter: TagsCounterParams;
 }
 
-const TagElement = ({ tag }: TagElementParams) => {
+
+const TagElement = ({ tag, count }: TagElementParams) => {
   const { name } = tag;
   return (
     <li className="tag-element d-flex">
       <div className="d-flex justify-content-center align-items-center">
         <p className="my-text my-text--bold my-text--align-center">{name}</p>
       </div>
-      <p className="my-text tag-element__counter">0</p>
+      <p className="my-text tag-element__counter">{count}</p>
     </li>
   );
 };
 
-const TagsList = ({ tags }: TagsListParams) => {
+const TagsList = ({ tags, tagsCounter }: TagsListParams) => {
   return (
     <ul className="tags-list flex-grow-1 d-flex flex-column">
-      <TagElement tag={{ name: "All" }} />
+      <TagElement tag={{ name: "All" }} count={tagsCounter.all} />
       {tags.map((tag: TagParams) => (
-        <TagElement key={tag.name} tag={tag} />
+        <TagElement key={tag.name} tag={tag} count={tagsCounter[tag.name]} />
       ))}
     </ul>
   );
@@ -71,43 +74,49 @@ const Home = () => {
   const [tags, setTags] = useState<TagParams[]>([]);
   const { authTokens, username } = useContext(AuthContext);
   const [image, setImage] = useState<string>("");
+  const [billSplits, setBillSplits] = useState<BillSplitParams[]>();
+  const [tagsCounter, setTagsCounter] = useState<TagsCounterParams>({});
 
-  const getTags = async () => {
-    console.log("Fetching Tags From the Backend");
-    const URL = setBackendURL("tag");
+  const setAvailableTags = (data: BillSplitParams[]) => {
+    console.log("Calculating Available Tags")
+    const tempTagsCounter : TagsCounterParams = {all: data.length};
+    const availableTags : TagParams[] = [];
+    
+    data.forEach((element : BillSplitParams) => {
+      element.tag.forEach((element: TagParams) => {
+        if (!(element.name in tags)) {
+          availableTags.push(element);
+          tempTagsCounter[element.name] = 1;
+          return;
+        }
 
-    const data = await APIFetch({
-      URL: URL,
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: setAuthorization(authTokens.access),
-      },
-    });
+        tempTagsCounter[element.name]++;
+      })
+    })
 
-    setTags(data);
-    console.log("Successfuly Fetching Tags");
-  };
+    setTags(availableTags);
+    setTagsCounter(tempTagsCounter);
+  }
 
   const getBillSplit = async () => {
     const URL = setBackendURL("billSplit/user");
     tryCatchFetch(async () => {
-      const data = await APIFetch({
+      const data = (await APIFetch({
         URL: URL,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: setAuthorization(authTokens.access)
-        }
-      }) as BillSplitParams[]
+          Authorization: setAuthorization(authTokens.access),
+        },
+      })) as BillSplitParams[];
 
-      console.log(data);
-    })
-  }
+      setBillSplits(data);
+      setAvailableTags(data);
+    });
+  };
 
   useEffect(() => {
     getImage(setImage, authTokens);
-    getTags();
     getBillSplit();
   }, [authTokens]);
 
@@ -129,11 +138,14 @@ const Home = () => {
         <div className="bill-split-box flex-grow-1">
           <div className="bill-split-tag box box--bg-black d-flex flex-column">
             <h2 className="my-header my-header--color-green">Tags</h2>
-            <TagsList tags={tags} />
+            <TagsList tags={tags} tagsCounter={tagsCounter} />
           </div>
           <div className="bill-split-list box">
             <BillSplitListHeader />
-            <BillSplitCard />
+            
+            {billSplits?.map((element: BillSplitParams) => (
+              <BillSplitCard {...element} />
+            ))}
           </div>
         </div>
       </main>
