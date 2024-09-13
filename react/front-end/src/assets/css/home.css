@@ -43,6 +43,12 @@
   border-radius: var(--border-sm);
 }
 
+.tag-element__btn {
+  gap: 1rem;
+  justify-content: space-between;
+  background-color: transparent;
+}
+
 .tag-element__counter {
   padding: 0 10px;
   border: 2px solid white;

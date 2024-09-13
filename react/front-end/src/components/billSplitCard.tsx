@@ -2,7 +2,13 @@ import dollarIcon from "../assets/img/dollar.png";
 import "../assets/css/billSplitCard.css";
 import AuthContext from "../context/authContext";
 import { useContext, useState, useEffect } from "react";
-import { getImage } from "../utility/myapi";
+import {
+  setBackendURL,
+  setAuthorization,
+  APIFetch,
+  tryCatchFetch,
+  setImageURL
+} from "../utility/myapi";
 
 interface UserAmountParams {
   user: { username: string };
@@ -52,15 +58,30 @@ const BillSplitCard = ({
   };
 
   const [hostImage, setHostImage] = useState("");
-
   const { username, authTokens } = useContext(AuthContext);
   const { username: host } = hostData;
-
   const priceFormat = `RM. ${getPrice()}`;
 
+  const getHostImage = () => {
+    tryCatchFetch(async () => {
+      const { image } = await APIFetch({
+        URL: setBackendURL("userImage/get"),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: setAuthorization(authTokens.access)
+        },
+        body: JSON.stringify({ username: host })
+      })
+
+      setHostImage(setImageURL(image));
+      console.log(`${host}: ${image}`)
+    })
+  };
+
   useEffect(() => {
-    getImage(setHostImage, authTokens);
-  }, [])
+    getHostImage();
+  }, [host]);
 
   return (
     <div className="box box--bg-black">

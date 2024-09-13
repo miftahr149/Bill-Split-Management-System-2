@@ -40,7 +40,7 @@ class BillSplit(models.Model):
 
 class UserProfileImage(models.Model):
   image = models.ImageField(upload_to='image/', blank=True, null=True, 
-                            default='image/defaultUserProfile.jpg')
+                            default='image/defaultUserProfile.png')
   user = models.OneToOneField(User, on_delete=models.CASCADE, 
                               related_name='user_image', null=True)
   
@@ -56,5 +56,6 @@ class UserProfileImage(models.Model):
       os.remove(folder_path / image_name)
     
     # Upload data to the database
-    self.image.name = image_name
+    if self.image.name != 'image/defaultUserProfile.png':
+      self.image.name = image_name
     return super().save(*args, **kwargs)

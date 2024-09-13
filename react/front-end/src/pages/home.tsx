@@ -4,9 +4,6 @@ import smallPlusIcon from "../assets/img/plus-small.png";
 import Navbar from "../components/navbar";
 import { BillSplitParams, TagParams } from "../components/billSplitCard";
 import BillSplitCard from "../components/billSplitCard";
-
-import { jwtDecode } from "jwt-decode";
-
 import AuthContext from "../context/authContext";
 import {
   setBackendURL,
@@ -16,6 +13,7 @@ import {
   getImage,
 } from "../utility/myapi";
 
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 
 interface TagElementParams {
@@ -24,7 +22,7 @@ interface TagElementParams {
 }
 
 interface TagsCounterParams {
-  [tagName: string] : number;
+  [tagName: string]: number;
 }
 
 interface TagsListParams {
@@ -32,15 +30,27 @@ interface TagsListParams {
   tagsCounter: TagsCounterParams;
 }
 
-
 const TagElement = ({ tag, count }: TagElementParams) => {
   const { name } = tag;
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClick = () => {
+    const prop = name == "All" ? {} : { state: { filter: name } };
+    navigate(location.pathname, prop);
+  };
+
   return (
-    <li className="tag-element d-flex">
-      <div className="d-flex justify-content-center align-items-center">
-        <p className="my-text my-text--bold my-text--align-center">{name}</p>
-      </div>
-      <p className="my-text tag-element__counter">{count}</p>
+    <li className="tag-element d-flex flex-column">
+      <button
+        className="tag-element__btn d-flex my-button box--white-text"
+        onClick={handleClick}
+      >
+        <div className="d-flex justify-content-center align-items-center">
+          <p className="my-text my-text--bold my-text--align-center">{name}</p>
+        </div>
+        <p className="my-text tag-element__counter">{count}</p>
+      </button>
     </li>
   );
 };
@@ -60,12 +70,15 @@ const BillSplitListHeader = () => {
   return (
     <div className="bill-split-list__header d-flex flex-center">
       <h2 className="my-header my-header--color-green">Bill Split</h2>
-      <button className="create-bill-split-button box--white-text d-flex flex-center">
+      <Link
+        to="create-bill-split"
+        className="create-bill-split-button box--white-text d-flex flex-center"
+      >
         <img src={smallPlusIcon} alt="plus" className="img img--sm plus-icon" />
         <p className="my-text my-text--bold my-text--align-center display-desktop">
           Proposed Bill Split
         </p>
-      </button>
+      </Link>
     </div>
   );
 };
@@ -76,13 +89,14 @@ const Home = () => {
   const [image, setImage] = useState<string>("");
   const [billSplits, setBillSplits] = useState<BillSplitParams[]>();
   const [tagsCounter, setTagsCounter] = useState<TagsCounterParams>({});
+  const location = useLocation();
 
   const setAvailableTags = (data: BillSplitParams[]) => {
-    console.log("Calculating Available Tags")
-    const tempTagsCounter : TagsCounterParams = {all: data.length};
-    const availableTags : TagParams[] = [];
-    
-    data.forEach((element : BillSplitParams) => {
+    console.log("Calculating Available Tags");
+    const tempTagsCounter: TagsCounterParams = { all: data.length };
+    const availableTags: TagParams[] = [];
+
+    data.forEach((element: BillSplitParams) => {
       element.tag.forEach((element: TagParams) => {
         if (!(element.name in tags)) {
           availableTags.push(element);
@@ -91,12 +105,12 @@ const Home = () => {
         }
 
         tempTagsCounter[element.name]++;
-      })
-    })
+      });
+    });
 
     setTags(availableTags);
     setTagsCounter(tempTagsCounter);
-  }
+  };
 
   const getBillSplit = async () => {
     const URL = setBackendURL("billSplit/user");
@@ -112,6 +126,18 @@ const Home = () => {
 
       setBillSplits(data);
       setAvailableTags(data);
+    });
+  };
+
+  const filterBillSplit = () => {
+    if (location.state === null) return billSplits;
+    return billSplits?.filter((value: BillSplitParams) => {
+      for (const index in value.tag) {
+        if (value.tag[index].name === location.state.filter) {
+          return true;
+        }
+      }
+      return false;
     });
   };
 
@@ -142,10 +168,12 @@ const Home = () => {
           </div>
           <div className="bill-split-list box">
             <BillSplitListHeader />
-            
-            {billSplits?.map((element: BillSplitParams) => (
-              <BillSplitCard {...element} />
-            ))}
+
+            <div className="d-flex flex-column gap">
+              {filterBillSplit()?.map((value: BillSplitParams) => (
+                <BillSplitCard {...value} />
+              ))}
+            </div>
           </div>
         </div>
       </main>

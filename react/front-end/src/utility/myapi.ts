@@ -38,6 +38,9 @@ export const tryCatchFetch = (fetchFunction: () => void) => {
   }
 };
 
+export const setImageURL = (imageURL: string) =>
+  setBackendURL(imageURL.slice(1));
+
 export const getImage = async (
   setImage: (value: string) => void,
   authTokens: AuthTokensParams
