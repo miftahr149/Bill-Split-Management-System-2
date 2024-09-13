@@ -1,0 +1,68 @@
+/* # main */
+
+/* # Input */
+.text-input {
+  padding: 20px;
+  border: 1px solid white;
+  background: transparent;
+  border-radius: var(--border-xs);
+  color: white;
+}
+
+.create-button {
+  border-radius: var(--border-round);
+  background-color: var(--accept-color);
+  padding: 5px;
+}
+
+/* # Black Screen */
+.black-screen {
+  background-color: rgba(84,84,84, 0.6);
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+}
+
+.black-screen-box {
+  background-color: var(--default-pages-bg-color);
+  border-radius: var(--border-sm);
+  width: 75vw;
+  height: 60vh;
+  padding: 20px;
+
+  align-items: start;
+
+  & .content-box {
+    padding: 0 1rem;
+    
+    & .search {
+      background-color: rgb(84,84,84);
+      padding: 10px;
+      border-radius: var(--border-sm);
+      width: 80%;
+  
+      & .search-input {
+        background-color: transparent;
+        font-size: 1.5rem;
+        border: 0;
+      }
+  
+      & .search-input:focus {
+        outline: none;
+      }
+    }
+
+    
+  }
+
+}
+
+@media screen and (min-width: 768px) {
+  .main {
+    padding: 5vw 15vh;
+  }
+}

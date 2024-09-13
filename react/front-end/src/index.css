@@ -10,6 +10,7 @@
   --black-bg-color: #5454545d;
 
   --header-green-color: #77B0AA;
+  --accept-color: #43CD40;
 
   /* border-radius */
   --border-xs: 5px;
@@ -17,7 +18,7 @@
   --border-round: 50%;
 
   /* img Size */
-  --img-size-xs: 1.6rem;
+  --img-size-xs: 1.8rem;
   --img-size-sm: 4rem;
   --img-size: 6rem;
   --img-size-l: 8rem;
