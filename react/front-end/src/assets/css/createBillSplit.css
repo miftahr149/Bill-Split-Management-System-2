@@ -49,13 +49,25 @@
         background-color: transparent;
         font-size: 1.5rem;
         border: 0;
-      }
-  
-      & .search-input:focus {
-        outline: none;
+
+        &:focus {
+          outline: none;
+        }
       }
     }
 
+    & .query-list {
+      width: 80%;
+
+      & .element {
+        border-bottom: 1px solid white;
+        padding: 5px;
+
+        &:hover {
+          background-color: var(--header-green-color);
+        }
+      }
+    }
     
   }
 

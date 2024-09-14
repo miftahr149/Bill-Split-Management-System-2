@@ -1,4 +1,6 @@
 import { AuthTokensParams } from "../context/authContext";
+import AuthContext from "../context/authContext";
+import { useContext } from "react";
 
 interface FetchApiParam {
   URL: string;
@@ -12,8 +14,9 @@ const backendURL = "http://127.0.0.1:8000/api/";
 
 export const setBackendURL = (url: string) => backendURL + url;
 
-export const setAuthorization = (accessToken: string) =>
-  `Bearer ${accessToken}`;
+export const setAuthorization = (accessToken: string) => {
+  return `Bearer ${accessToken}`;
+}
 
 export const APIFetch = async ({
   URL,

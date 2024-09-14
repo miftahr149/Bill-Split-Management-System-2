@@ -26,15 +26,6 @@ def profile_image_views(user: models.User) -> Response:
   return Response(response_serializer.data)
 
 # Create your views here.
-@api_view(['GET'])
-def getRoutes(request):
-  routes = [
-    'api/token',
-    'api/token/refresh'
-  ]
-
-  return JsonResponse(routes, safe=False)
-
 class TokenObtainPairView(TokenObtainPairView):
   serializer_class = serializer.TokenObtainPairSerializer
 
@@ -74,3 +65,8 @@ class UserBillSplitView(APIView):
     bill_splits_serializer = serializer.BillSplitSerializer(bill_splits, 
                                                             many=True)
     return Response(bill_splits_serializer.data, status=status.HTTP_200_OK)
+
+class TagsView(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = models.Tag.objects.all()
+  serializer_class = serializer.TagSerializer
