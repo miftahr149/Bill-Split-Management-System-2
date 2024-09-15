@@ -1,0 +1,44 @@
+.search-box {
+  background-color: var(--default-pages-bg-color);
+  border-radius: var(--border-sm);
+  width: 75vw;
+  height: 60vh;
+  padding: 20px;
+
+  align-items: start;
+
+  & .content-box {
+    padding: 0 1rem;
+    
+    & .search {
+      background-color: rgb(84,84,84);
+      padding: 10px;
+      border-radius: var(--border-sm);
+      width: 80%;
+  
+      & .search-input {
+        background-color: transparent;
+        font-size: 1.5rem;
+        border: 0;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    & .query-list {
+      width: 80%;
+
+      & .element {
+        border-bottom: 1px solid white;
+        padding: 5px;
+
+        &:hover {
+          background-color: var(--header-green-color);
+        }
+      }
+    }
+    
+  }
+}
