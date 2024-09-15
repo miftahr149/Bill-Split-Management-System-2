@@ -53,7 +53,7 @@ const TagSearchBox = ({ callback, tags, setTags }: TagSearchBoxParams) => {
     };
 
     return (
-      <SearchElement callback={handleClick}>
+      <SearchElement callback={handleClick} key={value.name}>
         <p className="my-text my-text--bold">{value.name}</p>
       </SearchElement>
     );
@@ -73,14 +73,15 @@ const TagSearchBox = ({ callback, tags, setTags }: TagSearchBoxParams) => {
         });
       });
 
-      getTags();
-      console.log(tagsQuery);
-      appendTags(searchQuery);
+      setTagsQuery((previousTagsQuery: TagParams[]) => {
+        return [...previousTagsQuery, {name: searchQuery}]
+      });
+      appendTags({name: searchQuery});
       callback(false);
     };
 
     return (
-      <SearchElement callback={handleClick}>
+      <SearchElement callback={handleClick} key={searchQuery}>
         <p className="my-text my-text--bold">
           {`Create new tag "${searchQuery}"`}
         </p>
@@ -89,19 +90,22 @@ const TagSearchBox = ({ callback, tags, setTags }: TagSearchBoxParams) => {
   };
 
   useEffect(() => {
+    console.log("getting tags from backend");
     getTags();
   }, []);
 
   return (
-    <SearchBox
-      title="Add Tag"
-      callback={callback}
-      query={tagsQuery}
-      queryFunction={queryFunction}
-      mapFunction={mapFunction}
-      findFunction={findFunction}
-      emptyFunction={emptyFunction}
-    />
+    <>
+      <SearchBox
+        title="Add Tag"
+        callback={callback}
+        query={tagsQuery}
+        queryFunction={queryFunction}
+        mapFunction={mapFunction}
+        findFunction={findFunction}
+        emptyFunction={emptyFunction}
+      />
+    </>
   );
 };
 

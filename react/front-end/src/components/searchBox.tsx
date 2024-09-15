@@ -21,6 +21,24 @@ interface SearchElementParams {
   children: JSX.Element | JSX.Element[];
 }
 
+export const SearchElement = ({ callback, children }: SearchElementParams) => {
+  return (
+    <button
+      className="element my-button box--white-text d-flex"
+      onClick={callback}
+    >
+      {children}
+    </button>
+  );
+};
+
+export const appendFunction = (
+  value: any[],
+  setValue: (value: any) => void
+) => {
+  return (appendValue: any) => setValue([...value, appendValue]);
+};
+
 const SearchBox = ({
   title,
   callback,
@@ -38,6 +56,7 @@ const SearchBox = ({
       return result === undefined;
     };
 
+    console.log(query);
     return searchQuery === ""
       ? query.filter(checkAvailable)
       : query.filter(checkAvailable).filter(queryFunction(searchQuery));
@@ -53,16 +72,12 @@ const SearchBox = ({
       : filterQuery().map(mapFunction);
   };
 
-  useEffect(() => {
-    console.log(query);
-  }, [query])
-
   return (
     <div className="search-box d-flex gap--sm">
       <button className="my-button" onClick={() => callback(false)}>
         <img src={cancelIcon} alt={cancelIcon} className="img img--xs" />
       </button>
-      <div className="content-box d-flex flex-grow-1 flex-column flex-center gap">
+      <div className="content-box flex-grow-1 d-flex flex-column flex-center gap">
         <h2 className="my-header">{title}</h2>
 
         <div className="search d-flex gap">
@@ -75,30 +90,12 @@ const SearchBox = ({
           />
         </div>
 
-        <div className="query-list d-flex flex-column gap">
+        <div className="query-list d-flex flex-column">
           {displaySearchElement()}
         </div>
       </div>
     </div>
   );
-};
-
-export const SearchElement = ({ callback, children }: SearchElementParams) => {
-  return (
-    <button
-      className="element my-button box--white-text d-flex"
-      onClick={callback}
-    >
-      {children}
-    </button>
-  );
-};
-
-export const appendFunction = (
-  value: any[],
-  setValue: (value: any) => void
-) => {
-  return (appendValue: any) => setValue([...value, appendValue]);
 };
 
 export default SearchBox;

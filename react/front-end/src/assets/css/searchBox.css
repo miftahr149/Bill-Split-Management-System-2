@@ -1,7 +1,7 @@
 .search-box {
   background-color: var(--default-pages-bg-color);
   border-radius: var(--border-sm);
-  width: 75vw;
+  width: 65vw;
   height: 60vh;
   padding: 20px;
 
@@ -29,10 +29,12 @@
 
     & .query-list {
       width: 80%;
+      max-height: 35vh;
+      overflow: auto;
 
       & .element {
         border-bottom: 1px solid white;
-        padding: 5px;
+        padding: 0.8rem;
 
         &:hover {
           background-color: var(--header-green-color);
