@@ -1,0 +1,33 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  & .dropdown-button {
+    font-size: var(--font-size-l);
+    background-color: var(--header-green-color);
+    padding: 10px;
+    width: 18vw;
+
+    &:hover {
+      background-color: rgba(119,176,170, 0.8);
+    }
+  }
+
+  & .dropdown-content {
+    display: block;
+    position: absolute;
+    width: 18vw;
+
+    & .dropdown-element {
+      display: block;
+      width: 100%;
+      background-color: #135D66;
+      padding: 5px;
+      z-index: 1;
+
+      &:hover {
+        background-color: rgb(26, 105, 116);
+      }
+    }
+  }
+}

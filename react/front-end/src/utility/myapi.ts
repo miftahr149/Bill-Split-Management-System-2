@@ -1,6 +1,4 @@
 import { AuthTokensParams } from "../context/authContext";
-import AuthContext from "../context/authContext";
-import { useContext } from "react";
 
 interface FetchApiParam {
   URL: string;

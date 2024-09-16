@@ -12,7 +12,9 @@ import UserSearchBox from "../components/userSearchBox";
 import TagElement from "../components/tagElement";
 import UserElement from "../components/userElement";
 
-import { TagParams, UserParams } from "../components/billSplitCard";
+import BillAmount from "../components/billAmount";
+
+import { TagParams, UserAmountParams, UserParams } from "../components/billSplitCard";
 import { useState } from "react";
 
 interface ElementParams {
@@ -47,6 +49,7 @@ const CreateBillSplit = () => {
   const [desc, setDesc] = useState("");
   const [tags, setTags] = useState<TagParams[]>([]);
   const [users, setUsers] = useState<UserParams[]>([]);
+  const [usersAmount, setUsersAmount] = useState<UserAmountParams[]>([]);
 
   const [isAddTag, setIsAddTag] = useState(false);
   const [isAddUser, setIsAddUser] = useState(false);
@@ -79,6 +82,9 @@ const CreateBillSplit = () => {
                 />
               ))}
             </div>
+          </Element>
+          <Element title="Bill Split Duration">
+            <BillAmount users={users} setUsersAmount={setUsersAmount} />
           </Element>
         </main>
       </div>
