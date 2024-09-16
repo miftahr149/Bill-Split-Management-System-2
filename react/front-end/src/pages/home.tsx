@@ -142,7 +142,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getImage(setImage, authTokens);
+    getImage(setImage, authTokens, username);
     getBillSplit();
   }, [authTokens]);
 

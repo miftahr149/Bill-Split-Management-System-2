@@ -10,6 +10,7 @@ import TagSearchBox from "../components/tagSearchBox";
 import UserSearchBox from "../components/userSearchBox";
 
 import TagElement from "../components/tagElement";
+import UserElement from "../components/userElement";
 
 import { TagParams, UserParams } from "../components/billSplitCard";
 import { useState } from "react";
@@ -61,7 +62,7 @@ const CreateBillSplit = () => {
           <Element title="Tags" buttonFunc={() => setIsAddTag(true)}>
             <div className="d-flex flex-wrap gap--sm">
               {tags.map((tag: TagParams) => (
-                <TagElement callback={setTags} tag={tag} />
+                <TagElement callback={setTags} tag={tag} key={tag.name} />
               ))}
             </div>
           </Element>
@@ -69,7 +70,15 @@ const CreateBillSplit = () => {
             <TextArea callback={setDesc} className="text-input" />
           </Element>
           <Element title="User" buttonFunc={() => setIsAddUser(true)}>
-            <div className="d-flex flex-wrap gap--sm"></div>
+            <div className="d-flex flex-wrap gap--sm">
+              {users.map((value: UserParams) => (
+                <UserElement
+                  user={value}
+                  setUsers={setUsers}
+                  key={value.username}
+                />
+              ))}
+            </div>
           </Element>
         </main>
       </div>

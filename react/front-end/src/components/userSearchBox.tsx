@@ -6,6 +6,7 @@ import {
   APIFetch,
   setAuthorization,
   setBackendURL,
+  setImageURL,
   tryCatchFetch,
 } from "../utility/myapi";
 import AuthContext from "../context/authContext";
@@ -16,9 +17,14 @@ interface UserSearchBoxParams {
   setUsers: React.Dispatch<SetStateAction<UserParams[]>>;
 }
 
+interface UsersImageParams {
+  [username: string] : string;
+}
+
 const UserSearchBox = ({ callback, users, setUsers }: UserSearchBoxParams) => {
   const [userQuery, setUserQuery] = useState<UserParams[]>([]);
-  const { authTokens } = useContext(AuthContext);
+  const [usersImage, setUsersImage] = useState<UsersImageParams>({});
+  const { authTokens, username } = useContext(AuthContext);
 
   const getUser = () => {
     tryCatchFetch(async () => {
@@ -42,39 +48,25 @@ const UserSearchBox = ({ callback, users, setUsers }: UserSearchBoxParams) => {
   };
 
   const findFunction = (value: UserParams) => {
+    if (value.username === username) return false;
+    
     return users.find(
       (findValue: UserParams) => findValue.username === value.username
     );
   };
 
   const mapFunction = (value: UserParams) => {
-    const [userImage, setUserImage] = useState("");
-
-    const callback = () => {
+    const handleClick = () => {
       setUsers((previousState: UserParams[]) => [...previousState, value]);
+      callback(false);
     };
 
-    useEffect(() => {
-      tryCatchFetch(async () => {
-        const { image } = await APIFetch({
-          URL: setBackendURL("userImage/get"),
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: setAuthorization(authTokens.access),
-          },
-          body: JSON.stringify({ username: value.username }),
-        });
-        setUserImage(image);
-      });
-    }, [value.username]);
-
     return (
-      <SearchElement callback={callback}>
-        <div className="d-flex">
+      <SearchElement callback={handleClick} key={value.username}>
+        <div className="d-flex gap">
           <img
-            src={userImage}
-            alt={userImage}
+            src={usersImage[value.username]}
+            alt={usersImage[value.username]}
             className="img img--xs img--round"
           />
           <p className="my-text my-text--bold">{value.username}</p>
@@ -86,6 +78,27 @@ const UserSearchBox = ({ callback, users, setUsers }: UserSearchBoxParams) => {
   useEffect(() => {
     getUser();
   }, []);
+
+  useEffect(() => {
+    userQuery.forEach((user: UserParams) => {
+      tryCatchFetch(async () => {
+        const { image } = await APIFetch({
+          URL: setBackendURL("userImage/get"),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: setAuthorization(authTokens.access),
+          },
+          body: JSON.stringify({ username: user.username }),
+        });
+
+        setUsersImage((previousState: UsersImageParams) => {
+          previousState[user.username] = setImageURL(image);
+          return previousState;
+        });
+      });
+    });
+  }, [userQuery])
 
   return (
     <SearchBox

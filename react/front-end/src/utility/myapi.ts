@@ -45,20 +45,22 @@ export const setImageURL = (imageURL: string) =>
   setBackendURL(imageURL.slice(1));
 
 export const getImage = async (
-  setImage: (value: string) => void,
-  authTokens: AuthTokensParams
+  setImage: React.Dispatch<React.SetStateAction<string>>,
+  authTokens: AuthTokensParams,
+  username: string,
 ) => {
   console.log("Fetching User's Photo Profile From the Backend");
 
   tryCatchFetch(async () => {
     const { image } = (await APIFetch({
-      URL: setBackendURL("userImage"),
-      method: "GET",
+      URL: setBackendURL("userImage/get"),
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: setAuthorization(authTokens.access),
       },
+      body: JSON.stringify({username: username})
     })) as { image: string };
-    setImage(setBackendURL(image.slice(1)));
+    setImage(setImageURL(image));
   });
 };

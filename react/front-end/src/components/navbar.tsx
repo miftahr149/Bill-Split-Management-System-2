@@ -121,12 +121,12 @@ const Menu = ({ children, isActive }: MenuParams) => {
 const Navbar = ({ title }: NavbarParams) => {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [image, setImage] = useState("");
-  const { logoutFunction, authTokens } = useContext(AuthContext);
+  const { logoutFunction, authTokens, username } = useContext(AuthContext);
 
   const handleMenuClick = () => setIsMenuActive(!isMenuActive);
 
   useEffect(() => {
-    getImage(setImage, authTokens) 
+    getImage(setImage, authTokens, username); 
   }, [authTokens])
 
   return (
