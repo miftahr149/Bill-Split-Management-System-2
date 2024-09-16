@@ -1,0 +1,27 @@
+.attribute-element {
+  background-color: var(--header-green-color);
+  padding: 5px 8px;
+  border-radius: var(--border-xs);
+  display: grid;
+
+  & .on-hover, .default {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+  }
+
+  & .on-hover {
+    display: None
+  }
+
+  &:hover {
+    background-color: var(--alert-color-2);
+
+    & .on-hover {
+      display: flex;
+    }
+    
+    & .default {
+      opacity: 0;
+    }
+  }
+}

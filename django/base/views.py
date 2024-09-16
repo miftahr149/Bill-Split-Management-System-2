@@ -67,6 +67,17 @@ class UserBillSplitView(APIView):
     return Response(bill_splits_serializer.data, status=status.HTTP_200_OK)
 
 class TagsView(generics.ListCreateAPIView):
+  """
+  Use for create tags and get all the tags in the backend
+  """
   permission_classes = [IsAuthenticated]
   queryset = models.Tag.objects.all()
   serializer_class = serializer.TagSerializer
+
+class GetUsersView(generics.ListAPIView):
+  """
+  get all the user
+  """
+  permission_classes = [IsAuthenticated]
+  queryset = models.User.objects.all()
+  serializer_class = serializer.UserSerializer

@@ -1,53 +1,54 @@
 import "../assets/css/createBillSplit.css";
 import plusIcon from "../assets/img/plus-small.png";
 
-
 import Navbar from "../components/navbar";
 import Input from "../components/Input";
 import TextArea from "../components/textarea";
 import TopLayer from "../components/topLayer";
-import TagSearchBox from "../components/tagSearchBox";
 
-import { TagParams } from "../components/billSplitCard";
+import TagSearchBox from "../components/tagSearchBox";
+import UserSearchBox from "../components/userSearchBox";
+
+import TagElement from "../components/tagElement";
+
+import { TagParams, UserParams } from "../components/billSplitCard";
 import { useState } from "react";
 
 interface ElementParams {
   title: string;
   children: JSX.Element | JSX.Element[];
-  addButton?: boolean;
   buttonFunc?: () => void;
 }
 
-const Element = ({ title, children, addButton, buttonFunc }: ElementParams) => {
+const Element = ({ title, children, buttonFunc }: ElementParams) => {
+  const addButtonFunc = () => {
+    if (typeof buttonFunc === "undefined") return undefined;
+    return (
+      <button onClick={buttonFunc} className="my-button create-button">
+        <img src={plusIcon} alt={plusIcon} className="img img--xs img--round" />
+      </button>
+    );
+  };
+
   return (
     <div className="d-flex flex-column gap">
       <div className="d-flex gap--sm">
         <h2 className="my-header my-header--color-green">{title}</h2>
-        {addButton && (
-          <button onClick={buttonFunc} className="my-button create-button">
-            <img
-              src={plusIcon}
-              alt={plusIcon}
-              className="img img--xs img--round"
-            />
-          </button>
-        )}
+        {addButtonFunc()}
       </div>
       {children}
     </div>
   );
 };
 
-const VariableElement = () => {
-
-}
-
 const CreateBillSplit = () => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [tags, setTags] = useState<TagParams[]>([]);
+  const [users, setUsers] = useState<UserParams[]>([]);
 
   const [isAddTag, setIsAddTag] = useState(false);
+  const [isAddUser, setIsAddUser] = useState(false);
 
   return (
     <>
@@ -57,21 +58,32 @@ const CreateBillSplit = () => {
           <Element title="Bill Split Name">
             <Input callback={setName} className="text-input" />
           </Element>
-          <Element
-            title="Tags"
-            addButton={true}
-            buttonFunc={() => setIsAddTag(true)}
-          >
-            <div></div>
+          <Element title="Tags" buttonFunc={() => setIsAddTag(true)}>
+            <div className="d-flex flex-wrap gap--sm">
+              {tags.map((tag: TagParams) => (
+                <TagElement callback={setTags} tag={tag} />
+              ))}
+            </div>
           </Element>
           <Element title="Description">
             <TextArea callback={setDesc} className="text-input" />
+          </Element>
+          <Element title="User" buttonFunc={() => setIsAddUser(true)}>
+            <div className="d-flex flex-wrap gap--sm"></div>
           </Element>
         </main>
       </div>
 
       <TopLayer value={isAddTag}>
         <TagSearchBox callback={setIsAddTag} tags={tags} setTags={setTags} />
+      </TopLayer>
+
+      <TopLayer value={isAddUser}>
+        <UserSearchBox
+          callback={setIsAddUser}
+          users={users}
+          setUsers={setUsers}
+        />
       </TopLayer>
     </>
   );

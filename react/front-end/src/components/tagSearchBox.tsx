@@ -11,9 +11,9 @@ import { TagParams } from "./billSplitCard";
 import { useState, useContext, useEffect } from "react";
 
 interface TagSearchBoxParams {
-  callback: (value: boolean) => void;
+  callback: React.Dispatch<React.SetStateAction<boolean>>;
   tags: TagParams[];
-  setTags: (value: TagParams[]) => void;
+  setTags: React.Dispatch<React.SetStateAction<TagParams[]>>;
 }
 
 const TagSearchBox = ({ callback, tags, setTags }: TagSearchBoxParams) => {

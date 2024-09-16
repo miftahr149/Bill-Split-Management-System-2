@@ -10,11 +10,16 @@ import {
   setImageURL
 } from "../utility/myapi";
 
-interface UserAmountParams {
-  user: { username: string };
+export interface UserParams {
+  username: string;
+}
+
+export interface UserAmountParams {
+  user: UserParams;
   amount: number;
   receipt: string;
 }
+
 
 export interface TagParams {
   name: string;
@@ -24,7 +29,7 @@ export interface BillSplitParams {
   id: number;
   name: string;
   description: string;
-  host: { username: string };
+  host: UserParams;
   status: "Pending" | "Ongoing";
   tag: TagParams[];
   user_amount: UserAmountParams[];
