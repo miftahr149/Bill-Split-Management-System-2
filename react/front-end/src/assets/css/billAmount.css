@@ -1,0 +1,22 @@
+.bill-amount {
+  & .input-total-bill {
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: var(--border-xs);
+    align-items: center;
+
+    & .currency {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    & .input {
+      background-color: transparent;
+      font-size: var(--font-size-l);
+      border: 0;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

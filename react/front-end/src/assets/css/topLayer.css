@@ -1,7 +1,7 @@
 .top-layer {
   background-color: rgba(84,84,84, 0.6);
   display: flex;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
