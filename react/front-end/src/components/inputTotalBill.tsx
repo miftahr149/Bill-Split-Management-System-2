@@ -1,3 +1,4 @@
+import InputNumber from "./inputNumber";
 import { useState, useEffect } from "react";
 import { UserAmountParams } from "./billSplitCard";
 
@@ -8,10 +9,6 @@ interface InputTotalBillParams {
 const InputTotalBill = ({ setUsersAmount }: InputTotalBillParams) => {
   const [totalBill, setTotalBill] = useState(0);
   const [averageBill, setAverageBill] = useState(0);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTotalBill(Number(e.target.value));
-  };
 
   useEffect(() => {
     setUsersAmount((previousState: UserAmountParams[]) => {
@@ -29,9 +26,8 @@ const InputTotalBill = ({ setUsersAmount }: InputTotalBillParams) => {
       <h3 className="my-header my-header--sm">Total Bill</h3>
       <div className="input-total-bill d-flex gap">
         <p className="currency my-text">RM</p>
-        <input
-          type="number"
-          onChange={handleChange}
+        <InputNumber
+          callback={setTotalBill}
           className="input box--white-text flex-grow-1"
           value={totalBill}
         />

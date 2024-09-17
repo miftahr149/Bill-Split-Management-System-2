@@ -84,7 +84,7 @@ const CreateBillSplit = () => {
             </div>
           </Element>
           <Element title="Bill Split Duration">
-            <BillAmount users={users} setUsersAmount={setUsersAmount} />
+            <BillAmount users={users} setUsersAmount={setUsersAmount} usersAmount={usersAmount} />
           </Element>
         </main>
       </div>
