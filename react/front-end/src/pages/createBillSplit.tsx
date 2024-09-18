@@ -27,7 +27,7 @@ const Element = ({ title, children, buttonFunc }: ElementParams) => {
   const addButtonFunc = () => {
     if (typeof buttonFunc === "undefined") return undefined;
     return (
-      <button onClick={buttonFunc} className="my-button create-button">
+      <button onClick={buttonFunc} className="my-button create-button btn btn-success">
         <img src={plusIcon} alt={plusIcon} className="img img--xs img--round" />
       </button>
     );
@@ -35,7 +35,7 @@ const Element = ({ title, children, buttonFunc }: ElementParams) => {
 
   return (
     <div className="d-flex flex-column gap">
-      <div className="d-flex gap--sm">
+      <div className="d-flex gap--l">
         <h2 className="my-header my-header--color-green">{title}</h2>
         {addButtonFunc()}
       </div>

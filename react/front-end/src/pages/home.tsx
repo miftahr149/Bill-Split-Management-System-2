@@ -25,11 +25,6 @@ interface TagsCounterParams {
   [tagName: string]: number;
 }
 
-interface TagsListParams {
-  tags: TagParams[];
-  tagsCounter: TagsCounterParams;
-}
-
 const TagElement = ({ tag, count }: TagElementParams) => {
   const { name } = tag;
   const navigate = useNavigate();
@@ -52,17 +47,6 @@ const TagElement = ({ tag, count }: TagElementParams) => {
         <p className="counter my-text">{count}</p>
       </button>
     </li>
-  );
-};
-
-const TagsList = ({ tags, tagsCounter }: TagsListParams) => {
-  return (
-    <ul className="tags-list flex-grow-1 d-flex flex-column">
-      <TagElement tag={{ name: "All" }} count={tagsCounter.all} />
-      {tags.map((tag: TagParams) => (
-        <TagElement key={tag.name} tag={tag} count={tagsCounter[tag.name]} />
-      ))}
-    </ul>
   );
 };
 
@@ -130,7 +114,7 @@ const Home = () => {
   }, [authTokens]);
 
   return (
-    <div className="home pages d-flex flex-column">
+    <div className="pages d-flex flex-column">
       <Navbar title="Home" />
 
       <main className="box box--white-text flex-grow-1 d-flex flex-column gap--l">
@@ -147,14 +131,23 @@ const Home = () => {
         <div className="bill-split-box flex-grow-1 gap--l">
           <div className="box box--bg-black d-flex flex-column gap">
             <h2 className="my-header my-header--color-green">Tags</h2>
-            <TagsList tags={tags} tagsCounter={tagsCounter} />
+            <ul className="tags-list flex-grow-1 d-flex flex-column">
+              <TagElement tag={{ name: "All" }} count={tagsCounter.all} />
+              {tags.map((tag: TagParams) => (
+                <TagElement
+                  key={tag.name}
+                  tag={tag}
+                  count={tagsCounter[tag.name]}
+                />
+              ))}
+            </ul>
           </div>
           <div className="bill-split-list box">
             <div className="header-box d-flex flex-center">
               <h2 className="my-header my-header--color-green">Bill Split</h2>
               <Link
                 to="create-bill-split"
-                className="create-bill-split-button box--white-text d-flex flex-center"
+                className="create-bill-split-button box--white-text d-flex flex-center btn btn-success"
               >
                 <img
                   src={smallPlusIcon}

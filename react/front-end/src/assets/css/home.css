@@ -56,7 +56,6 @@
   }
   
   & .create-bill-split-button {
-    background-color: #43cd40;
     border: 0;
     border-radius: var(--border-xs);
     padding: 3px 0.7rem;

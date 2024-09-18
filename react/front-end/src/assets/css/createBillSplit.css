@@ -13,6 +13,10 @@
   border-radius: var(--border-round);
   background-color: var(--accept-color);
   padding: 5px;
+
+  & .img {
+    --size: 2.2rem;
+  }
 }
 
 @media screen and (min-width: 768px) {
