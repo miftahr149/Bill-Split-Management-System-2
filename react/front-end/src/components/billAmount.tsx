@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Dropdown, DropdownElement } from "./dropdown";
 import InputTotalBill from "./inputTotalBill";
 import CustomBillAmount from "./customBillAmount";
-import Input from "./Input";
 
 interface BillAmountParams {
   users: UserParams[];

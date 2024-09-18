@@ -1,52 +1,30 @@
 .navbar-box {
   position: sticky;
   top: 0;
-  left: 0;  
-}
+  left: 0;
 
-.my-navbar {
-  background-color: #77B0AA;
-  padding: 0.5rem 0.6rem;
-}
+  & .my-navbar {
+    background-color: #77b0aa;
+    padding: 0.5rem 0.6rem;
+  }
 
-.my-navbar__title {
-  margin: 0;
-  text-align: center;
-}
+  & .my-menu {
+    background-color: #135d66;
 
-.my-navbar__option {
-  gap: 1rem;
-}
-
-/* This class is use to disable an element if not in a width of a desktop (min-width: 768px)  */
-.option__display-desktop {
-  display: none
-}
-
-
-/* # menu */
-.my-menu {
-  background-color: #135D66;
-}
-
-.my-menu__elements {
-  padding: 0.5rem 0.5rem;
-  color: inherit;
-  gap: 1rem;
-  width: 100%;
+    & .elements {
+      padding: 0.5rem 0.5rem;
+      color: inherit;
+      gap: 1rem;
+      width: 100%;
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {
-  .my-navbar {
-    padding: 1rem 1.1rem;
-    gap: 1rem;
-  }
-  
-  .option__display-mobile {
-    display: none;
-  }
-
-  .option__display-desktop {
-    display: block;
+  .navbar-box {
+    & .my-navbar {
+      padding: 1rem 1.1rem;
+      gap: 1rem;
+    }
   }
 }

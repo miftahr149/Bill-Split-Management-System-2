@@ -11,12 +11,6 @@ interface LoginFieldParams {
   callback: (value: string) => void;
 }
 
-interface LoginBodyParams {
-  setUsername: (value: string) => void;
-  setPassword: (value: string) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}
-
 const LoginField = ({ name, type, callback }: LoginFieldParams) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     callback(e.target.value);
@@ -31,58 +25,6 @@ const LoginField = ({ name, type, callback }: LoginFieldParams) => {
         placeholder={name}
         onChange={handleChange}
       />
-    </div>
-  );
-};
-
-const LoginHeader = () => {
-  return (
-    <div className="form__header d-flex box">
-      <div className="header__left d-flex align-items-center justify-content-center">
-        <img src={favicon} alt="" className="img img--round" />
-      </div>
-      <div className="header__right d-flex justify-content-center">
-        <h1 className="my-header">Bill Split Management System</h1>
-        <p className="my-text">Login Page</p>
-      </div>
-    </div>
-  );
-};
-
-const LoginBody = ({
-  setUsername,
-  setPassword,
-  handleSubmit,
-}: LoginBodyParams) => {
-  return (
-    <form
-      className="form__body box d-flex flex-column"
-      method="POST"
-      onSubmit={handleSubmit}
-    >
-      <LoginField name="username" type="text" callback={setUsername} />
-      <LoginField name="password" type="password" callback={setPassword} />
-      <div className="button-box d-flex justify-content-center align-items-end flex-grow-1">
-        <input
-          className="flex-grow-1 btn btn-success"
-          type="submit"
-          value="Login"
-        />
-      </div>
-    </form>
-  );
-};
-
-const LoginAlert = () => {
-  return (
-    <div className="login-alert d-flex">
-      <div className="login-alert__img-wrapper d-flex justify-content-center align-items-center">
-        <img src={alertImage} alt="" className="img img-small" />
-      </div>
-      <div className="login-alert__message d-flex flex-column justify-content-center">
-        <p className="my-text">Warning!!</p>
-        <p className="my-text my-text--bold">Incorect Username or Password</p>
-      </div>
     </div>
   );
 };
@@ -108,16 +50,48 @@ const Login = () => {
 
   return (
     <div className="login pages d-flex justify-content-center align-items-center">
-      <div className="login__form d-flex flex-column">
-        <LoginHeader />
+      <div className="form d-flex flex-column">
+        <div className="header-box d-flex box">
+          <div className="flex-grow-1 d-flex align-items-center justify-content-center">
+            <img src={favicon} alt="" className="img img--round" />
+          </div>
+          <div className="text-box d-flex justify-content-center">
+            <h1 className="my-header my-header--sm">
+              Bill Split Management System
+            </h1>
+            <p className="my-text">Login Page</p>
+          </div>
+        </div>
 
-        {!isUserValid && isAlreadySubmit && <LoginAlert />}
+        {!isUserValid && isAlreadySubmit && (
+          <div className="login-alert d-flex">
+            <div className="d-flex justify-content-center align-items-center">
+              <img src={alertImage} alt="" className="img img-small" />
+            </div>
+            <div className="d-flex flex-column justify-content-center">
+              <p className="my-text">Warning!!</p>
+              <p className="my-text my-text--bold">
+                Incorect Username or Password
+              </p>
+            </div>
+          </div>
+        )}
 
-        <LoginBody
-          setUsername={setUsername}
-          setPassword={setPassword}
-          handleSubmit={handleSubmit}
-        />
+        <form
+          className="body-box box d-flex flex-column"
+          method="POST"
+          onSubmit={handleSubmit}
+        >
+          <LoginField name="username" type="text" callback={setUsername} />
+          <LoginField name="password" type="password" callback={setPassword} />
+          <div className="button-box d-flex justify-content-center align-items-end flex-grow-1">
+            <input
+              className="flex-grow-1 btn btn-success"
+              type="submit"
+              value="Login"
+            />
+          </div>
+        </form>
       </div>
     </div>
   );

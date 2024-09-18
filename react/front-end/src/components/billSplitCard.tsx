@@ -7,7 +7,7 @@ import {
   setAuthorization,
   APIFetch,
   tryCatchFetch,
-  setImageURL
+  setImageURL,
 } from "../utility/myapi";
 
 export interface UserParams {
@@ -19,7 +19,6 @@ export interface UserAmountParams {
   amount: number;
   receipt: string;
 }
-
 
 export interface TagParams {
   name: string;
@@ -34,14 +33,6 @@ export interface BillSplitParams {
   tag: TagParams[];
   user_amount: UserAmountParams[];
 }
-
-interface BillSplitCardTagsParams {
-  tag: string;
-}
-
-const BillSplitCardTag = ({ tag }: BillSplitCardTagsParams) => {
-  return <p className={"bill-split-card__tag my-text my-text--bold"}>{tag}</p>;
-};
 
 const BillSplitCard = ({
   name,
@@ -58,7 +49,7 @@ const BillSplitCard = ({
 
   const renderTag = () => {
     return tag.map((element: TagParams) => (
-      <BillSplitCardTag tag={element.name} />
+      <p className={"tag my-text my-text--bold"}>{element.name}</p>
     ));
   };
 
@@ -74,14 +65,14 @@ const BillSplitCard = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: setAuthorization(authTokens.access)
+          Authorization: setAuthorization(authTokens.access),
         },
-        body: JSON.stringify({ username: host })
-      })
+        body: JSON.stringify({ username: host }),
+      });
 
       setHostImage(setImageURL(image));
-      console.log(`${host}: ${image}`)
-    })
+      console.log(`${host}: ${image}`);
+    });
   };
 
   useEffect(() => {
@@ -89,14 +80,14 @@ const BillSplitCard = ({
   }, [host]);
 
   return (
-    <div className="box box--bg-black">
+    <div className="bill-split-card box box--bg-black">
       <div className="display-desktop">
         <div className="d-flex flex-column gap">
-          <div className="d-flex bill-split-card__header flex-center">
-            <p className="my-text bill-split-card__name my-text--bold flex-grow-1">
+          <div className="header-box d-flex flex-center">
+            <p className="name my-text my-text--bold flex-grow-1">
               {name}
             </p>
-            <div className="bill-split-card__tag-list d-flex justify-content-end gap--sm flex-grow-1">
+            <div className="tag-list d-flex justify-content-end gap--sm flex-grow-1">
               {renderTag()}
             </div>
           </div>
@@ -110,7 +101,7 @@ const BillSplitCard = ({
               />
               <p className="my-text my-text--bold">{host}</p>
             </div>
-            <img src="" alt="" className="ball" />
+            <img src="" alt="" className="separator img img--round" />
             <div className="d-flex gap--sm flex-center">
               <img
                 src={dollarIcon}
@@ -125,8 +116,8 @@ const BillSplitCard = ({
 
       <div className="display-mobile">
         <div className="d-flex flex-column gap">
-          <div className="bill-split-card__header d-flex flex-center">
-            <p className="bill-split-card__name my-text my-text--bold">
+          <div className="header-box d-flex flex-center">
+            <p className="name my-text my-text--bold">
               {name}
             </p>
             <div className="d-flex gap--sm flex-center">
@@ -147,7 +138,7 @@ const BillSplitCard = ({
             />
             <p className="my-text my-text--bold my-text--sm">{host}</p>
           </div>
-          <div className="bill-split-card__tag-list d-flex gap--sm">
+          <div className="tag-list d-flex gap--sm">
             {renderTag()}
           </div>
         </div>

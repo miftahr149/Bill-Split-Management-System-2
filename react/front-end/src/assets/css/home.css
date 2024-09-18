@@ -1,26 +1,17 @@
-.home__main {
-  gap: 2rem;
-}
-
 /* # Greeting */
 .greeting {
   display: grid;
   grid-template-columns: 0.5fr 2fr;
   gap: 1rem;
-}
-
-.greeting__text, .greeting__username {
-  margin: 0;
-}
-
-.greeting__username {
-  font-size: 3rem;
+  
+  & .username {
+    font-size: 3rem;
+  }
 }
 
 /* # bill-split */
 .bill-split-box {
   display: grid;
-  gap: 2rem;
 }
 
 /* ## Tag */
@@ -33,68 +24,68 @@
   margin: 0;
   padding: 0;
   gap: 1rem;
+  
+  & .tag-element {
+    list-style: None;
+    gap: 1rem;
+    margin: 0;
+    justify-content: space-between;
+    border-radius: var(--border-sm);
+  
+    & .button {
+      justify-content: space-between;
+      background-color: transparent;
+    }
+  
+    & .counter {
+      padding: 0 10px;
+      border: 2px solid white;
+      border-radius: var(--border-xs);
+    }
+  }
 }
 
-.tag-element {
-  list-style: None;
-  gap: 1rem;
-  margin: 0;
-  justify-content: space-between;
-  border-radius: var(--border-sm);
-}
-
-.tag-element__btn {
-  gap: 1rem;
-  justify-content: space-between;
-  background-color: transparent;
-}
-
-.tag-element__counter {
-  padding: 0 10px;
-  border: 2px solid white;
-  border-radius: var(--border-xs);
-}
 
 /* ## Bill Split List */
 .bill-split-list {
   padding: 0;
+
+  & .header-box {
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  & .create-bill-split-button {
+    background-color: #43cd40;
+    border: 0;
+    border-radius: var(--border-xs);
+    padding: 3px 0.7rem;
+    text-decoration: none;
+  }
+  
+  & .plus-icon {
+    --size: 2.5rem;
+  }
 }
 
-.bill-split-list__header {
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
 
-.create-bill-split-button {
-  background-color: #43CD40;
-  border: 0;
-  border-radius: var(--border-xs);
-  padding: 3px 0.7rem;
-}
-
-.plus-icon {
-  --size: 2.5rem;
-}
 
 @media screen and (min-width: 768px) {
   .main__home {
     padding: 0;
   }
-  
+
   .bill-split-list {
     padding: 1.5rem;
   }
-  
-  .greeting__username {
-    font-size: 6rem;
+
+  .greeting {
+    & .username {
+      font-size: 6rem;
+    }
   }
 
   .bill-split-box {
     grid-template-columns: 1fr 3fr;
   }
-
-  .bill-split-card__name {
-    font-size: 1.6rem;
-  }
 }
- 

@@ -43,13 +43,13 @@ const TagElement = ({ tag, count }: TagElementParams) => {
   return (
     <li className="tag-element d-flex flex-column">
       <button
-        className="tag-element__btn d-flex my-button box--white-text"
+        className="button d-flex my-button box--white-text"
         onClick={handleClick}
       >
         <div className="d-flex justify-content-center align-items-center">
           <p className="my-text my-text--bold my-text--align-center">{name}</p>
         </div>
-        <p className="my-text tag-element__counter">{count}</p>
+        <p className="counter my-text">{count}</p>
       </button>
     </li>
   );
@@ -63,23 +63,6 @@ const TagsList = ({ tags, tagsCounter }: TagsListParams) => {
         <TagElement key={tag.name} tag={tag} count={tagsCounter[tag.name]} />
       ))}
     </ul>
-  );
-};
-
-const BillSplitListHeader = () => {
-  return (
-    <div className="bill-split-list__header d-flex flex-center">
-      <h2 className="my-header my-header--color-green">Bill Split</h2>
-      <Link
-        to="create-bill-split"
-        className="create-bill-split-button box--white-text d-flex flex-center"
-      >
-        <img src={smallPlusIcon} alt="plus" className="img img--sm plus-icon" />
-        <p className="my-text my-text--bold my-text--align-center display-desktop">
-          Proposed Bill Split
-        </p>
-      </Link>
-    </div>
   );
 };
 
@@ -150,24 +133,39 @@ const Home = () => {
     <div className="home pages d-flex flex-column">
       <Navbar title="Home" />
 
-      <main className="home__main box box--white-text flex-grow-1 d-flex flex-column">
+      <main className="box box--white-text flex-grow-1 d-flex flex-column gap--l">
         <div className="greeting">
           <div className="d-flex justify-content-center">
             <img src={image} alt="" className="img img--xl img--round" />
           </div>
           <div className="d-flex flex-column justify-content-center">
             <p className="my-text">Welcome Back!!</p>
-            <h1 className="greeting__username my-header">{username}</h1>
+            <h1 className="username my-header">{username}</h1>
           </div>
         </div>
 
-        <div className="bill-split-box flex-grow-1">
-          <div className="bill-split-tag box box--bg-black d-flex flex-column">
+        <div className="bill-split-box flex-grow-1 gap--l">
+          <div className="box box--bg-black d-flex flex-column gap">
             <h2 className="my-header my-header--color-green">Tags</h2>
             <TagsList tags={tags} tagsCounter={tagsCounter} />
           </div>
           <div className="bill-split-list box">
-            <BillSplitListHeader />
+            <div className="header-box d-flex flex-center">
+              <h2 className="my-header my-header--color-green">Bill Split</h2>
+              <Link
+                to="create-bill-split"
+                className="create-bill-split-button box--white-text d-flex flex-center"
+              >
+                <img
+                  src={smallPlusIcon}
+                  alt="plus"
+                  className="img img--sm plus-icon"
+                />
+                <p className="my-text my-text--bold my-text--align-center display-desktop">
+                  Proposed Bill Split
+                </p>
+              </Link>
+            </div>
 
             <div className="d-flex flex-column gap">
               {filterBillSplit()?.map((value: BillSplitParams) => (

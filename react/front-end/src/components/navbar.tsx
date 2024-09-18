@@ -42,10 +42,6 @@ interface ImageButtonParams extends BaseImageButtonParams {
   display: "desktop" | "mobile";
 }
 
-interface NavbarTitleParams {
-  title: string;
-}
-
 const Image = ({ imageRound, src, alt }: BaseImageButtonParams) => {
   const setImageClass = () => {
     const defaultClass = "img img--sm";
@@ -60,10 +56,9 @@ const MenuElement = ({
   name,
   ...imageParams
 }: MenuElementParams) => {
-
   return (
     <button
-      className="my-menu__elements my-button d-flex align-items-center"
+      className="elements my-button d-flex align-items-center"
       onClick={handleSubmit}
     >
       <Image {...imageParams} alt={name} />
@@ -89,9 +84,9 @@ const ImageButton = ({
 }: ImageButtonParams) => {
   const setButtonClass = () => {
     const defaultClass = "my-button";
-    return (display === "desktop")
-      ? defaultClass + " option__display-desktop"
-      : defaultClass + " option__display-mobile";
+    return display === "desktop"
+      ? defaultClass + " display-desktop"
+      : defaultClass + " display-mobile";
   };
 
   return (
@@ -101,17 +96,9 @@ const ImageButton = ({
   );
 };
 
-const NavbarTitle = ({ title }: NavbarTitleParams) => {
-  return (
-    <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-      <h1 className="my-header my-text--align-center flex-grow-1">{title}</h1>
-    </div>
-  );
-};
-
 const Menu = ({ children, isActive }: MenuParams) => {
   const setMenuClass = () => {
-    const defaultClass = "my-menu option__display-mobile";
+    const defaultClass = "my-menu display-mobile";
     return isActive ? defaultClass : defaultClass + " none";
   };
 
@@ -126,16 +113,20 @@ const Navbar = ({ title }: NavbarParams) => {
   const handleMenuClick = () => setIsMenuActive(!isMenuActive);
 
   useEffect(() => {
-    getImage(setImage, authTokens, username); 
-  }, [authTokens])
+    getImage(setImage, authTokens, username);
+  }, [authTokens]);
 
   return (
     <nav className="navbar-box box--white-text">
       <div className="my-navbar d-flex">
         <LinkImageButton to="/" src={favicon} alt="icon" imageRound={true} />
-        <NavbarTitle title={title} />
-        
-        <div className="my-navbar__option d-flex">
+        <div className="d-flex flex-grow-1 justify-content-center align-items-center">
+          <h1 className="my-header my-text--align-center flex-grow-1">
+            {title}
+          </h1>
+        </div>
+
+        <div className="gap d-flex">
           <ImageButton
             handleClick={() => {}}
             src={image}
