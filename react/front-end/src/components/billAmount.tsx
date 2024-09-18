@@ -47,10 +47,10 @@ const BillAmount = ({
     <div className="bill-amount d-flex flex-column gap--l">
       <Dropdown name={billType}>
         <DropdownElement callback={() => setBillType("Equal Share")}>
-          <p className="my-text my-text--bold">Equal Share</p>
+          <p className="my-text text-bold">Equal Share</p>
         </DropdownElement>
         <DropdownElement callback={() => setBillType("Custom")}>
-          <p className="my-text my-text--bold">Custom</p>
+          <p className="my-text text-bold">Custom</p>
         </DropdownElement>
       </Dropdown>
 

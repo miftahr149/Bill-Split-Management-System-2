@@ -110,18 +110,6 @@
   font-size: var(--font-size-sm);
 }
 
-.my-text--align-center {
-  text-align: center;
-}
-
-.my-text--align-left {
-  text-align: left;
-}
-
-.my-text--bold {
-  font-weight: bold;
-}
-
 /* Headers */
 .my-header {
   font-size: var(--header-font-size);
@@ -182,6 +170,10 @@
 
 .display-desktop {
   display: none;
+}
+
+.text-bold {
+  font-weight: bold;
 }
 
 @media screen and (min-width: 768px) {

@@ -54,7 +54,7 @@ const TagSearchBox = ({ callback, tags, setTags }: TagSearchBoxParams) => {
 
     return (
       <SearchElement callback={handleClick} key={value.name}>
-        <p className="my-text my-text--bold">{value.name}</p>
+        <p className="my-text text-bold">{value.name}</p>
       </SearchElement>
     );
   };
@@ -82,7 +82,7 @@ const TagSearchBox = ({ callback, tags, setTags }: TagSearchBoxParams) => {
 
     return (
       <SearchElement callback={handleClick} key={searchQuery}>
-        <p className="my-text my-text--bold">
+        <p className="my-text text-bold">
           {`Create new tag "${searchQuery}"`}
         </p>
       </SearchElement>

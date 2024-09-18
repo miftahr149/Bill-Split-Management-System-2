@@ -49,7 +49,7 @@ const BillSplitCard = ({
 
   const renderTag = () => {
     return tag.map((element: TagParams) => (
-      <p className={"tag my-text my-text--bold"}>{element.name}</p>
+      <p className={"tag my-text text-bold"}>{element.name}</p>
     ));
   };
 
@@ -84,7 +84,7 @@ const BillSplitCard = ({
       <div className="display-desktop">
         <div className="d-flex flex-column gap">
           <div className="header-box d-flex flex-center">
-            <p className="name my-text my-text--bold flex-grow-1">
+            <p className="name my-text text-bold flex-grow-1">
               {name}
             </p>
             <div className="tag-list d-flex justify-content-end gap--sm flex-grow-1">
@@ -99,7 +99,7 @@ const BillSplitCard = ({
                 alt="hostImage"
                 className="img img--round img--xs"
               />
-              <p className="my-text my-text--bold">{host}</p>
+              <p className="my-text text-bold">{host}</p>
             </div>
             <img src="" alt="" className="separator img img--round" />
             <div className="d-flex gap--sm flex-center">
@@ -108,7 +108,7 @@ const BillSplitCard = ({
                 alt="dollaricon"
                 className="img img--round img--xs"
               />
-              <p className="my-text my-text--bold">{priceFormat}</p>
+              <p className="my-text text-bold">{priceFormat}</p>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@ const BillSplitCard = ({
       <div className="display-mobile">
         <div className="d-flex flex-column gap">
           <div className="header-box d-flex flex-center">
-            <p className="name my-text my-text--bold">
+            <p className="name my-text text-bold">
               {name}
             </p>
             <div className="d-flex gap--sm flex-center">
@@ -126,7 +126,7 @@ const BillSplitCard = ({
                 alt="dollar"
                 className="img img--round img--xs"
               />
-              <p className="my-text my-text--bold my-text--sm">{priceFormat}</p>
+              <p className="my-text text-bold my-text--sm">{priceFormat}</p>
             </div>
           </div>
 
@@ -136,7 +136,7 @@ const BillSplitCard = ({
               alt="hostImage"
               className="img img--round img--xs"
             />
-            <p className="my-text my-text--bold my-text--sm">{host}</p>
+            <p className="my-text text-bold my-text--sm">{host}</p>
           </div>
           <div className="tag-list d-flex gap--sm">
             {renderTag()}

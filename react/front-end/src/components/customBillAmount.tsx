@@ -35,7 +35,7 @@ const CustomBillAmountElement = ({
     <div className="element d-flex gap align-items-center">
       <div className="d-flex gap--sm align-items-center">
         <img src={image} alt={image} className="img img--xs img--round" />
-        <p className="my-text my-text--bold my-text--l">
+        <p className="my-text text-bold my-text--l">
           {userAmount.user.username}
         </p>
       </div>

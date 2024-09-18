@@ -42,7 +42,7 @@ const TagElement = ({ tag, count }: TagElementParams) => {
         onClick={handleClick}
       >
         <div className="d-flex justify-content-center align-items-center">
-          <p className="my-text my-text--bold my-text--align-center">{name}</p>
+          <p className="my-text text-bold text-center">{name}</p>
         </div>
         <p className="counter my-text">{count}</p>
       </button>
@@ -154,7 +154,7 @@ const Home = () => {
                   alt="plus"
                   className="img img--sm plus-icon"
                 />
-                <p className="my-text my-text--bold my-text--align-center display-desktop">
+                <p className="my-text text-bold text-center display-desktop">
                   Proposed Bill Split
                 </p>
               </Link>

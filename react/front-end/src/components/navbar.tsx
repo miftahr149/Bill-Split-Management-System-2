@@ -63,7 +63,7 @@ const MenuElement = ({
     >
       <Image {...imageParams} alt={name} />
       <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-        <p className="my-text my-text--align-center flex-grow-1">{name}</p>
+        <p className="my-text text-center flex-grow-1">{name}</p>
       </div>
     </button>
   );
@@ -121,7 +121,7 @@ const Navbar = ({ title }: NavbarParams) => {
       <div className="my-navbar d-flex">
         <LinkImageButton to="/" src={favicon} alt="icon" imageRound={true} />
         <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-          <h1 className="my-header my-text--align-center flex-grow-1">
+          <h1 className="my-header text-center flex-grow-1">
             {title}
           </h1>
         </div>

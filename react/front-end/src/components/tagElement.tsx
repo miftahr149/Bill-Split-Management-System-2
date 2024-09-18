@@ -17,7 +17,7 @@ const TagElement = ({ callback, tag }: TagElementParams) => {
 
   return (
     <AttributeElement callback={handleClick}>
-      <p className="my-text my-text--bold">{tag.name}</p>
+      <p className="my-text text-bold">{tag.name}</p>
     </AttributeElement>
   )
 };

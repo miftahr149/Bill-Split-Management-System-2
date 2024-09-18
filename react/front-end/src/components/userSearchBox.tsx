@@ -69,7 +69,7 @@ const UserSearchBox = ({ callback, users, setUsers }: UserSearchBoxParams) => {
             alt={usersImage[value.username]}
             className="img img--xs img--round"
           />
-          <p className="my-text my-text--bold">{value.username}</p>
+          <p className="my-text text-bold">{value.username}</p>
         </div>
       </SearchElement>
     );

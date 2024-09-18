@@ -70,7 +70,7 @@ const Login = () => {
             </div>
             <div className="d-flex flex-column justify-content-center">
               <p className="my-text">Warning!!</p>
-              <p className="my-text my-text--bold">
+              <p className="my-text text-bold">
                 Incorect Username or Password
               </p>
             </div>

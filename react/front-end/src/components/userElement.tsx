@@ -33,7 +33,7 @@ const UserElement = ({ user, setUsers }: UserElement) => {
           alt={userImage}
           className="img img--xs img--round"
         />
-        <p className="my-text my-text--bold">{user.username}</p>
+        <p className="my-text text-bold">{user.username}</p>
       </div>
     </AttributeElement>
   );
