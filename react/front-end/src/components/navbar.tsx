@@ -8,6 +8,7 @@ import AuthContext from "../context/authContext";
 import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { getImage } from "../utility/myapi";
+import { UserProfileContext } from "../context/userProfileProvider";
 
 interface NavbarParams {
   title: string;
@@ -107,13 +108,13 @@ const Menu = ({ children, isActive }: MenuParams) => {
 
 const Navbar = ({ title }: NavbarParams) => {
   const [isMenuActive, setIsMenuActive] = useState(false);
-  const [image, setImage] = useState("");
+  const {getImage} = useContext(UserProfileContext);
   const { logoutFunction, authTokens, username } = useContext(AuthContext);
 
   const handleMenuClick = () => setIsMenuActive(!isMenuActive);
 
   useEffect(() => {
-    getImage(setImage, authTokens, username);
+
   }, [authTokens]);
 
   return (
@@ -129,7 +130,7 @@ const Navbar = ({ title }: NavbarParams) => {
         <div className="gap d-flex">
           <ImageButton
             handleClick={() => {}}
-            src={image}
+            src={getImage(username)}
             alt="Profile"
             imageRound={true}
             display="desktop"
@@ -154,7 +155,7 @@ const Navbar = ({ title }: NavbarParams) => {
       <Menu isActive={isMenuActive}>
         <MenuElement
           name="Profile"
-          src={image}
+          src={getImage(username)}
           handleSubmit={() => {}}
           imageRound={true}
         />

@@ -1,8 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import AttributeElement from "./attributeElement";
 import { UserParams } from "./billSplitCard";
-import { getImage } from "../utility/myapi";
-import AuthContext from "../context/authContext";
+import { UserProfileContext } from "../context/userProfileProvider";
 
 interface UserElement {
   user: UserParams;
@@ -10,8 +9,7 @@ interface UserElement {
 }
 
 const UserElement = ({ user, setUsers }: UserElement) => {
-  const [userImage, setUserImage] = useState("");
-  const { authTokens } = useContext(AuthContext);
+  const {getImage} = useContext(UserProfileContext)
 
   const callback = () => {
     setUsers((previousState: UserParams[]) => {
@@ -21,16 +19,12 @@ const UserElement = ({ user, setUsers }: UserElement) => {
     });
   };
 
-  useEffect(() => {
-    getImage(setUserImage, authTokens, user.username);
-  }, []);
-
   return (
     <AttributeElement callback={callback}>
       <div className="d-flex gap">
         <img
-          src={userImage}
-          alt={userImage}
+          src={getImage(user.username)}
+          alt="Profile Image"
           className="img img--xs img--round"
         />
         <p className="my-text text-bold">{user.username}</p>

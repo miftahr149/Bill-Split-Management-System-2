@@ -6,22 +6,25 @@ import CreateBillSplit from "./pages/createBillSplit";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
+import { UserProfileProvider } from "./context/userProfileProvider";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<PrivateRoute component={<Home />} />} />
-          <Route
-            path="/create-bill-split"
-            element={<PrivateRoute component={<CreateBillSplit />} />}
-          />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </Router>
+      <UserProfileProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<PrivateRoute component={<Home />} />} />
+            <Route
+              path="/create-bill-split"
+              element={<PrivateRoute component={<CreateBillSplit />} />}
+            />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </Router>
+      </UserProfileProvider>
     </AuthProvider>
   );
 }

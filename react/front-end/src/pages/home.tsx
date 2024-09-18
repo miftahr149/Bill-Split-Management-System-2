@@ -10,11 +10,11 @@ import {
   setAuthorization,
   APIFetch,
   tryCatchFetch,
-  getImage,
 } from "../utility/myapi";
 
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
+import { UserProfileContext } from "../context/userProfileProvider";
 
 interface TagElementParams {
   tag: TagParams;
@@ -53,7 +53,7 @@ const TagElement = ({ tag, count }: TagElementParams) => {
 const Home = () => {
   const [tags, setTags] = useState<TagParams[]>([]);
   const { authTokens, username } = useContext(AuthContext);
-  const [image, setImage] = useState<string>("");
+  const { getImage } = useContext(UserProfileContext);
   const [billSplits, setBillSplits] = useState<BillSplitParams[]>();
   const [tagsCounter, setTagsCounter] = useState<TagsCounterParams>({});
   const location = useLocation();
@@ -109,7 +109,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getImage(setImage, authTokens, username);
     getBillSplit();
   }, [authTokens]);
 
@@ -120,7 +119,11 @@ const Home = () => {
       <main className="box text-color-white flex-grow-1 d-flex flex-column gap--l">
         <div className="greeting">
           <div className="d-flex justify-content-center">
-            <img src={image} alt="" className="img img--xl img--round" />
+            <img
+              src={getImage(username)}
+              alt=""
+              className="img img--xl img--round"
+            />
           </div>
           <div className="d-flex flex-column justify-content-center">
             <p className="my-text">Welcome Back!!</p>

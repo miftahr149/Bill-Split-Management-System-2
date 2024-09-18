@@ -16,41 +16,24 @@ from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-
-def profile_image_views(user: models.User) -> Response:
-  try:
-    profile_image = models.UserProfileImage.objects.get(user=user)
-  except models.UserProfileImage.DoesNotExist:
-    profile_image = models.UserProfileImage.objects.create(user=user)
-  response_serializer = serializer.UserProfileImageSerializer(profile_image)
-  return Response(response_serializer.data)
-
 # Create your views here.
 class TokenObtainPairView(TokenObtainPairView):
   serializer_class = serializer.TokenObtainPairSerializer
 
-class UserProfileImageViews(APIView):
+class UserProfileImageViews(generics.ListCreateAPIView):
   """
   Use to return a link of a user's image with authtentication tokens
   """
   
   parser_classes = (FileUploadParser, MultiPartParser)
   permission_classes = [IsAuthenticated]
-  
-  def get(self, request: Request, format='jpg'):
-    user = models.User.objects.get(username=request.user.username)
-    return profile_image_views(user)
+  queryset = models.UserProfileImage.objects.all()
+  serializer_class = serializer.UserProfileImageSerializer
 
-class GetProfileImageViews(APIView):
-  """
-  Use to return a link of a user's image with username as input
-  """
-  permission_classes = [IsAuthenticated]
-
-  def post(self, request: Request):
-    username = request.data.get('username')
-    user = models.User.objects.get(username=username)
-    return profile_image_views(user)
+  def list(self, request: Request):
+    queryset = self.get_queryset()
+    _serializer = serializer.UserProfileImageSerializer(queryset, many=True)
+    return Response(_serializer.data)
 
 class UserBillSplitView(APIView):
   """ 

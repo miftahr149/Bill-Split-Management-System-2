@@ -9,10 +9,17 @@ class TokenObtainPairSerializer(TokenObtainPairSerializer):
     token['username'] = user.username
     return token
 
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.User
+    fields = ['username']
+
 class UserProfileImageSerializer(serializers.ModelSerializer):
+  user = UserSerializer() 
+  
   class Meta:
     model = models.UserProfileImage
-    fields = ['image']
+    fields = ['image', 'user']
 
 class TagSerializer(serializers.ModelSerializer):
   class Meta:
@@ -20,10 +27,6 @@ class TagSerializer(serializers.ModelSerializer):
     fields = ['name']
 
 
-class UserSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = models.User
-    fields = ['username']
 
 class UserAmountSerializer(serializers.ModelSerializer):
   user = UserSerializer()

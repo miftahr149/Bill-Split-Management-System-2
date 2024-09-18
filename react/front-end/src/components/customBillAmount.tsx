@@ -1,8 +1,7 @@
 import { UserAmountParams } from "./billSplitCard";
 import { useContext, useEffect, useState } from "react";
-import { getImage } from "../utility/myapi";
-import AuthContext from "../context/authContext";
 import InputNumber from "./inputNumber";
+import { UserProfileContext } from "../context/userProfileProvider";
 
 interface CustomBillAmountParams {
   usersAmount: UserAmountParams[];
@@ -18,23 +17,22 @@ const CustomBillAmountElement = ({
   userAmount,
   callback,
 }: CustomBillAmountElementParams) => {
-  const [image, setImage] = useState("");
   const [billAmount, setBillAmount] = useState<number>(userAmount.amount);
-  const { authTokens } = useContext(AuthContext);
+  const { getImage } = useContext(UserProfileContext);
 
   const handleChange = (value: number) => {
     setBillAmount(value);
     callback(value);
-  }
-
-  useEffect(() => {
-    getImage(setImage, authTokens, userAmount.user.username);
-  }, []);
+  };
 
   return (
     <div className="element d-flex gap align-items-center">
       <div className="d-flex gap--sm align-items-center">
-        <img src={image} alt={image} className="img img--xs img--round" />
+        <img
+          src={getImage(userAmount.user.username)}
+          alt="Photo"
+          className="img img--xs img--round"
+        />
         <p className="my-text text-bold my-text--l">
           {userAmount.user.username}
         </p>
@@ -64,7 +62,7 @@ const CustomBillAmount = ({
         );
 
         if (index === -1) return previousState;
-        
+
         previousState[index].amount = Number(value);
         console.log(previousState[index].amount);
         return previousState;
@@ -74,7 +72,7 @@ const CustomBillAmount = ({
 
   useEffect(() => {
     console.log(usersAmount);
-  }, [usersAmount])
+  }, [usersAmount]);
 
   return (
     <div className="custom-bill">

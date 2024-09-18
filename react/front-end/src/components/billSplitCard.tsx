@@ -9,6 +9,7 @@ import {
   tryCatchFetch,
   setImageURL,
 } from "../utility/myapi";
+import { UserProfileContext } from "../context/userProfileProvider";
 
 export interface UserParams {
   username: string;
@@ -53,31 +54,10 @@ const BillSplitCard = ({
     ));
   };
 
-  const [hostImage, setHostImage] = useState("");
-  const { username, authTokens } = useContext(AuthContext);
+  const { username } = useContext(AuthContext);
+  const { getImage } = useContext(UserProfileContext);
   const { username: host } = hostData;
   const priceFormat = `RM. ${getPrice()}`;
-
-  const getHostImage = () => {
-    tryCatchFetch(async () => {
-      const { image } = await APIFetch({
-        URL: setBackendURL("userImage/get"),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: setAuthorization(authTokens.access),
-        },
-        body: JSON.stringify({ username: host }),
-      });
-
-      setHostImage(setImageURL(image));
-      console.log(`${host}: ${image}`);
-    });
-  };
-
-  useEffect(() => {
-    getHostImage();
-  }, [host]);
 
   return (
     <div className="bill-split-card box box--bg-black">
@@ -95,7 +75,7 @@ const BillSplitCard = ({
           <div className="d-flex align-items-center gap--l">
             <div className="d-flex gap--sm flex-center">
               <img
-                src={hostImage}
+                src={getImage(hostData.username)}
                 alt="hostImage"
                 className="img img--round img--xs"
               />
@@ -132,7 +112,7 @@ const BillSplitCard = ({
 
           <div className="d-flex gap--sm align-items-center">
             <img
-              src={hostImage}
+              src={getImage(hostData.username)}
               alt="hostImage"
               className="img img--round img--xs"
             />
