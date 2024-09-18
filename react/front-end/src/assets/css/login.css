@@ -1,5 +1,5 @@
 .login {
-  background-color: var(--login-pages-bg-color) !important;
+  background-color: rgb(var(--secondary-green-color-rgb));
 
   & .form {
     min-width: min(500px, 80%);
@@ -50,8 +50,8 @@
     }
 
     & .login-alert {
-      background-color: var(--alert-color-bg);
-      color: var(--alert-color);
+      background-color: rgba(var(--primary-alert-color-rgb), 0.6);
+      color: rgb(var(--secondary-alert-color-rgb));
       padding: 0.8rem 0.5rem;
       justify-content: space-evenly;
       gap: 1rem;

@@ -8,7 +8,7 @@ interface AttributeElementParams {
 
 const AttributeElement = ({children, callback}: AttributeElementParams) => {
   return (
-    <button onClick={callback} className="my-button attribute-element box--white-text">
+    <button onClick={callback} className="my-button attribute-element text-color-white">
       <div className="default">
         {children}
       </div>

@@ -117,7 +117,7 @@ const Navbar = ({ title }: NavbarParams) => {
   }, [authTokens]);
 
   return (
-    <nav className="navbar-box box--white-text">
+    <nav className="navbar-box text-color-white">
       <div className="my-navbar d-flex">
         <LinkImageButton to="/" src={favicon} alt="icon" imageRound={true} />
         <div className="d-flex flex-grow-1 justify-content-center align-items-center">

@@ -43,7 +43,7 @@ const CustomBillAmountElement = ({
         <p className="my-text currency">RM</p>
         <InputNumber
           callback={handleChange}
-          className="input box--white-text my-text--l"
+          className="input text-color-white my-text--l"
           value={billAmount}
         />
       </div>

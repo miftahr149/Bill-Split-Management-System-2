@@ -7,7 +7,7 @@ interface TopLayerParams {
 
 const TopLayer = ({ value, children }: TopLayerParams) => {
   const setClass = () => {
-    const defaultClass = "top-layer flex-center box--white-text";
+    const defaultClass = "top-layer flex-center text-color-white";
     return value ? defaultClass : defaultClass + " none";
   };
 

@@ -1,5 +1,5 @@
 .search-box {
-  background-color: var(--default-pages-bg-color);
+  background-color: rgb(var(--default-pages-bg-color-rgb));
   border-radius: var(--border-sm);
   width: 65vw;
   height: 60vh;
@@ -37,7 +37,7 @@
         padding: 0.8rem;
 
         &:hover {
-          background-color: var(--header-green-color);
+          background-color: rgb(var(--primary-green-color-rgb));
         }
       }
     }

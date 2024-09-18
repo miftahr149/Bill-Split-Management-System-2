@@ -1,5 +1,5 @@
 .attribute-element {
-  background-color: var(--header-green-color);
+  background-color: rgb(var(--primary-green-color-rgb));
   padding: 5px 8px;
   border-radius: var(--border-xs);
   display: grid;
@@ -14,7 +14,7 @@
   }
 
   &:hover {
-    background-color: var(--alert-color-2);
+    background-color: rgb(var(--secondary-alert-color-rgb));
 
     & .on-hover {
       display: flex;

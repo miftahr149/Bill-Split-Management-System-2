@@ -41,7 +41,7 @@ export const Dropdown = ({ name, children }: DropdownParams) => {
   return (
     <div className="dropdown">
       <button
-        className="dropdown-button my-button box--white-text"
+        className="dropdown-button my-button text-color-white"
         onClick={handleClick}
       >
         {name}
@@ -68,7 +68,7 @@ export const DropdownElement = ({
 
   return (
     <button
-      className="dropdown-element my-button box--white-text"
+      className="dropdown-element my-button text-color-white"
       onClick={handleClick}
     >
       {children}

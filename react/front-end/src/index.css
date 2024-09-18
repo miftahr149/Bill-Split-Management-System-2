@@ -2,16 +2,19 @@
 
 :root {
   /* color */
-  --alert-color-bg: #f488885e;
-  --alert-color: #f48888;
-  --alert-color-2: #DA1F38;
+  --primary-alert-color-rgb: 244,136,136;
+  --secondary-alert-color-rgb: 218,31,56;
   
-  --login-pages-bg-color: #135D66;
+  --primary-green-color-rgb: 119,176,170;
+  --secondary-green-color-rgb: 19,93,102;
+
+  --black-bg-color-rgb: 84,84,84;
+  --default-pages-bg-color-rgb: 39,39,39;
+  
   --default-pages-bg-color: #272727;
   --black-bg-color: #5454545d;
 
   --header-green-color: #77B0AA;
-  --accept-color: #43CD40;
 
   /* border-radius */
   --border-xs: 5px;
@@ -85,10 +88,6 @@
   border-radius: var(--border-sm);
 }
 
-.box--white-text {
-  color: white;
-}
-
 .box--bg-black {
   background-color: var(--black-bg-color);
 }
@@ -136,11 +135,17 @@
   font-size: var(--header-font-size-sm);
 }
 
-.my-header--color-green {
-  color: var(--header-green-color);
+
+/* ## text-color */
+.text-color-white {
+  color: white;
 }
 
-/* button */
+.text-color-primary-green {
+  color: rgb(var(--primary-green-color-rgb));
+}
+
+/* ## button */
 .my-button {
   border: 0;
   background-color: transparent;
@@ -149,10 +154,10 @@
 /* ## Pages */
 .pages {
   min-height: 100vh;
-  background-color: var(--default-pages-bg-color)
+  background-color: rgb(var(--default-pages-bg-color-rgb))
 }
 
-/* gap */
+/* ## gap */
 .gap {
   gap: var(--gap);
 }

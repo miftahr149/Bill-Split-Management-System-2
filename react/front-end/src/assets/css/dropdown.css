@@ -4,7 +4,7 @@
 
   & .dropdown-button {
     font-size: var(--font-size-l);
-    background-color: var(--header-green-color);
+    background-color: rgb(var(--primary-green-color-rgb));
     padding: 10px;
     width: 18vw;
 

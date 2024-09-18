@@ -38,7 +38,7 @@ const TagElement = ({ tag, count }: TagElementParams) => {
   return (
     <li className="tag-element d-flex flex-column">
       <button
-        className="button d-flex my-button box--white-text"
+        className="button d-flex my-button text-color-white"
         onClick={handleClick}
       >
         <div className="d-flex justify-content-center align-items-center">
@@ -117,7 +117,7 @@ const Home = () => {
     <div className="pages d-flex flex-column">
       <Navbar title="Home" />
 
-      <main className="box box--white-text flex-grow-1 d-flex flex-column gap--l">
+      <main className="box text-color-white flex-grow-1 d-flex flex-column gap--l">
         <div className="greeting">
           <div className="d-flex justify-content-center">
             <img src={image} alt="" className="img img--xl img--round" />
@@ -130,7 +130,7 @@ const Home = () => {
 
         <div className="bill-split-box flex-grow-1 gap--l">
           <div className="box box--bg-black d-flex flex-column gap">
-            <h2 className="my-header my-header--color-green">Tags</h2>
+            <h2 className="my-header text-color-primary-green">Tags</h2>
             <ul className="tags-list flex-grow-1 d-flex flex-column">
               <TagElement tag={{ name: "All" }} count={tagsCounter.all} />
               {tags.map((tag: TagParams) => (
@@ -144,10 +144,10 @@ const Home = () => {
           </div>
           <div className="bill-split-list box">
             <div className="header-box d-flex flex-center">
-              <h2 className="my-header my-header--color-green">Bill Split</h2>
+              <h2 className="my-header text-color-primary-green">Bill Split</h2>
               <Link
                 to="create-bill-split"
-                className="create-bill-split-button box--white-text d-flex flex-center btn btn-success"
+                className="create-bill-split-button text-color-white d-flex flex-center btn btn-success"
               >
                 <img
                   src={smallPlusIcon}

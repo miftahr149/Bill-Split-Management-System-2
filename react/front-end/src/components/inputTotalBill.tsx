@@ -28,7 +28,7 @@ const InputTotalBill = ({ setUsersAmount }: InputTotalBillParams) => {
         <p className="currency my-text">RM</p>
         <InputNumber
           callback={setTotalBill}
-          className="input box--white-text flex-grow-1"
+          className="input text-color-white flex-grow-1"
           value={totalBill}
         />
       </div>

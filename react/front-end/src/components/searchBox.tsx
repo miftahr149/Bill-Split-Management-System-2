@@ -24,7 +24,7 @@ interface SearchElementParams {
 export const SearchElement = ({ callback, children }: SearchElementParams) => {
   return (
     <button
-      className="element my-button box--white-text d-flex"
+      className="element my-button text-color-white d-flex"
       onClick={callback}
     >
       {children}
@@ -96,7 +96,7 @@ const SearchBox = ({
           </button>
           <Input
             callback={setSearchQuery}
-            className="search-input box--white-text flex-grow-1"
+            className="search-input text-color-white flex-grow-1"
           />
         </div>
 
