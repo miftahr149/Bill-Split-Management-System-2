@@ -14,10 +14,7 @@ const InputTotalBill = ({ setUsersAmount }: InputTotalBillParams) => {
     setUsersAmount((previousState: UserAmountParams[]) => {
       const billAmount = totalBill / (previousState.length + 1);
       setAverageBill(billAmount);
-      for (const index in previousState) {
-        previousState[index].amount = billAmount;
-      }
-      return previousState;
+      return previousState.map(value => ({...value, amount: billAmount}));
     });
   }, [totalBill]);
 

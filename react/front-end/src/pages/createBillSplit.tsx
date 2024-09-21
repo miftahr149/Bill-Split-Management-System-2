@@ -14,7 +14,11 @@ import UserElement from "../components/userElement";
 
 import BillAmount from "../components/billAmount";
 
-import { TagParams, UserAmountParams, UserParams } from "../components/billSplitCard";
+import {
+  TagParams,
+  UserAmountParams,
+  UserParams,
+} from "../components/billSplitCard";
 import { useState } from "react";
 
 interface ElementParams {
@@ -27,7 +31,10 @@ const Element = ({ title, children, buttonFunc }: ElementParams) => {
   const addButtonFunc = () => {
     if (typeof buttonFunc === "undefined") return undefined;
     return (
-      <button onClick={buttonFunc} className="my-button create-button btn btn-success">
+      <button
+        onClick={buttonFunc}
+        className="my-button create-button btn btn-success"
+      >
         <img src={plusIcon} alt={plusIcon} className="img img--xs img--round" />
       </button>
     );
@@ -54,6 +61,18 @@ const CreateBillSplit = () => {
   const [isAddTag, setIsAddTag] = useState(false);
   const [isAddUser, setIsAddUser] = useState(false);
 
+  const disableButtonCreate = () => {
+    const isNameEmpty = name === "";
+    const isUsersEmpty = users.length === 0;
+
+    const usersAmountZero = usersAmount.filter((value) => value.amount === 0);
+    const isUsersAmountEmpty = usersAmountZero.length !== 0;
+
+    return {
+      disabled: isNameEmpty || isUsersEmpty || isUsersAmountEmpty,
+    };
+  };
+
   return (
     <>
       <div className="pages d-flex flex-column">
@@ -67,6 +86,12 @@ const CreateBillSplit = () => {
               {tags.map((tag: TagParams) => (
                 <TagElement callback={setTags} tag={tag} key={tag.name} />
               ))}
+
+              {tags.length === 0 && (
+                <p className="my-text text-color-dark">
+                  you haven't add any tag yet
+                </p>
+              )}
             </div>
           </Element>
           <Element title="Description">
@@ -81,11 +106,25 @@ const CreateBillSplit = () => {
                   key={value.username}
                 />
               ))}
+
+              {users.length === 0 && (
+                <p className="my-text text-color-dark">
+                  you haven't add any user yet
+                </p>
+              )}
             </div>
           </Element>
           <Element title="Bill Split Duration">
-            <BillAmount users={users} setUsersAmount={setUsersAmount} usersAmount={usersAmount} />
+            <BillAmount
+              users={users}
+              setUsersAmount={setUsersAmount}
+              usersAmount={usersAmount}
+            />
           </Element>
+
+          <button className="btn btn-success btn-lg" {...disableButtonCreate()}>
+            Proposed Bill Split
+          </button>
         </main>
       </div>
 

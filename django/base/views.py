@@ -49,6 +49,34 @@ class UserBillSplitView(APIView):
                                                             many=True)
     return Response(bill_splits_serializer.data, status=status.HTTP_200_OK)
 
+class BillSplitView(APIView):
+  """
+  Class that handle an api regarding Bill Split models
+  """
+  permission_classes = [IsAuthenticated]
+  serializer_class = serializer.BillSplitSerializer
+  queryset = models.BillSplit.objects.all()
+
+  def get(self, request: Request, handle: str = "user"):
+    data: models.BillSplit
+
+    if handle == "user":
+      user = models.User.objects.get(username=request.user.username)
+      data = self.queryset.filter(user_amount__user=user)
+    
+    _serializer = self.serializer_class(data, many=True)
+    return Response(_serializer.data, status=status.HTTP_200_OK)
+  
+  def post(self, request: Request, handle: str = None):
+    _serializer = self.serializer_class(request.data)
+    if _serializer.is_valid():
+      _serializer.save()
+      return Response(status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    
+
+
 class TagsView(generics.ListCreateAPIView):
   """
   Use for create tags and get all the tags in the backend

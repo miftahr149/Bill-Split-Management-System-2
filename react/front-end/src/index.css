@@ -133,6 +133,10 @@
   color: rgb(var(--primary-green-color-rgb));
 }
 
+.text-color-dark {
+  color: rgba(255, 255, 255, 0.5)
+}
+
 /* ## button */
 .my-button {
   border: 0;

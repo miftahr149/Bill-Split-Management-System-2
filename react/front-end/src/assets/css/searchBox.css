@@ -38,6 +38,7 @@
 
         &:hover {
           background-color: rgb(var(--primary-green-color-rgb));
+          border: 0;
         }
       }
     }

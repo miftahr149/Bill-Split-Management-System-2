@@ -53,19 +53,21 @@ const CustomBillAmount = ({
   usersAmount,
   setUsersAmount,
 }: CustomBillAmountParams) => {
+  
   const setCallbackFunction = (userAmount: UserAmountParams) => {
     return (value: Number) => {
       const username = userAmount.user.username;
-      setUsersAmount((previousState: UserAmountParams[]) => {
-        const index = previousState.findIndex(
-          (value: UserAmountParams) => value.user.username == username
+      setUsersAmount((previousState) => {
+        const findIndex = previousState.findIndex(
+          (value) => value.user.username == username
         );
 
-        if (index === -1) return previousState;
+        if (findIndex === -1) return previousState;
 
-        previousState[index].amount = Number(value);
-        console.log(previousState[index].amount);
-        return previousState;
+        return [
+          ...previousState.filter((value, index) => index !== findIndex),
+          { ...previousState[findIndex], amount: value } as UserAmountParams,
+        ];
       });
     };
   };

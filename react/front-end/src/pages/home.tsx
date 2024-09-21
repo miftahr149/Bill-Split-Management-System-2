@@ -110,7 +110,7 @@ const Home = () => {
 
   useEffect(() => {
     getBillSplit();
-  }, [authTokens]);
+  }, []);
 
   return (
     <div className="pages d-flex flex-column">

@@ -82,7 +82,7 @@ const TagSearchBox = ({ callback, tags, setTags }: TagSearchBoxParams) => {
 
     return (
       <SearchElement callback={handleClick} key={searchQuery}>
-        <p className="my-text text-bold">
+        <p className="my-text text-bold text-color-dark">
           {`Create new tag "${searchQuery}"`}
         </p>
       </SearchElement>

@@ -1,5 +1,3 @@
-import { AuthTokensParams } from "../context/authContext";
-
 interface FetchApiParam {
   URL: string;
   method: string;
