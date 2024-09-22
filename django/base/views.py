@@ -1,4 +1,5 @@
 from . import models, serializer
+from .serializer import BillSplitDict, UserAmountDict, TagDict
 
 from django.http import JsonResponse
 
@@ -11,6 +12,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -57,10 +59,37 @@ class BillSplitView(APIView):
   serializer_class = serializer.BillSplitSerializer
   queryset = models.BillSplit.objects.all()
 
-  def get(self, request: Request, handle: str = "user"):
+  def create_bill_split(self, validate_data: BillSplitDict):
+    print('creating new bill split')
+    host_data = validate_data.pop('host')
+    host = models.User.objects.get(username=host_data['username'])
+
+    def tag_map_func(data: TagDict):
+      return models.Tag.objects.get(name=data['name'])
+    
+    tags: list[models.Tag] = map(tag_map_func, validate_data.pop('tag'))
+
+    def user_amount_map_func(data: UserAmountDict):
+      user_data = data.pop('user')
+      user = models.User.objects.get(username=user_data['username'])
+      return models.UserAmount.objects.create(user=user, **data)
+    
+    users_amount = map(user_amount_map_func, validate_data.pop('user_amount'))
+    
+    bill_split = models.BillSplit.objects.create(host=host, **validate_data)
+
+    for tag in tags:
+      bill_split.tag.add(tag)
+    
+    for user_amount in users_amount:
+      bill_split.user_amount.add(user_amount)
+
+    return bill_split
+
+  def get(self, request: Request, handle: str = 'user'):
     data: models.BillSplit
 
-    if handle == "user":
+    if handle == 'user':
       user = models.User.objects.get(username=request.user.username)
       data = self.queryset.filter(user_amount__user=user)
     
@@ -68,11 +97,13 @@ class BillSplitView(APIView):
     return Response(_serializer.data, status=status.HTTP_200_OK)
   
   def post(self, request: Request, handle: str = None):
-    _serializer = self.serializer_class(request.data)
-    if _serializer.is_valid():
-      _serializer.save()
-      return Response(status=status.HTTP_201_CREATED)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    bill_split_data = {
+      **request.data.copy(),  
+      'status': 'Ongoing' if request.user.is_superuser else 'Pending'
+    }
+
+    self.create_bill_split(bill_split_data)
+    return Response({}, status=status.HTTP_200_OK)
     
     
 

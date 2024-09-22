@@ -2,13 +2,6 @@ import dollarIcon from "../assets/img/dollar.png";
 import "../assets/css/billSplitCard.css";
 import AuthContext from "../context/authContext";
 import { useContext, useState, useEffect } from "react";
-import {
-  setBackendURL,
-  setAuthorization,
-  APIFetch,
-  tryCatchFetch,
-  setImageURL,
-} from "../utility/myapi";
 import { UserProfileContext } from "../context/userProfileProvider";
 
 export interface UserParams {
@@ -18,7 +11,7 @@ export interface UserParams {
 export interface UserAmountParams {
   user: UserParams;
   amount: number;
-  receipt: string;
+  receipt: string | undefined;
 }
 
 export interface TagParams {

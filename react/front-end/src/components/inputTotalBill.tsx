@@ -22,7 +22,7 @@ const InputTotalBill = ({ setUsersAmount }: InputTotalBillParams) => {
     <>
       <h3 className="my-header my-header--sm">Total Bill</h3>
       <div className="input-total-bill d-flex gap">
-        <p className="currency my-text">RM</p>
+        <p className="my-text text-color-dark">RM</p>
         <InputNumber
           callback={setTotalBill}
           className="input text-color-white flex-grow-1"

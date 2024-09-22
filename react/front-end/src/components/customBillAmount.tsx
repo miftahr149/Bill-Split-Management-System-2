@@ -38,7 +38,7 @@ const CustomBillAmountElement = ({
         </p>
       </div>
       <div className="d-flex gap align-items-center">
-        <p className="my-text currency">RM</p>
+        <p className="my-text text-color-dark">RM</p>
         <InputNumber
           callback={handleChange}
           className="input text-color-white my-text--l"
@@ -58,15 +58,15 @@ const CustomBillAmount = ({
     return (value: Number) => {
       const username = userAmount.user.username;
       setUsersAmount((previousState) => {
-        const findIndex = previousState.findIndex(
+        const find = previousState.find(
           (value) => value.user.username == username
         );
 
-        if (findIndex === -1) return previousState;
+        if (typeof find === "undefined") return previousState;
 
         return [
-          ...previousState.filter((value, index) => index !== findIndex),
-          { ...previousState[findIndex], amount: value } as UserAmountParams,
+          ...previousState.filter((value) => value !== find),
+          { ...find, amount: value } as UserAmountParams,
         ];
       });
     };

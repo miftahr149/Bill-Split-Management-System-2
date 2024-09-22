@@ -22,7 +22,7 @@ export const APIFetch = async ({
   const response = await fetch(URL, { ...fetchData, mode: "cors" });
   const data = await response.json();
   if (!response.ok) {
-    if (errorCallback) errorCallback();
+    if (typeof errorCallback !== "undefined") errorCallback();
     throw new Error(data);
   }
 

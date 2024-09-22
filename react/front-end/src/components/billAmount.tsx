@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Dropdown, DropdownElement } from "./dropdown";
 import InputTotalBill from "./inputTotalBill";
 import CustomBillAmount from "./customBillAmount";
+import { setImageURL } from "../utility/myapi";
 
 interface BillAmountParams {
   users: UserParams[];
@@ -38,7 +39,10 @@ const BillAmount = ({
         );
 
         if (find !== undefined) return previousState;
-        return [...previousState, { user: user, amount: 0, receipt: "" }];
+        return [
+          ...previousState,
+          { user: user, amount: 0, receipt: setImageURL("/receipt/") },
+        ];
       });
     });
   }, [users]);

@@ -1,8 +1,4 @@
 .bill-amount {
-  & .currency {
-    color: rgba(255, 255, 255, 0.5);
-  }
-
   & .input {
     background-color: transparent;
     font-size: var(--font-size-l);
@@ -18,8 +14,6 @@
     border: 1px solid white;
     border-radius: var(--border-xs);
     align-items: center;
-
-
   }
 
   & .custom-bill {

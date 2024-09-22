@@ -19,7 +19,15 @@ import {
   UserAmountParams,
   UserParams,
 } from "../components/billSplitCard";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import {
+  APIFetch,
+  setAuthorization,
+  setBackendURL,
+  tryCatchFetch,
+} from "../utility/myapi";
+import AuthContext from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 interface ElementParams {
   title: string;
@@ -57,9 +65,11 @@ const CreateBillSplit = () => {
   const [tags, setTags] = useState<TagParams[]>([]);
   const [users, setUsers] = useState<UserParams[]>([]);
   const [usersAmount, setUsersAmount] = useState<UserAmountParams[]>([]);
-
   const [isAddTag, setIsAddTag] = useState(false);
   const [isAddUser, setIsAddUser] = useState(false);
+
+  const { authTokens, username } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const disableButtonCreate = () => {
     const isNameEmpty = name === "";
@@ -73,13 +83,44 @@ const CreateBillSplit = () => {
     };
   };
 
+  const handleClick = () => {
+    const billSplitData = {
+      name: name,
+      description: desc,
+      tag: tags,
+      user_amount: usersAmount,
+      host: {username: username}
+    }
+
+    const errorCallback = () => {
+      console.log("Failed to create bill-split");
+    }
+
+
+    tryCatchFetch(async () => {
+      await APIFetch({
+        URL: setBackendURL("billSplit/user"),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: setAuthorization(authTokens.access),
+        },
+        body: JSON.stringify(billSplitData),
+        errorCallback: errorCallback
+      });
+
+      console.log("successfully create bill-split")
+      navigate("/");
+    });
+  };
+
   return (
     <>
       <div className="pages d-flex flex-column">
         <Navbar title="Create Bill Split" />
         <main className="main text-color-white flex-grow-1 d-flex flex-column gap--l">
           <Element title="Bill Split Name">
-            <Input callback={setName} className="text-input" />
+            <Input callback={setName} className="text-input my-text--l" />
           </Element>
           <Element title="Tags" buttonFunc={() => setIsAddTag(true)}>
             <div className="d-flex flex-wrap gap--sm">
@@ -122,7 +163,11 @@ const CreateBillSplit = () => {
             />
           </Element>
 
-          <button className="btn btn-success btn-lg" {...disableButtonCreate()}>
+          <button
+            className="btn btn-success btn-lg"
+            onClick={handleClick}
+            {...disableButtonCreate()}
+          >
             Proposed Bill Split
           </button>
         </main>
