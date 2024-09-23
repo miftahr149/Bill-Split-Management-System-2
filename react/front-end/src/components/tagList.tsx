@@ -51,32 +51,36 @@ const TagList = ({ query, callback }: TagListParams) => {
     initTagsCounter()
   );
 
-  const setAvaialableTags = () => {
-    setTags(() => initTags());
-    setTagsCounter(() => initTagsCounter());
+  const setAvailableTags = () => {
+    setTags(initTags);
+    setTagsCounter(initTagsCounter);
 
-    query.forEach(({ tag }) => {
-      tag.forEach((value) => {
-        if (tags.includes(value)) {
-          setTagsCounter((previousState) => ({
-            ...previousState,
-            ...Object.fromEntries([
-              [value.name, previousState[value.name] + 1],
-            ]),
-          }));
-        } else {
-          setTags((previousState) => [...previousState, value]);
-          setTagsCounter((previousState) => ({
-            ...previousState,
-            ...Object.fromEntries([[value.name, 1]]),
-          }));
-        }
-      });
+    setTags((previousState) => {
+      const tagListData = query.map((value) => value.tag).flat(1);
+      const uniqueTagListData = new Set(tagListData);
+      return [...previousState, ...Array.from(uniqueTagListData)];
     });
+
+    setTagsCounter((previousState) => {
+      const tagListData = query.map((value) => value.tag).flat(1);
+      const tagCounter: TagsCounterParams = {};
+      
+      tagListData.forEach(({ name }) => {
+        if (Object.keys(tagCounter).includes(name)) {
+          tagCounter[name] += 1;
+          return;
+        }
+
+        tagCounter[name] = 1;
+      })
+
+      return {...previousState, ...tagCounter};
+    })
   };
 
   useEffect(() => {
-    setAvaialableTags();
+    console.log("setting available tags");
+    setAvailableTags();
   }, [query]);
 
   return (
