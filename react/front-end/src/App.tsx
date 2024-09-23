@@ -6,7 +6,7 @@ import CreateBillSplit from "./pages/createBillSplit";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
-import { UserProfileProvider } from "./context/userProfileProvider";
+import { UserProfileProvider } from "./context/userProfileContext";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 

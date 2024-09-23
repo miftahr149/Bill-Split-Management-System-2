@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import AttributeElement from "./attributeElement";
 import { UserParams } from "./billSplitCard";
-import { UserProfileContext } from "../context/userProfileProvider";
+import { UserProfileContext } from "../context/userProfileContext";
 
 interface UserElement {
   user: UserParams;

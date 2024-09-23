@@ -1,7 +1,7 @@
 import { UserAmountParams } from "./billSplitCard";
 import { useContext, useEffect, useState } from "react";
 import InputNumber from "./inputNumber";
-import { UserProfileContext } from "../context/userProfileProvider";
+import { UserProfileContext } from "../context/userProfileContext";
 
 interface CustomBillAmountParams {
   usersAmount: UserAmountParams[];

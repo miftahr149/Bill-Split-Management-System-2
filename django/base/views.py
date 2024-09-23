@@ -1,5 +1,4 @@
 from . import models, serializer
-from .serializer import BillSplitDict, UserAmountDict, TagDict
 
 from django.http import JsonResponse
 
@@ -12,11 +11,30 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+# Typed Dict
+class UserDict(TypedDict):
+  username: str
+
+class TagDict(TypedDict):
+  name: str
+
+class UserAmountDict(TypedDict):
+  user: UserDict
+  receipt: str
+  amount: int
+
+class BillSplitDict(TypedDict):
+  name: str
+  host: UserDict
+  tag: list[TagDict]
+  description: str
+  user_amount: list[UserAmountDict]
+  status: str
 
 # Create your views here.
 class TokenObtainPairView(TokenObtainPairView):
@@ -54,6 +72,9 @@ class UserBillSplitView(APIView):
 class BillSplitView(APIView):
   """
   Class that handle an api regarding Bill Split models
+
+  get: retrieve bill-split data based on the variable 'handle'
+  post: create bill-split data
   """
   permission_classes = [IsAuthenticated]
   serializer_class = serializer.BillSplitSerializer
@@ -77,12 +98,8 @@ class BillSplitView(APIView):
     users_amount = map(user_amount_map_func, validate_data.pop('user_amount'))
     
     bill_split = models.BillSplit.objects.create(host=host, **validate_data)
-
-    for tag in tags:
-      bill_split.tag.add(tag)
-    
-    for user_amount in users_amount:
-      bill_split.user_amount.add(user_amount)
+    for tag in tags: bill_split.tag.add(tag)
+    for user_amount in users_amount: bill_split.user_amount.add(user_amount)
 
     return bill_split
 

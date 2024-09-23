@@ -2,7 +2,7 @@ import dollarIcon from "../assets/img/dollar.png";
 import "../assets/css/billSplitCard.css";
 import AuthContext from "../context/authContext";
 import { useContext, useState, useEffect } from "react";
-import { UserProfileContext } from "../context/userProfileProvider";
+import { UserProfileContext } from "../context/userProfileContext";
 
 export interface UserParams {
   username: string;

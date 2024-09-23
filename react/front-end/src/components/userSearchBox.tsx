@@ -9,7 +9,7 @@ import {
   tryCatchFetch,
 } from "../utility/myapi";
 import AuthContext from "../context/authContext";
-import { UserProfileContext } from "../context/userProfileProvider";
+import { UserProfileContext } from "../context/userProfileContext";
 
 interface UserSearchBoxParams {
   callback: React.Dispatch<SetStateAction<boolean>>;

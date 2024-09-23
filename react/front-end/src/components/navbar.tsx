@@ -8,7 +8,7 @@ import AuthContext from "../context/authContext";
 import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { getImage } from "../utility/myapi";
-import { UserProfileContext } from "../context/userProfileProvider";
+import { UserProfileContext } from "../context/userProfileContext";
 
 interface NavbarParams {
   title: string;

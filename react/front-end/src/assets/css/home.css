@@ -9,82 +9,10 @@
   }
 }
 
-/* # bill-split */
-.bill-split-box {
-  display: grid;
-}
-
-/* ## Tag */
-
-.bill-split-tag {
-  gap: 1.5rem;
-}
-
-.tags-list {
-  margin: 0;
-  padding: 0;
-  gap: 1rem;
-  
-  & .tag-element {
-    list-style: None;
-    gap: 1rem;
-    margin: 0;
-    justify-content: space-between;
-    border-radius: var(--border-sm);
-  
-    & .button {
-      justify-content: space-between;
-      background-color: transparent;
-    }
-  
-    & .counter {
-      padding: 0 10px;
-      border: 2px solid white;
-      border-radius: var(--border-xs);
-    }
-  }
-}
-
-
-/* ## Bill Split List */
-.bill-split-list {
-  padding: 0;
-
-  & .header-box {
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-  
-  & .create-bill-split-button {
-    border: 0;
-    border-radius: var(--border-xs);
-    padding: 3px 0.7rem;
-    text-decoration: none;
-  }
-  
-  & .plus-icon {
-    --size: 2.5rem;
-  }
-}
-
-
-
 @media screen and (min-width: 768px) {
-  .main__home {
-    padding: 0;
-  }
-
-  .bill-split-list {
-    padding: 1.5rem;
-  }
-
   .greeting {
     & .username {
       font-size: 6rem;
     }
-  }
-
-  .bill-split-box {
-    grid-template-columns: 1fr 3fr;
   }
 }
