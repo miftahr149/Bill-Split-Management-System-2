@@ -1,7 +1,7 @@
 import "../assets/css/home.css";
 
 import Navbar from "../components/navbar";
-import { BillSplitParams, TagParams } from "../components/billSplitCard";
+import { BillSplitParams } from "../components/billSplitCard";
 import BillSplitBox from "../components/billSplitBox";
 import AuthContext from "../context/authContext";
 import {
@@ -20,10 +20,9 @@ const Home = () => {
   const [billSplits, setBillSplits] = useState<BillSplitParams[]>([]);
 
   const getBillSplit = async () => {
-    const URL = setBackendURL("billSplit/user");
     tryCatchFetch(async () => {
       const data = (await APIFetch({
-        URL: URL,
+        URL: setBackendURL("billSplit/user"),
         method: "GET",
         headers: {
           "Content-Type": "application/json",

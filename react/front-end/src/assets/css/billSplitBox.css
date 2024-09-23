@@ -1,31 +1,6 @@
 .bill-split-box {
   display: grid;
 
-  & .tags-list {
-    margin: 0;
-    padding: 0;
-    gap: 1rem;
-
-    & .tag-element {
-      list-style: None;
-      gap: 1rem;
-      margin: 0;
-      justify-content: space-between;
-      border-radius: var(--border-sm);
-    
-      & .button {
-        justify-content: space-between;
-        background-color: transparent;
-      }
-    
-      & .counter {
-        padding: 0 10px;
-        border: 2px solid white;
-        border-radius: var(--border-xs);
-      }
-    }
-  }
-
   .bill-split-list {
     padding: 0;
   

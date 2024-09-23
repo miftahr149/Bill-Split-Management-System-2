@@ -31,7 +31,7 @@ class BillSplit(models.Model):
   host = models.ForeignKey(User, on_delete=models.CASCADE)
   tag = models.ManyToManyField(Tag, blank=True)
   description = models.TextField()
-  user_amount = models.ManyToManyField(UserAmount)
+  user_amount = models.ManyToManyField(UserAmount)  
   status = models.CharField(max_length=30, choices=status_choices,
                             default='Pending')
   
