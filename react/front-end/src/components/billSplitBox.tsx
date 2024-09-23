@@ -1,4 +1,4 @@
-import "../assets/css/billSplitBox.css"
+import "../assets/css/billSplitBox.css";
 import smallPlusIcon from "../assets/img/plus-small.png";
 import BillSplitCard from "./billSplitCard";
 import TagList from "./tagList";
@@ -13,7 +13,7 @@ interface BillSplitBoxParams {
 }
 
 const BillSplitBox = ({ query }: BillSplitBoxParams) => {
-  const [filterTags, setFilterTags] = useState<TagParams>({name: "All"});
+  const [filterTags, setFilterTags] = useState<TagParams>({ name: "All" });
 
   const filterBillSplit = () => {
     return filterTags.name === "All"
@@ -27,7 +27,11 @@ const BillSplitBox = ({ query }: BillSplitBoxParams) => {
     <div className="bill-split-box flex-grow-1 gap--l">
       <div className="box box--bg-black d-flex flex-column gap">
         <h2 className="my-header text-color-primary-green">Tags</h2>
-        <TagList query={query} callback={TagListCallback} />
+        <TagList
+          query={query}
+          callback={TagListCallback}
+          filterTag={filterTags}
+        />
       </div>
       <div className="bill-split-list box">
         <div className="header-box d-flex flex-center">

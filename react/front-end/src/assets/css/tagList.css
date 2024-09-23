@@ -1,24 +1,41 @@
 .tags-list {
   margin: 0;
   padding: 0;
-  gap: 1rem;
 
   & .tag-element {
     list-style: None;
     gap: 1rem;
     margin: 0;
+    padding: 0.5rem 0.4rem;
+    border-radius: var(--border-xs);
     justify-content: space-between;
-    border-radius: var(--border-sm);
-  
+
+    
     & .button {
       justify-content: space-between;
       background-color: transparent;
     }
-  
+    
     & .counter {
       padding: 0 10px;
       border: 2px solid white;
       border-radius: var(--border-xs);
     }
+    
   }
+
+  .tag-element:hover, .tag-element--focus {
+    --color-pallete: white;
+    background-color: rgb(var(--primary-green-color-rgb));
+    
+    & .button {
+      color: var(--color-pallete);
+    }
+  
+    & .counter {
+      border: 2px solid var(--color-pallete);
+    }
+  }
+  
 }
+

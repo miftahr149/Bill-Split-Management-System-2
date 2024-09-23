@@ -7,20 +7,30 @@ import { TagParams } from "./billSplitCard";
 interface TagListParams {
   query: BillSplitParams[];
   callback: (value: TagParams) => void;
+  filterTag: TagParams;
 }
 
 interface TagElementParams {
   tag: TagParams;
   count: number;
   callback: (value: TagParams) => void;
+  filterTag: TagParams;
 }
 
 interface TagsCounterParams {
   [tagName: string]: number;
 }
 
-const TagElement = ({ tag, count, callback }: TagElementParams) => {
+const TagElement = ({ tag, count, callback, filterTag }: TagElementParams) => {
   const { name } = tag;
+
+  const setClassName = () => {
+    const defaultClassName = "tag-element d-flex flex-column";
+    if (filterTag.name === tag.name) console.log(tag);
+    return filterTag.name === tag.name
+      ? defaultClassName + " tag-element--focus"
+      : defaultClassName;
+  };
 
   const handleClick = () => {
     console.log(`set tagsFilter to ${name}`);
@@ -28,7 +38,7 @@ const TagElement = ({ tag, count, callback }: TagElementParams) => {
   };
 
   return (
-    <li className="tag-element d-flex flex-column">
+    <li className={setClassName()}>
       <button
         className="button d-flex my-button text-color-white"
         onClick={handleClick}
@@ -42,7 +52,7 @@ const TagElement = ({ tag, count, callback }: TagElementParams) => {
   );
 };
 
-const TagList = ({ query, callback }: TagListParams) => {
+const TagList = ({ query, callback, filterTag }: TagListParams) => {
   const initTags = () => [{ name: "All" }];
   const initTagsCounter = () => ({ All: query.length });
 
@@ -64,7 +74,7 @@ const TagList = ({ query, callback }: TagListParams) => {
     setTagsCounter((previousState) => {
       const tagListData = query.map((value) => value.tag).flat(1);
       const tagCounter: TagsCounterParams = {};
-      
+
       tagListData.forEach(({ name }) => {
         if (Object.keys(tagCounter).includes(name)) {
           tagCounter[name] += 1;
@@ -72,10 +82,10 @@ const TagList = ({ query, callback }: TagListParams) => {
         }
 
         tagCounter[name] = 1;
-      })
+      });
 
-      return {...previousState, ...tagCounter};
-    })
+      return { ...previousState, ...tagCounter };
+    });
   };
 
   useEffect(() => {
@@ -84,13 +94,14 @@ const TagList = ({ query, callback }: TagListParams) => {
   }, [query]);
 
   return (
-    <ul className="tags-list flex-grow-1 d-flex flex-column">
+    <ul className="tags-list flex-grow-1 d-flex flex-column gap--sm">
       {tags.map((tag: TagParams) => (
         <TagElement
           key={tag.name}
           tag={tag}
           count={tagsCounter[tag.name]}
           callback={callback}
+          filterTag={filterTag}
         />
       ))}
     </ul>
