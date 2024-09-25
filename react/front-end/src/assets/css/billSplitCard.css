@@ -1,34 +1,37 @@
 .bill-split-card {
+  --attribute-font-size: clamp(var(--font-size-sm), 2vw, var(--font-size-l));
+
   & .header-box {
     justify-content: space-between;
   }
 
+  & .attribute-text {
+    font-size: var(--attribute-font-size);
+  }
+
   & .tag-list {
-    flex-wrap: wrap;
+    height: min-content;
+    overflow-x: auto;
 
     & .tag {
+      flex: 0 0 auto;
       background-color: rgb(var(--primary-green-color-rgb));
       border-radius: 4px;
       padding: 3px 0.8rem;
-      font-size: clamp(var(--font-size-sm), 1vw, var(--font-size));
+      font-size: var(--attribute-font-size);
     }
   }
-  
+
   .separator {
     --size: 5px;
     background-color: white;
   }
 
   & .name {
-    font-size: 1.2rem;
+    min-width: min-content;
+    font-size: clamp(var(--header-font-size-sm), 5vw, var(--header-font-size));
   }
 }
 
-
 @media screen and (min-width: 768px) {
-  .bill-split-card {
-    & .name {
-      font-size: 1.6rem;
-    }
-  }
 }

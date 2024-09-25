@@ -1,0 +1,17 @@
+.wrapper {
+  display: flex;
+  border: 1px solid white;
+  gap: 1rem;
+  overflow-x: auto;
+  justify-content: end;
+
+  & .element {
+    display: flex;
+    flex: 0 0 auto;
+    height: 50px;
+    text-align: center;
+    align-items: center;
+    border: 1px solid white;
+    padding: 5px;
+  }
+}

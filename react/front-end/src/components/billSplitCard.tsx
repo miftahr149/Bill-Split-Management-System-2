@@ -35,10 +35,9 @@ const BillSplitCard = ({
   tag,
 }: BillSplitParams) => {
   const getPrice = () => {
-    const userAmount = user_amount.filter(
-      (value: UserAmountParams) => value.user.username === username
-    )[0];
-    return userAmount.amount;
+    const find = user_amount.find(({ user }) => user.username == username);
+    if (typeof find === "undefined") return 0;
+    return find.amount;
   };
 
   const renderTag = () => {
@@ -54,65 +53,35 @@ const BillSplitCard = ({
 
   return (
     <div className="bill-split-card box box--bg-black">
-      <div className="display-desktop">
-        <div className="d-flex flex-column gap">
-          <div className="header-box d-flex flex-center">
-            <p className="name my-text text-bold flex-grow-1">
+      <div className="d-flex flex-column">
+        <div className="header-box d-flex flex-center gap">
+          <div className="flex-grow-1">
+            <p className="name my-text text-bold flex-grow-2 text-nowrap">
               {name}
             </p>
-            <div className="tag-list d-flex justify-content-end gap--sm flex-grow-1">
-              {renderTag()}
-            </div>
           </div>
-
-          <div className="d-flex align-items-center gap--l">
-            <div className="d-flex gap--sm flex-center">
-              <img
-                src={getImage(hostData.username)}
-                alt="hostImage"
-                className="img img--round img--xs"
-              />
-              <p className="my-text text-bold">{host}</p>
-            </div>
-            <img src="" alt="" className="separator img img--round" />
-            <div className="d-flex gap--sm flex-center">
-              <img
-                src={dollarIcon}
-                alt="dollaricon"
-                className="img img--round img--xs"
-              />
-              <p className="my-text text-bold">{priceFormat}</p>
-            </div>
+          <div className="tag-list d-flex gap--sm">
+            {renderTag()}
           </div>
         </div>
-      </div>
 
-      <div className="display-mobile">
-        <div className="d-flex flex-column gap">
-          <div className="header-box d-flex flex-center">
-            <p className="name my-text text-bold">
-              {name}
-            </p>
-            <div className="d-flex gap--sm flex-center">
-              <img
-                src={dollarIcon}
-                alt="dollar"
-                className="img img--round img--xs"
-              />
-              <p className="my-text text-bold my-text--sm">{priceFormat}</p>
-            </div>
-          </div>
-
-          <div className="d-flex gap--sm align-items-center">
+        <div className="d-flex align-items-center gap--l">
+          <div className="d-flex gap--sm flex-center">
             <img
               src={getImage(hostData.username)}
               alt="hostImage"
               className="img img--round img--xs"
             />
-            <p className="my-text text-bold my-text--sm">{host}</p>
+            <p className="my-text text-bold attribute-text">{host}</p>
           </div>
-          <div className="tag-list d-flex gap--sm">
-            {renderTag()}
+          <img src="" alt="" className="separator img img--round" />
+          <div className="d-flex gap--sm flex-center">
+            <img
+              src={dollarIcon}
+              alt="dollaricon"
+              className="img img--round img--xs"
+            />
+            <p className="my-text text-bold attribute-text">{priceFormat}</p>
           </div>
         </div>
       </div>
