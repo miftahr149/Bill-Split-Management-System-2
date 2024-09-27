@@ -26,22 +26,16 @@ const TagElement = ({ tag, count, callback, filterTag }: TagElementParams) => {
 
   const setClassName = () => {
     const defaultClassName = "tag-element d-flex flex-column";
-    if (filterTag.name === tag.name) console.log(tag);
     return filterTag.name === tag.name
       ? defaultClassName + " tag-element--focus"
       : defaultClassName;
-  };
-
-  const handleClick = () => {
-    console.log(`set tagsFilter to ${name}`);
-    callback(tag);
   };
 
   return (
     <li className={setClassName()}>
       <button
         className="button d-flex my-button text-color-white"
-        onClick={handleClick}
+        onClick={() => callback(tag)}
       >
         <div className="d-flex justify-content-center align-items-center">
           <p className="my-text text-bold text-center">{name}</p>

@@ -1,12 +1,16 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from . import models 
+from django.contrib.auth.models import Permission
 
 class TokenObtainPairSerializer(TokenObtainPairSerializer):
   @classmethod
   def get_token(cls, user):
     token = super().get_token(user)
     token['username'] = user.username
+
+    userObject = models.User.objects.get(username=token['username'])
+    token['role'] = 'admin' if userObject.is_superuser else 'user'
     return token
 
 class UserSerializer(serializers.ModelSerializer):

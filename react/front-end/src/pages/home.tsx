@@ -10,19 +10,21 @@ import {
   APIFetch,
   tryCatchFetch,
 } from "../utility/myapi";
+import { ChoiceBox, ChoiceElement } from "../components/choice";
 
 import { useEffect, useState, useContext } from "react";
 import { UserProfileContext } from "../context/userProfileContext";
 
 const Home = () => {
-  const { authTokens, username } = useContext(AuthContext);
+  const { authTokens, username, role } = useContext(AuthContext);
   const { getImage } = useContext(UserProfileContext);
-  const [billSplits, setBillSplits] = useState<BillSplitParams[]>([]);
+  const [billSplit, setBillSplit] = useState<BillSplitParams[]>([])
+  const [choiceValue, setChoiceValue] = useState("ongoing");
 
   const getBillSplit = async () => {
     tryCatchFetch(async () => {
       const data = (await APIFetch({
-        URL: setBackendURL("billSplit/user"),
+        URL: setBackendURL(`billSplit/${choiceValue}`),
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -30,13 +32,13 @@ const Home = () => {
         },
       })) as BillSplitParams[];
 
-      setBillSplits(data);
+      setBillSplit(data);
     });
   };
 
   useEffect(() => {
     getBillSplit();
-  }, [authTokens]);
+  }, [authTokens, choiceValue]);
 
   return (
     <div className="pages d-flex flex-column">
@@ -56,8 +58,17 @@ const Home = () => {
             <h1 className="username my-header">{username}</h1>
           </div>
         </div>
-        
-        <BillSplitBox query={billSplits} />
+
+        <ChoiceBox variable={choiceValue} callback={setChoiceValue}>
+          <ChoiceElement value="ongoing" />
+          {role === "admin" ? (
+            <ChoiceElement value="request" />
+          ) : (
+          <ChoiceElement value="pending" />
+          )}
+        </ChoiceBox>
+
+        <BillSplitBox query={billSplit} />
       </main>
     </div>
   );

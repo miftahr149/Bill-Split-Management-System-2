@@ -9,6 +9,7 @@
     padding: 0.5rem 0.4rem;
     border-radius: var(--border-xs);
     justify-content: space-between;
+    transition: all 200ms ease-in;
 
     
     & .button {

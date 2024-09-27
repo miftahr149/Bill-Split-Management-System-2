@@ -105,10 +105,15 @@ class BillSplitView(APIView):
 
   def get(self, request: Request, handle: str = 'user'):
     data: models.BillSplit
+    user: models.User
 
-    if handle == 'user':
-      user = models.User.objects.get(username=request.user.username)
-      data = self.queryset.filter(user_amount__user=user)
+    if handle == 'ongoing':
+      data = self.queryset.filter(user_amount__user=request.user, 
+                                  status="Ongoing")
+    elif handle == 'request':
+      data = self.queryset.filter(status='Pending')
+    elif handle == 'pending':
+      data = self.queryset.filter(host=request.user, status="Pending")
     
     _serializer = self.serializer_class(data, many=True)
     return Response(_serializer.data, status=status.HTTP_200_OK)

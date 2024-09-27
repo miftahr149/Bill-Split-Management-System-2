@@ -19,6 +19,7 @@ export interface AuthTokensParams {
 interface AuthContextParams {
   authTokens: AuthTokensParams;
   username: string;
+  role: string;
   loginFunction: (
     userData: userDataParams
   ) => (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -36,6 +37,7 @@ const setLocalStorage = (authToken: AuthTokensParams) => {
 
 const AuthContext = createContext<AuthContextParams>({
   authTokens: nullAuthTokens,
+  role: "",
   username: "",
   loginFunction: (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,6 +67,12 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     Boolean(localStorage.getItem("authTokens"))
   );
 
+  const [role, ] = useState<string>(() => {
+    const userData = localStorage.getItem("user")
+    if (typeof userData === null) return "";
+    return JSON.parse(userData as string).role;
+  })
+
   const loginFunction = (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -79,6 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
           },
           body: JSON.stringify(userData),
         });
+
         setAuthTokens(data);
         setUsername(userData.username);
         setLocalStorage(data);
@@ -121,6 +130,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
   const contextData = {
     authTokens: authTokens,
     username: username,
+    role: role,
     loginFunction: loginFunction,
     isUserValid: isUserValid,
     logoutFunction: logoutFunction,

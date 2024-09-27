@@ -1,5 +1,5 @@
 .bill-split-card {
-  --attribute-font-size: clamp(var(--font-size-sm), 2vw, var(--font-size-l));
+  --attribute-font-size: clamp(var(--font-size-sm), 1.5vw, var(--font-size-l));
 
   & .header-box {
     justify-content: space-between;

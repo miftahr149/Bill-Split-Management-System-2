@@ -41,8 +41,8 @@ const BillSplitCard = ({
   };
 
   const renderTag = () => {
-    return tag.map((element: TagParams) => (
-      <p className={"tag my-text text-bold"}>{element.name}</p>
+    return tag.map(({ name }: TagParams) => (
+      <p className={"tag my-text text-bold"} key={name}>{name}</p>
     ));
   };
 
@@ -60,9 +60,7 @@ const BillSplitCard = ({
               {name}
             </p>
           </div>
-          <div className="tag-list d-flex gap--sm">
-            {renderTag()}
-          </div>
+          <div className="tag-list d-flex gap--sm">{renderTag()}</div>
         </div>
 
         <div className="d-flex align-items-center gap--l">

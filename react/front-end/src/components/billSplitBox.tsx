@@ -53,7 +53,7 @@ const BillSplitBox = ({ query }: BillSplitBoxParams) => {
 
         <div className="d-flex flex-column gap">
           {filterBillSplit().map((value: BillSplitParams) => (
-            <BillSplitCard {...value} />
+            <BillSplitCard {...value} key={value.name} />
           ))}
         </div>
       </div>
