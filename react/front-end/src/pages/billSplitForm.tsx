@@ -15,11 +15,12 @@ import UserElement from "../components/userElement";
 import BillAmount from "../components/billAmount";
 
 import {
+  BillSplitParams,
   TagParams,
   UserAmountParams,
   UserParams,
 } from "../components/billSplitCard";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   APIFetch,
   setAuthorization,
@@ -27,13 +28,21 @@ import {
   tryCatchFetch,
 } from "../utility/myapi";
 import AuthContext from "../context/authContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface ElementParams {
   title: string;
   children: JSX.Element | JSX.Element[];
   buttonFunc?: () => void;
 }
+
+interface BillSplitFormContentParams {
+  billSplitData?: BillSplitParams;
+  mode: string;
+}
+
+/* To Store Available mode in this page */
+const availableMode = ["create", "edit", "readonly"];
 
 const Element = ({ title, children, buttonFunc }: ElementParams) => {
   const addButtonFunc = () => {
@@ -59,17 +68,22 @@ const Element = ({ title, children, buttonFunc }: ElementParams) => {
   );
 };
 
-const CreateBillSplit = () => {
+const BillSplitFormContent = ({
+  billSplitData,
+  mode,
+}: BillSplitFormContentParams) => {
+  const navigate = useNavigate();
+  const { authTokens, username, role } = useContext(AuthContext);
+
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [tags, setTags] = useState<TagParams[]>([]);
   const [users, setUsers] = useState<UserParams[]>([]);
+
   const [usersAmount, setUsersAmount] = useState<UserAmountParams[]>([]);
+
   const [isAddTag, setIsAddTag] = useState(false);
   const [isAddUser, setIsAddUser] = useState(false);
-
-  const { authTokens, username } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const disableButtonCreate = () => {
     const isNameEmpty = name === "";
@@ -84,35 +98,62 @@ const CreateBillSplit = () => {
   };
 
   const handleClick = () => {
-    const billSplitData = {
+    const postBillSplitData: {[name: string]: any} = {
       name: name,
       description: desc,
       tag: tags,
       user_amount: usersAmount,
-      host: {username: username}
+      host: { username: username },
+    };
+
+    if (mode === "edit") {
+      postBillSplitData['id'] = billSplitData?.id;
     }
+
+    console.log(postBillSplitData)
 
     const errorCallback = () => {
       console.log("Failed to create bill-split");
-    }
-
+    };
 
     tryCatchFetch(async () => {
       await APIFetch({
         URL: setBackendURL("billSplit/user"),
-        method: "POST",
+        method: mode === "create" ? "POST" : "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: setAuthorization(authTokens.access),
         },
-        body: JSON.stringify(billSplitData),
-        errorCallback: errorCallback
+        body: JSON.stringify(postBillSplitData),
+        errorCallback: errorCallback,
       });
 
-      console.log("successfully create bill-split")
+      console.log("successfully create bill-split");
       navigate("/");
     });
   };
+
+  const setButtonName = () => {
+    if (mode === "edit") return "Edit Proposed Bill Split";
+
+    /* the mode is active */
+    return role === "admin" ? "Create Bill Split" : "Proposed Bill Split";
+  };
+
+  useEffect(() => {
+    console.log(billSplitData);
+    if (typeof billSplitData === "undefined") return;
+
+    setName(billSplitData.name);
+    setDesc(billSplitData.description);
+    setTags(billSplitData.tag);
+    setUsers(billSplitData.user_amount.map(({ user }) => user));
+    setUsersAmount(billSplitData.user_amount);
+  }, [billSplitData]);
+
+  useEffect(() => {
+    console.log(name);
+  }, [name]);
 
   return (
     <>
@@ -120,7 +161,11 @@ const CreateBillSplit = () => {
         <Navbar title="Create Bill Split" />
         <main className="main text-color-white flex-grow-1 d-flex flex-column gap--l">
           <Element title="Bill Split Name">
-            <Input callback={setName} className="text-input my-text--l" />
+            <Input
+              value={name}
+              callback={setName}
+              className="text-input my-text--l"
+            />
           </Element>
           <Element title="Tags" buttonFunc={() => setIsAddTag(true)}>
             <div className="d-flex flex-wrap gap--sm">
@@ -136,7 +181,7 @@ const CreateBillSplit = () => {
             </div>
           </Element>
           <Element title="Description">
-            <TextArea callback={setDesc} className="text-input" />
+            <TextArea callback={setDesc} value={desc} className="text-input" />
           </Element>
           <Element title="User" buttonFunc={() => setIsAddUser(true)}>
             <div className="d-flex flex-wrap gap--sm">
@@ -155,7 +200,7 @@ const CreateBillSplit = () => {
               )}
             </div>
           </Element>
-          <Element title="Bill Split Duration">
+          <Element title="Bill Split Amount">
             <BillAmount
               users={users}
               setUsersAmount={setUsersAmount}
@@ -163,13 +208,15 @@ const CreateBillSplit = () => {
             />
           </Element>
 
-          <button
-            className="btn btn-success btn-lg"
-            onClick={handleClick}
-            {...disableButtonCreate()}
-          >
-            Proposed Bill Split
-          </button>
+          {mode !== "readonly" && (
+            <button
+              className="btn btn-success btn-lg"
+              onClick={handleClick}
+              {...disableButtonCreate()}
+            >
+              {setButtonName()}
+            </button>
+          )}
         </main>
       </div>
 
@@ -188,4 +235,59 @@ const CreateBillSplit = () => {
   );
 };
 
-export default CreateBillSplit;
+const BillSplitForm = () => {
+  let { mode, id: billSplitId } = useParams();
+  const navigate = useNavigate();
+  const { authTokens, username } = useContext(AuthContext);
+  const [billSplitData, setBillSplitData] = useState<BillSplitParams>();
+
+  const checkModeValid = () => {
+    mode = typeof mode === "undefined" ? "create" : mode;
+    if (!availableMode.includes(mode)) navigate("/404");
+  };
+
+  const checkDataValid = () => {
+    if (typeof billSplitId === "undefined") return;
+
+    console.log(billSplitId);
+    tryCatchFetch(async () => {
+      const data = (await APIFetch({
+        URL: setBackendURL("billSplit/request"),
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: setAuthorization(authTokens.access),
+        },
+      })) as BillSplitParams[];
+      console.log(data);
+
+      const find = data.find(({ id }) => id === Number(billSplitId));
+      if (typeof find === "undefined") {
+        return navigate("/404");
+      }
+
+      setBillSplitData(find);
+    });
+  };
+
+  const checkHostValid = () => {
+    if (billSplitData?.host.username !== username) navigate("/404");
+  }
+
+  useEffect(() => {
+    checkModeValid();
+    checkDataValid();
+  }, []);
+
+  /* Action after there is update from billSplitData */
+  useEffect(() => {
+    if (typeof billSplitData === "undefined") return;
+    checkHostValid();
+  }, [billSplitData]);
+
+  return (
+    <BillSplitFormContent mode={mode as string} billSplitData={billSplitData} />
+  );
+};
+
+export default BillSplitForm;

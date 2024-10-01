@@ -6,13 +6,15 @@ import TagList from "./tagList";
 import { BillSplitParams, TagParams } from "./billSplitCard";
 
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AuthContext from "../context/authContext";
 
 interface BillSplitBoxParams {
   query: BillSplitParams[];
 }
 
 const BillSplitBox = ({ query }: BillSplitBoxParams) => {
+  const { role } = useContext(AuthContext);
   const [filterTags, setFilterTags] = useState<TagParams>({ name: "All" });
 
   const filterBillSplit = () => {
@@ -37,7 +39,7 @@ const BillSplitBox = ({ query }: BillSplitBoxParams) => {
         <div className="header-box d-flex flex-center">
           <h2 className="my-header text-color-primary-green">Bill Split</h2>
           <Link
-            to="create-bill-split"
+            to="bill-split/create/"
             className="create-bill-split-button text-color-white d-flex flex-center btn btn-success"
           >
             <img
@@ -46,7 +48,7 @@ const BillSplitBox = ({ query }: BillSplitBoxParams) => {
               className="img img--sm plus-icon"
             />
             <p className="my-text text-bold text-center display-desktop">
-              Proposed Bill Split
+              {role === "admin" ? "Create Bill Split" : "Proposed Bill Split"}
             </p>
           </Link>
         </div>

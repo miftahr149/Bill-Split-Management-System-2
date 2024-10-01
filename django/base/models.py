@@ -16,11 +16,6 @@ class Tag(models.Model):
   def __str__(self):
     return self.name
 
-class UserAmount(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-  amount = models.IntegerField()
-  receipt = models.FileField(upload_to='receipt/', blank=True)
-
 class BillSplit(models.Model):
   status_choices = (
     ('Ongoing', 'Ongoing'),
@@ -28,10 +23,9 @@ class BillSplit(models.Model):
   )
   
   name = models.CharField(max_length=50)
-  host = models.ForeignKey(User, on_delete=models.CASCADE)
-  tag = models.ManyToManyField(Tag, blank=True)
+  host = models.ForeignKey(User, related_name='host', on_delete=models.CASCADE)
   description = models.TextField()
-  user_amount = models.ManyToManyField(UserAmount)  
+  tag = models.ManyToManyField(Tag, related_name='tag')
   status = models.CharField(max_length=30, choices=status_choices,
                             default='Pending')
   
@@ -59,3 +53,10 @@ class UserProfileImage(models.Model):
     if self.image.name != 'image/defaultUserProfile.png':
       self.image.name = image_name
     return super().save(*args, **kwargs)
+
+class UserAmount(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  amount = models.IntegerField()
+  receipt = models.FileField(upload_to='receipt/', blank=True)
+  bill_split = models.ForeignKey(BillSplit, related_name='user_amount',
+                                 on_delete=models.CASCADE, null=True)

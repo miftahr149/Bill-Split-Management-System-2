@@ -2,7 +2,8 @@ import "./index.css";
 
 import Login from "./pages/login";
 import Home from "./pages/home";
-import CreateBillSplit from "./pages/createBillSplit";
+import BillSplitForm from "./pages/billSplitForm";
+import NotFound from "./pages/notFound";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
@@ -18,10 +19,16 @@ function App() {
           <Routes>
             <Route path="/" element={<PrivateRoute component={<Home />} />} />
             <Route
-              path="/create-bill-split"
-              element={<PrivateRoute component={<CreateBillSplit />} />}
+              path="/bill-split/:mode/:id"
+              element={<PrivateRoute component={<BillSplitForm />} />}
+            />
+            <Route
+              path="/bill-split/create/"
+              element={<PrivateRoute component={<BillSplitForm />} />}
             />
             <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+            <Route path="/404" element={<NotFound />} />
           </Routes>
         </Router>
       </UserProfileProvider>

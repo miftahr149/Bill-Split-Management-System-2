@@ -12,13 +12,14 @@ import {
 } from "../utility/myapi";
 import { ChoiceBox, ChoiceElement } from "../components/choice";
 
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { UserProfileContext } from "../context/userProfileContext";
 
 const Home = () => {
   const { authTokens, username, role } = useContext(AuthContext);
   const { getImage } = useContext(UserProfileContext);
-  const [billSplit, setBillSplit] = useState<BillSplitParams[]>([])
+  const [billSplit, setBillSplit] = useState<BillSplitParams[]>([]);
   const [choiceValue, setChoiceValue] = useState("ongoing");
 
   const getBillSplit = async () => {
@@ -35,6 +36,32 @@ const Home = () => {
       setBillSplit(data);
     });
   };
+
+  const getBillSplitCallback = () => {
+    
+    interface dictFunctionParams {
+      [name: string]: (value: BillSplitParams) => () => void; 
+    }
+
+    const navigate = useNavigate();
+    const dictFunction: dictFunctionParams = {
+      "pending": (value) => () => {
+        const props = {state: "edit", data: value}
+        navigate("create-bill-split", {state: props})
+      },
+
+      "ongoing": (value) => () => {
+        const props = {state: "read-only", data: value}
+        navigate("create-bill-split", {state: props})
+      },
+
+      "request": (value) => () => {
+        navigate("create-bill-split")
+      }
+    }
+
+    return dictFunction[choiceValue];
+  }
 
   useEffect(() => {
     getBillSplit();

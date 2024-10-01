@@ -1,30 +1,32 @@
-import "../assets/css/dropdown.css"
+import "../assets/css/dropdown.css";
 import { useState, createContext, useContext } from "react";
-
 
 interface DropdownParams {
   name: string;
   children: JSX.Element[] | JSX.Element;
+  callback: (value: string) => void;
 }
 
 interface DropdownElementParams {
-  children: JSX.Element[] | JSX.Element;
-  callback: () => void;
+  children?: JSX.Element[] | JSX.Element;
+  value: string;
 }
 
 interface DropdownContextParams {
-  isClick: boolean;
   setIsClick: (value: boolean) => void;
+  callback: (value: string) => void;
 }
 
 const dropdownContext = createContext<DropdownContextParams>({
-  isClick: false,
   setIsClick: (value: boolean) => {
+    value;
+  },
+  callback: (value: string) => {
     value;
   },
 });
 
-export const Dropdown = ({ name, children }: DropdownParams) => {
+export const Dropdown = ({ name, children, callback }: DropdownParams) => {
   const [isClick, setIsClick] = useState(false);
 
   const handleClick = () => setIsClick((value: boolean) => !value);
@@ -34,8 +36,8 @@ export const Dropdown = ({ name, children }: DropdownParams) => {
   };
 
   const value: DropdownContextParams = {
-    isClick: isClick,
     setIsClick: (value: boolean) => setIsClick(value),
+    callback: callback,
   };
 
   return (
@@ -55,14 +57,11 @@ export const Dropdown = ({ name, children }: DropdownParams) => {
   );
 };
 
-export const DropdownElement = ({
-  children,
-  callback,
-}: DropdownElementParams) => {
-  const { setIsClick } = useContext(dropdownContext);
+export const DropdownElement = ({ children, value }: DropdownElementParams) => {
+  const { setIsClick, callback } = useContext(dropdownContext);
 
   const handleClick = () => {
-    callback();
+    callback(value);
     setIsClick(false);
   };
 
@@ -71,7 +70,11 @@ export const DropdownElement = ({
       className="dropdown-element my-button text-color-white"
       onClick={handleClick}
     >
-      {children}
+      {typeof children === "undefined" ? (
+        <p className="my-text text-bold">{value}</p>
+      ) : (
+        children
+      )}
     </button>
   );
 };

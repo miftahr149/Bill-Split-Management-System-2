@@ -17,25 +17,24 @@ const BillAmount = ({
   setUsersAmount,
   usersAmount,
 }: BillAmountParams) => {
-  const [billType, setBillType] = useState("Equal Share");
+  const [billType, setBillType] = useState("Custom");
 
   useEffect(() => {
     /* Deleting userAmount that is not available in users */
-    setUsersAmount((previousState: UserAmountParams[]) => {
-      return previousState.filter((value: UserAmountParams) => {
-        const username = value.user.username;
+    setUsersAmount((previousState) => {
+      return previousState.filter(({ user }) => {
         const find = users.findIndex(
-          (value: UserParams) => value.username === username
+          (value: UserParams) => value.username === user.username
         );
         return find !== -1;
       });
     });
 
     /* Appending new users to the userAmount */
-    users.forEach((user: UserParams) => {
-      setUsersAmount((previousState: UserAmountParams[]) => {
+    users.forEach((user) => {
+      setUsersAmount((previousState) => {
         const find = previousState.find(
-          (value: UserAmountParams) => value.user.username === user.username
+          ({ user }) => user.username === user.username
         );
 
         if (find !== undefined) return previousState;
@@ -49,13 +48,9 @@ const BillAmount = ({
 
   return (
     <div className="bill-amount d-flex flex-column gap--l">
-      <Dropdown name={billType}>
-        <DropdownElement callback={() => setBillType("Equal Share")}>
-          <p className="my-text text-bold">Equal Share</p>
-        </DropdownElement>
-        <DropdownElement callback={() => setBillType("Custom")}>
-          <p className="my-text text-bold">Custom</p>
-        </DropdownElement>
+      <Dropdown name={billType} callback={setBillType}>
+        <DropdownElement value="Equal Share" />
+        <DropdownElement value="Custom" />
       </Dropdown>
 
       <div className="d-flex flex-column gap">

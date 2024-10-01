@@ -72,17 +72,14 @@ const CustomBillAmount = ({
     };
   };
 
-  useEffect(() => {
-    console.log(usersAmount);
-  }, [usersAmount]);
-
   return (
     <div className="custom-bill">
       {usersAmount !== undefined &&
-        usersAmount.map((value: UserAmountParams) => (
+        usersAmount.map((value) => (
           <CustomBillAmountElement
             userAmount={value}
             callback={setCallbackFunction(value)}
+            key={value.user.username}
           />
         ))}
     </div>
