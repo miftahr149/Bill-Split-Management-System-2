@@ -1,7 +1,8 @@
 import { UserAmountParams } from "./billSplitCard";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import InputNumber from "./inputNumber";
 import { UserProfileContext } from "../context/userProfileContext";
+import { BillAmountContext } from "./billAmount";
 
 interface CustomBillAmountParams {
   usersAmount: UserAmountParams[];
@@ -19,6 +20,7 @@ const CustomBillAmountElement = ({
 }: CustomBillAmountElementParams) => {
   const [billAmount, setBillAmount] = useState<number>(userAmount.amount);
   const { getImage } = useContext(UserProfileContext);
+  const { notReadOnlyRestriction } = useContext(BillAmountContext)
 
   const handleChange = (value: number) => {
     setBillAmount(value);
@@ -43,6 +45,7 @@ const CustomBillAmountElement = ({
           callback={handleChange}
           className="input text-color-white my-text--l"
           value={billAmount}
+          disabled= {typeof notReadOnlyRestriction(1) === "undefined"}
         />
       </div>
     </div>

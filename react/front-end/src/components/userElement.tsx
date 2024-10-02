@@ -5,22 +5,23 @@ import { UserProfileContext } from "../context/userProfileContext";
 
 interface UserElement {
   user: UserParams;
-  setUsers: React.Dispatch<React.SetStateAction<UserParams[]>>;
+  setUsers?: React.Dispatch<React.SetStateAction<UserParams[]>>;
 }
 
 const UserElement = ({ user, setUsers }: UserElement) => {
-  const {getImage} = useContext(UserProfileContext)
+  const { getImage } = useContext(UserProfileContext);
 
-  const callback = () => {
-    setUsers((previousState: UserParams[]) => {
-      return previousState.filter(
-        (value: UserParams) => value.username !== user.username
-      );
+  const handleClick = () => {
+    if (typeof setUsers === "undefined") return;
+    setUsers((previousState) => {
+      return previousState.filter(({ username }) => username !== user.username);
     });
   };
 
   return (
-    <AttributeElement callback={callback}>
+    <AttributeElement
+      callback={typeof setUsers === "undefined" ? undefined : handleClick}
+    >
       <div className="d-flex gap">
         <img
           src={getImage(user.username)}

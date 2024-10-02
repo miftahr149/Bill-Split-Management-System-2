@@ -4,24 +4,30 @@
   border-radius: var(--border-xs);
   display: grid;
 
-  & .on-hover, .default {
+  & .on-hover,
+  .default {
     grid-row: 1 / 2;
     grid-column: 1 / 2;
   }
 
   & .on-hover {
-    display: None
+    display: None;
   }
 
   &:hover {
-    background-color: rgb(var(--secondary-alert-color-rgb));
+    cursor: default;
+  }
+}
 
-    & .on-hover {
-      display: flex;
-    }
-    
-    & .default {
-      opacity: 0;
-    }
+.attribute-element--enable-hover:hover {
+  background-color: rgb(var(--secondary-alert-color-rgb));
+  cursor: pointer;
+
+  & .on-hover {
+    display: flex;
+  }
+
+  & .default {
+    opacity: 0;
   }
 }

@@ -97,6 +97,10 @@ const BillSplitFormContent = ({
     };
   };
 
+  const notReadOnlyRestriction = (value: any) => {
+    return mode === "readonly" ? undefined : value;
+  };
+
   const handleClick = () => {
     const postBillSplitData: { [name: string]: any } = {
       name: name,
@@ -160,12 +164,20 @@ const BillSplitFormContent = ({
               value={name}
               callback={setName}
               className="text-input my-text--l"
+              disabled={mode === "readonly"}
             />
           </Element>
-          <Element title="Tags" buttonFunc={() => setIsAddTag(true)}>
+          <Element
+            title="Tags"
+            buttonFunc={notReadOnlyRestriction(() => setIsAddTag(true))}
+          >
             <div className="d-flex flex-wrap gap--sm">
               {tags.map((tag: TagParams) => (
-                <TagElement callback={setTags} tag={tag} key={tag.name} />
+                <TagElement
+                  callback={notReadOnlyRestriction(setTags)}
+                  tag={tag}
+                  key={tag.name}
+                />
               ))}
 
               {tags.length === 0 && (
@@ -176,14 +188,22 @@ const BillSplitFormContent = ({
             </div>
           </Element>
           <Element title="Description">
-            <TextArea callback={setDesc} value={desc} className="text-input" />
+            <TextArea
+              callback={setDesc}
+              value={desc}
+              className="text-input"
+              disabled={mode === "readonly"}
+            />
           </Element>
-          <Element title="User" buttonFunc={() => setIsAddUser(true)}>
+          <Element
+            title="User"
+            buttonFunc={notReadOnlyRestriction(() => setIsAddUser(true))}
+          >
             <div className="d-flex flex-wrap gap--sm">
               {users.map((value: UserParams) => (
                 <UserElement
                   user={value}
-                  setUsers={setUsers}
+                  setUsers={notReadOnlyRestriction(setUsers)}
                   key={value.username}
                 />
               ))}
@@ -200,10 +220,11 @@ const BillSplitFormContent = ({
               users={users}
               setUsersAmount={setUsersAmount}
               usersAmount={usersAmount}
+              notReadOnlyRestriction={notReadOnlyRestriction}
             />
           </Element>
 
-          {mode !== "readonly" && (
+          {mode !== "readonly" ? (
             <button
               className="btn btn-success btn-lg"
               onClick={handleClick}
@@ -211,6 +232,11 @@ const BillSplitFormContent = ({
             >
               {setButtonName()}
             </button>
+          ) : (
+            <div className="d-flex flex-center gap--l">
+              <button className="btn btn-success flex-grow-1">Accept</button>
+              <button className="btn btn-danger flex-grow-1">Decline</button>
+            </div>
           )}
         </main>
       </div>
@@ -279,7 +305,7 @@ const BillSplitForm = () => {
 
   /* Action after there is update from billSplitData */
   useEffect(() => {
-    console.log(billSplitData)
+    console.log(billSplitData);
     if (typeof billSplitData === "undefined") return;
     if (mode === "edit")
       checkValidUsername(
