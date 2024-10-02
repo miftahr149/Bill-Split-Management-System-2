@@ -1,7 +1,7 @@
 import dollarIcon from "../assets/img/dollar.png";
 import "../assets/css/billSplitCard.css";
 import AuthContext from "../context/authContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { UserProfileContext } from "../context/userProfileContext";
 
 export interface UserParams {
@@ -28,12 +28,14 @@ export interface BillSplitParams {
   user_amount: UserAmountParams[];
 }
 
-const BillSplitCard = ({
-  name,
-  host: hostData,
-  user_amount,
-  tag,
-}: BillSplitParams) => {
+interface BillSplitCardParams {
+  value: BillSplitParams;
+  callback: (value: BillSplitParams) => void;
+}
+
+const BillSplitCard = ({ value, callback }: BillSplitCardParams) => {
+  const { user_amount, tag, host: hostData, name } = value;
+
   const getPrice = () => {
     const find = user_amount.find(({ user }) => user.username == username);
     if (typeof find === "undefined") return 0;
@@ -42,7 +44,9 @@ const BillSplitCard = ({
 
   const renderTag = () => {
     return tag.map(({ name }: TagParams) => (
-      <p className={"tag my-text text-bold"} key={name}>{name}</p>
+      <p className={"tag my-text text-bold"} key={name}>
+        {name}
+      </p>
     ));
   };
 
@@ -52,7 +56,10 @@ const BillSplitCard = ({
   const priceFormat = `RM. ${getPrice()}`;
 
   return (
-    <div className="bill-split-card box box--bg-black">
+    <button
+      className="bill-split-card box box--bg-black text-color-white"
+      onClick={() => callback(value)}
+    >
       <div className="d-flex flex-column">
         <div className="header-box d-flex flex-center gap">
           <div className="flex-grow-1">
@@ -83,7 +90,7 @@ const BillSplitCard = ({
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 

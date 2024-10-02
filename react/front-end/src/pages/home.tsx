@@ -40,23 +40,23 @@ const Home = () => {
   const getBillSplitCallback = () => {
     
     interface dictFunctionParams {
-      [name: string]: (value: BillSplitParams) => () => void; 
+      [name: string]: (value: BillSplitParams) => void; 
     }
 
     const navigate = useNavigate();
     const dictFunction: dictFunctionParams = {
-      "pending": (value) => () => {
-        const props = {state: "edit", data: value}
-        navigate("create-bill-split", {state: props})
+      "pending": ({ id }) => {
+        navigate(`/bill-split/edit/${id}`)
       },
 
-      "ongoing": (value) => () => {
+      "ongoing": (value) => {
         const props = {state: "read-only", data: value}
         navigate("create-bill-split", {state: props})
       },
 
-      "request": (value) => () => {
-        navigate("create-bill-split")
+      "request": ({ id }) => {
+        console.log("Hello world")
+        navigate(`/bill-split/readonly/${id}`)
       }
     }
 
@@ -95,7 +95,7 @@ const Home = () => {
           )}
         </ChoiceBox>
 
-        <BillSplitBox query={billSplit} />
+        <BillSplitBox query={billSplit} queryCallback={getBillSplitCallback()}/>
       </main>
     </div>
   );

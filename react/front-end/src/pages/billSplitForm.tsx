@@ -98,7 +98,7 @@ const BillSplitFormContent = ({
   };
 
   const handleClick = () => {
-    const postBillSplitData: {[name: string]: any} = {
+    const postBillSplitData: { [name: string]: any } = {
       name: name,
       description: desc,
       tag: tags,
@@ -107,10 +107,10 @@ const BillSplitFormContent = ({
     };
 
     if (mode === "edit") {
-      postBillSplitData['id'] = billSplitData?.id;
+      postBillSplitData["id"] = billSplitData?.id;
     }
 
-    console.log(postBillSplitData)
+    console.log(postBillSplitData);
 
     const errorCallback = () => {
       console.log("Failed to create bill-split");
@@ -141,7 +141,6 @@ const BillSplitFormContent = ({
   };
 
   useEffect(() => {
-    console.log(billSplitData);
     if (typeof billSplitData === "undefined") return;
 
     setName(billSplitData.name);
@@ -150,10 +149,6 @@ const BillSplitFormContent = ({
     setUsers(billSplitData.user_amount.map(({ user }) => user));
     setUsersAmount(billSplitData.user_amount);
   }, [billSplitData]);
-
-  useEffect(() => {
-    console.log(name);
-  }, [name]);
 
   return (
     <>
@@ -261,18 +256,21 @@ const BillSplitForm = () => {
       })) as BillSplitParams[];
       console.log(data);
 
-      const find = data.find(({ id }) => id === Number(billSplitId));
-      if (typeof find === "undefined") {
+      const listId = data.map(({ id }) => id);
+      if (!listId.includes(Number(billSplitId))) {
         return navigate("/404");
       }
 
-      setBillSplitData(find);
+      setBillSplitData(data.find(({ id }) => id === Number(billSplitId)));
     });
   };
 
-  const checkHostValid = () => {
-    if (billSplitData?.host.username !== username) navigate("/404");
-  }
+  const checkValidUsername = (checkUsername: string, message?: string) => {
+    if (username !== checkUsername) {
+      if (typeof message !== "undefined") console.log(message);
+      navigate("/404");
+    }
+  };
 
   useEffect(() => {
     checkModeValid();
@@ -281,8 +279,15 @@ const BillSplitForm = () => {
 
   /* Action after there is update from billSplitData */
   useEffect(() => {
+    console.log(billSplitData)
     if (typeof billSplitData === "undefined") return;
-    checkHostValid();
+    if (mode === "edit")
+      checkValidUsername(
+        billSplitData?.host.username,
+        "Username is not a host"
+      );
+    else if (mode === "readonly")
+      checkValidUsername("admin", "Username is not an admin");
   }, [billSplitData]);
 
   return (

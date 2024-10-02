@@ -11,9 +11,10 @@ import AuthContext from "../context/authContext";
 
 interface BillSplitBoxParams {
   query: BillSplitParams[];
+  queryCallback: (value: BillSplitParams) => void;
 }
 
-const BillSplitBox = ({ query }: BillSplitBoxParams) => {
+const BillSplitBox = ({ query, queryCallback }: BillSplitBoxParams) => {
   const { role } = useContext(AuthContext);
   const [filterTags, setFilterTags] = useState<TagParams>({ name: "All" });
 
@@ -55,7 +56,11 @@ const BillSplitBox = ({ query }: BillSplitBoxParams) => {
 
         <div className="d-flex flex-column gap">
           {filterBillSplit().map((value: BillSplitParams) => (
-            <BillSplitCard {...value} key={value.name} />
+            <BillSplitCard
+              value={value}
+              callback={queryCallback}
+              key={value.name}
+            />
           ))}
         </div>
       </div>

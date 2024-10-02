@@ -1,5 +1,11 @@
 .bill-split-card {
   --attribute-font-size: clamp(var(--font-size-sm), 1.5vw, var(--font-size-l));
+  border: 0;
+  transition: all 200ms ease-in-out;
+
+  &:hover {
+    background-color: rgb(var(--black-bg-color-rgb), 0.5)
+  }
 
   & .header-box {
     justify-content: space-between;
@@ -30,6 +36,7 @@
   & .name {
     min-width: min-content;
     font-size: clamp(var(--header-font-size-sm), 5vw, var(--header-font-size));
+    text-align: left
   }
 }
 

@@ -51,6 +51,12 @@ const AuthContext = createContext<AuthContextParams>({
 });
 
 export const AuthProvider = ({ children }: AuthProviderParams) => {
+  const initRole = () => {
+    const userData = localStorage.getItem("user")
+    if (userData === null) return "";
+    return JSON.parse(userData as string).role;
+  }
+
   const [username, setUsername] = useState(
     localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user") as string).username
@@ -67,20 +73,15 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     Boolean(localStorage.getItem("authTokens"))
   );
 
-  const [role, ] = useState<string>(() => {
-    const userData = localStorage.getItem("user")
-    if (typeof userData === null) return "";
-    return JSON.parse(userData as string).role;
-  })
+  const [role, setRole] = useState<string>(initRole)
 
   const loginFunction = (userData: userDataParams) => {
     return async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const URL = setBackendURL("token/");
 
       tryCatchFetch(async () => {
         const data = await APIFetch({
-          URL: URL,
+          URL: setBackendURL("token/"),
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -91,6 +92,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
         setAuthTokens(data);
         setUsername(userData.username);
         setLocalStorage(data);
+        setRole(initRole)
         setIsUserValid(true);
         console.log("Login Successful");
       });
@@ -101,6 +103,8 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     setIsUserValid(false);
     setAuthTokens(nullAuthTokens);
     setUsername("");
+    setRole("");
+    
     localStorage.removeItem("authTokens");
     localStorage.removeItem("user");
   };
