@@ -23,7 +23,7 @@ export const APIFetch = async ({
   const data = await response.json();
   if (!response.ok) {
     if (typeof errorCallback !== "undefined") errorCallback();
-    throw new Error(data);
+    throw new Error(String(data));
   }
 
   return data;

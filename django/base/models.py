@@ -19,7 +19,8 @@ class Tag(models.Model):
 class BillSplit(models.Model):
   status_choices = (
     ('Ongoing', 'Ongoing'),
-    ('Pending', 'Pending')
+    ('Pending', 'Pending'),
+    ('Reject', 'Reject'),
   )
   
   name = models.CharField(max_length=50)

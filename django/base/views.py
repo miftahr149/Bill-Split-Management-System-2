@@ -87,16 +87,45 @@ class BillSplitView(APIView):
     return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
   def put(self, request: Request, handle: str = None):
+    update_data = request.data
+
+    if handle == 'edit':
+      update_data['status'] = 'Pending'
+    elif handle == 'accept':
+      update_data['status'] = 'Ongoing'
+    elif handle == 'reject':
+      update_data['status'] = 'Reject'
+    else:
+      response_dict = {
+        'message': 'handle is incorrect'
+      }
+      print(response_dict)
+      return Response(response_dict, status=status.HTTP_400_BAD_REQUEST)
     try:
-      instance = self.queryset.get(pk=request.data.get('id'))
+      instance = self.queryset.get(pk=update_data.get('id'))
     except models.BillSplit.DoesNotExist:
-      return Response(status=status.HTTP_400_BAD_REQUEST)
+      response_dict = {
+        'message': 'Bill Split data does not exist'
+      }
+      print(response_dict)
+      return Response(response_dict, status=status.HTTP_400_BAD_REQUEST)
     
-    print(instance)
-    _serializer = serializer.BillSplitSerializer(instance, data=request.data)
+
+    _serializer = serializer.BillSplitSerializer(instance, data=update_data, 
+                                                 partial=True)
     if _serializer.is_valid():
-      return Response({}, status=status.HTTP_200_OK)
-    return Response({}, status=status.HTTP_400_BAD_REQUEST)
+      _serializer.save()
+      response_dict = {
+        'message': 'Successfully Updating Bill Split Data'
+      }
+      print(response_dict)
+      return Response(response_dict, status=status.HTTP_200_OK)
+    response_dict = {
+      'message': 'bill split data is invalid',
+      'errors': _serializer.errors
+    }
+    print(response_dict)
+    return Response(response_dict, status=status.HTTP_400_BAD_REQUEST)
 
 class TagsView(generics.ListCreateAPIView):
   """

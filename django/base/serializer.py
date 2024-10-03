@@ -93,7 +93,7 @@ class BillSplitSerializer(serializers.ModelSerializer):
     bill_split = models.BillSplit.objects.create(host=host, **validated_data)
     
     tags = list(map(tag_map_func, tag_data))
-    for tag in tags: bill_split.tag.add(tag)
+    for tag in tags: bill_split.tag.add(tag) 
 
     for data in user_amount_data:
       user_data = data.pop('user')
@@ -101,3 +101,28 @@ class BillSplitSerializer(serializers.ModelSerializer):
       models.UserAmount.objects.create(bill_split=bill_split, user=user, **data)
 
     return bill_split
+  
+  def update(self, instance: models.BillSplit, validated_data: BillSplitDict):
+    print('updating bill split')
+    print(f'validated_data: {validated_data}')
+
+    instance.name = validated_data.get('name')
+    instance.description = validated_data.get('description')
+    instance.status = validated_data.get('status')
+
+    instance.tag.clear()
+    for tag_data in validated_data.get('tag'):
+      tag_object = models.Tag.objects.get(name=tag_data['name'])
+      instance.tag.add(tag_object)
+    
+
+    for user_amount in models.UserAmount.objects.filter(bill_split=instance):
+      user_amount.delete()
+    
+    for user_amount_data in validated_data.get('user_amount'):
+      user_data = user_amount_data.pop('user')
+      user_object = models.User.objects.get(username=user_data['username'])
+      models.UserAmount.objects.create(bill_split=instance, user=user_object, 
+                                       **user_amount_data)
+    instance.save()
+    return instance

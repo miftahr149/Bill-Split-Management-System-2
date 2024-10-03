@@ -79,7 +79,6 @@ const BillSplitFormContent = ({
   const [desc, setDesc] = useState("");
   const [tags, setTags] = useState<TagParams[]>([]);
   const [users, setUsers] = useState<UserParams[]>([]);
-
   const [usersAmount, setUsersAmount] = useState<UserAmountParams[]>([]);
 
   const [isAddTag, setIsAddTag] = useState(false);
@@ -101,47 +100,41 @@ const BillSplitFormContent = ({
     return mode === "readonly" ? undefined : value;
   };
 
-  const handleClick = () => {
-    const postBillSplitData: { [name: string]: any } = {
-      name: name,
-      description: desc,
-      tag: tags,
-      user_amount: usersAmount,
-      host: { username: username },
-    };
+  const handleClick = (
+    handle: string,
+    method: string,
+    data?: { [name: string]: any }
+  ) => {
+    return () => {
+      const postBillSplitData: { [name: string]: any } = {
+        name: name,
+        description: desc,
+        tag: tags,
+        user_amount: usersAmount,
+        host: { username: username },
+        ...data,
+      };
 
-    if (mode === "edit") {
-      postBillSplitData["id"] = billSplitData?.id;
-    }
+      const errorCallback = () => {
+        console.log("Failed to create bill-split");
+      };
 
-    console.log(postBillSplitData);
+      tryCatchFetch(async () => {
+        await APIFetch({
+          URL: setBackendURL(`billSplit/${handle}`),
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: setAuthorization(authTokens.access),
+          },
+          body: JSON.stringify(postBillSplitData),
+          errorCallback: errorCallback,
+        });
 
-    const errorCallback = () => {
-      console.log("Failed to create bill-split");
-    };
-
-    tryCatchFetch(async () => {
-      await APIFetch({
-        URL: setBackendURL("billSplit/user"),
-        method: mode === "create" ? "POST" : "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: setAuthorization(authTokens.access),
-        },
-        body: JSON.stringify(postBillSplitData),
-        errorCallback: errorCallback,
+        console.log("successfully create bill-split");
+        navigate("/");
       });
-
-      console.log("successfully create bill-split");
-      navigate("/");
-    });
-  };
-
-  const setButtonName = () => {
-    if (mode === "edit") return "Edit Proposed Bill Split";
-
-    /* the mode is active */
-    return role === "admin" ? "Create Bill Split" : "Proposed Bill Split";
+    };
   };
 
   useEffect(() => {
@@ -153,6 +146,10 @@ const BillSplitFormContent = ({
     setUsers(billSplitData.user_amount.map(({ user }) => user));
     setUsersAmount(billSplitData.user_amount);
   }, [billSplitData]);
+
+  useEffect(() => {
+    console.log(mode);
+  }, []);
 
   return (
     <>
@@ -224,18 +221,44 @@ const BillSplitFormContent = ({
             />
           </Element>
 
-          {mode !== "readonly" ? (
+          {mode === "create" && (
             <button
               className="btn btn-success btn-lg"
-              onClick={handleClick}
+              onClick={handleClick("create", "POST")}
               {...disableButtonCreate()}
             >
-              {setButtonName()}
+              {role === "admin" ? "Create Bill Split" : "Proposed Bill Split"}
             </button>
-          ) : (
+          )}
+
+          {mode === "edit" && (
+            <button
+              className="btn btn-success btn-lg"
+              onClick={handleClick("edit", "PUT", { id: billSplitData?.id })}
+              {...disableButtonCreate()}
+            >
+              Edit Proposed Bill Split
+            </button>
+          )}
+
+          {mode === "readonly" && (
             <div className="d-flex flex-center gap--l">
-              <button className="btn btn-success flex-grow-1">Accept</button>
-              <button className="btn btn-danger flex-grow-1">Decline</button>
+              <button
+                className="btn btn-success flex-grow-1"
+                onClick={handleClick("accept", "PUT", {
+                  id: billSplitData?.id,
+                })}
+              >
+                Accept
+              </button>
+              <button
+                className="btn btn-danger flex-grow-1"
+                onClick={handleClick("reject", "PUT", {
+                  id: billSplitData?.id,
+                })}
+              >
+                Reject
+              </button>
             </div>
           )}
         </main>
@@ -257,13 +280,13 @@ const BillSplitFormContent = ({
 };
 
 const BillSplitForm = () => {
-  let { mode, id: billSplitId } = useParams();
+  let { mode: modeForm, id: billSplitId } = useParams();
   const navigate = useNavigate();
   const { authTokens, username } = useContext(AuthContext);
   const [billSplitData, setBillSplitData] = useState<BillSplitParams>();
+  const [mode, setMode] = useState<string>("create");
 
   const checkModeValid = () => {
-    mode = typeof mode === "undefined" ? "create" : mode;
     if (!availableMode.includes(mode)) navigate("/404");
   };
 
@@ -299,9 +322,10 @@ const BillSplitForm = () => {
   };
 
   useEffect(() => {
+    if (typeof modeForm !== "undefined") setMode(modeForm);
     checkModeValid();
     checkDataValid();
-  }, []);
+  }, [mode]);
 
   /* Action after there is update from billSplitData */
   useEffect(() => {
