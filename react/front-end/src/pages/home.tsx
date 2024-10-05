@@ -49,14 +49,16 @@ const Home = () => {
         navigate(`/bill-split/edit/${id}`)
       },
 
-      "ongoing": (value) => {
-        const props = {state: "read-only", data: value}
-        navigate("create-bill-split", {state: props})
+      "ongoing": ({ }) => {
+        navigate("create-bill-split")
       },
 
       "request": ({ id }) => {
         console.log("Hello world")
         navigate(`/bill-split/readonly/${id}`)
+      },
+      "reject": ({ id }) => {
+        navigate(`/bill-split/reject/${id}`)
       }
     }
 
@@ -91,7 +93,10 @@ const Home = () => {
           {role === "admin" ? (
             <ChoiceElement value="request" />
           ) : (
-          <ChoiceElement value="pending" />
+          <>
+            <ChoiceElement value="pending" />
+            <ChoiceElement value="reject" />
+          </>
           )}
         </ChoiceBox>
 

@@ -28,6 +28,7 @@ import {
   tryCatchFetch,
 } from "../utility/myapi";
 import AuthContext from "../context/authContext";
+import { ignoreFirstRender } from "../utility/utility";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface ElementParams {
@@ -42,7 +43,8 @@ interface BillSplitFormContentParams {
 }
 
 /* To Store Available mode in this page */
-const availableMode = ["create", "edit", "readonly"];
+const availableMode = ["create", "edit", "readonly", "reject"];
+const readOnlyMode = ["readonly", "reject"];
 
 const Element = ({ title, children, buttonFunc }: ElementParams) => {
   const addButtonFunc = () => {
@@ -97,7 +99,7 @@ const BillSplitFormContent = ({
   };
 
   const notReadOnlyRestriction = (value: any) => {
-    return mode === "readonly" ? undefined : value;
+    return readOnlyMode.includes(mode) ? undefined : value;
   };
 
   const handleClick = (
@@ -147,10 +149,6 @@ const BillSplitFormContent = ({
     setUsersAmount(billSplitData.user_amount);
   }, [billSplitData]);
 
-  useEffect(() => {
-    console.log(mode);
-  }, []);
-
   return (
     <>
       <div className="pages d-flex flex-column">
@@ -161,7 +159,7 @@ const BillSplitFormContent = ({
               value={name}
               callback={setName}
               className="text-input my-text--l"
-              disabled={mode === "readonly"}
+              disabled={readOnlyMode.includes(mode)}
             />
           </Element>
           <Element
@@ -189,7 +187,7 @@ const BillSplitFormContent = ({
               callback={setDesc}
               value={desc}
               className="text-input"
-              disabled={mode === "readonly"}
+              disabled={readOnlyMode.includes(mode)}
             />
           </Element>
           <Element
@@ -255,11 +253,23 @@ const BillSplitFormContent = ({
                 className="btn btn-danger flex-grow-1"
                 onClick={handleClick("reject", "PUT", {
                   id: billSplitData?.id,
+                  status: billSplitData?.status,
                 })}
               >
                 Reject
               </button>
             </div>
+          )}
+
+          {mode === "reject" && (
+            <button
+              className="btn btn-danger"
+              onClick={handleClick("reject", "delete", {
+                id: billSplitData?.id,
+              })}
+            >
+              Delete
+            </button>
           )}
         </main>
       </div>
@@ -293,24 +303,25 @@ const BillSplitForm = () => {
   const checkDataValid = () => {
     if (typeof billSplitId === "undefined") return;
 
-    console.log(billSplitId);
     tryCatchFetch(async () => {
       const data = (await APIFetch({
-        URL: setBackendURL("billSplit/request"),
+        URL: setBackendURL(
+          mode === "reject" ? "billSplit/reject" : "billSplit/request"
+        ),
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: setAuthorization(authTokens.access),
         },
       })) as BillSplitParams[];
-      console.log(data);
 
-      const listId = data.map(({ id }) => id);
-      if (!listId.includes(Number(billSplitId))) {
+      const find = data.find(({ id }) => id === Number(billSplitId));
+      if (typeof find === "undefined") {
+        console.log("can't find the bill split data");
         return navigate("/404");
       }
 
-      setBillSplitData(data.find(({ id }) => id === Number(billSplitId)));
+      setBillSplitData(find);
     });
   };
 
@@ -323,6 +334,9 @@ const BillSplitForm = () => {
 
   useEffect(() => {
     if (typeof modeForm !== "undefined") setMode(modeForm);
+  }, []);
+
+  ignoreFirstRender(() => {
     checkModeValid();
     checkDataValid();
   }, [mode]);

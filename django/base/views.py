@@ -69,7 +69,14 @@ class BillSplitView(APIView):
     elif handle == 'request':
       data = data.filter(status='Pending')
     elif handle == 'pending':
-      data = data.filter(host=request.user, status="Pending")
+      data = data.filter(host=request.user, status='Pending')
+    elif handle == 'reject':
+      data = data.filter(host=request.user, status='Reject')
+    else:
+      response_dict = {
+        'message': 'handle doesnt exist'
+      }
+      return Response(response_dict, status=status.HTTP_400_BAD_REQUEST)
     
     _serializer = self.serializer_class(data, many=True)
     return Response(_serializer.data, status=status.HTTP_200_OK)
@@ -126,6 +133,17 @@ class BillSplitView(APIView):
     }
     print(response_dict)
     return Response(response_dict, status=status.HTTP_400_BAD_REQUEST)
+  
+  def delete(self, request: Request, handle: str):
+    try:
+      instance = models.BillSplit.objects.get(id=request.data['id'])
+      instance.delete()
+      return Response({}, status=status.HTTP_200_OK)
+    except:
+      response_dict = {
+        'message': 'cant find the Bill Split data',
+      }
+      return Response(response_dict, status=status.HTTP_400_BAD_REQUEST)
 
 class TagsView(generics.ListCreateAPIView):
   """
