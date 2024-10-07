@@ -15,6 +15,11 @@ import { ChoiceBox, ChoiceElement } from "../components/choice";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { UserProfileContext } from "../context/userProfileContext";
+import {
+  HostAttribute,
+  AmountUserAttribute,
+  ProgressBarAttribute
+} from "../components/billSplitCard";
 
 const Home = () => {
   const { authTokens, username, role } = useContext(AuthContext);
@@ -37,33 +42,56 @@ const Home = () => {
     });
   };
 
-  const getBillSplitCallback = () => {
-    
-    interface dictFunctionParams {
-      [name: string]: (value: BillSplitParams) => void; 
+  const HandleBillSplitBox = () => {
+    interface DictValueParams {
+      queryCallback: (value: BillSplitParams) => void;
+      queryChildren: JSX.Element[] | undefined;
     }
 
+    interface DictParams {
+      [name: string]: DictValueParams;
+    }
     const navigate = useNavigate();
-    const dictFunction: dictFunctionParams = {
-      "pending": ({ id }) => {
-        navigate(`/bill-split/edit/${id}`)
+
+    const dict: DictParams = {
+      ongoing: {
+        queryCallback: ({ id }) => {
+          navigate(`/bill-split/edit/${id}`);
+        },
+        queryChildren: undefined,
       },
 
-      "ongoing": ({ }) => {
-        navigate("create-bill-split")
+      pending: {
+        queryCallback: ({ id }) => {
+          navigate(`/bill-split/edit/${id}`);
+        },
+        queryChildren: [<HostAttribute />, <AmountUserAttribute />],
       },
 
-      "request": ({ id }) => {
-        console.log("Hello world")
-        navigate(`/bill-split/readonly/${id}`)
+      request: {
+        queryCallback: ({ id }) => {
+          navigate(`/bill-split/readonly/${id}`);
+        },
+        queryChildren: [<HostAttribute />, <AmountUserAttribute />],
       },
-      "reject": ({ id }) => {
-        navigate(`/bill-split/reject/${id}`)
-      }
-    }
 
-    return dictFunction[choiceValue];
-  }
+      reject: {
+        queryCallback: ({ id }) => {
+          navigate(`/bill-split/reject/${id}`);
+        },
+        queryChildren: [<HostAttribute />, <AmountUserAttribute />],
+      },
+
+      host: {
+        queryCallback: ({ id }) => {
+          navigate(`/bill-split/view/${id}`);
+        },
+        queryChildren: [<HostAttribute />, <ProgressBarAttribute />],
+      },
+    };
+
+    return <BillSplitBox query={billSplit} {...dict[choiceValue]} />;
+  };
 
   useEffect(() => {
     getBillSplit();
@@ -90,17 +118,18 @@ const Home = () => {
 
         <ChoiceBox variable={choiceValue} callback={setChoiceValue}>
           <ChoiceElement value="ongoing" />
+          <ChoiceElement value="host" />
           {role === "admin" ? (
             <ChoiceElement value="request" />
           ) : (
-          <>
-            <ChoiceElement value="pending" />
-            <ChoiceElement value="reject" />
-          </>
+            <>
+              <ChoiceElement value="pending" />
+              <ChoiceElement value="reject" />
+            </>
           )}
         </ChoiceBox>
 
-        <BillSplitBox query={billSplit} queryCallback={getBillSplitCallback()}/>
+        <HandleBillSplitBox />
       </main>
     </div>
   );

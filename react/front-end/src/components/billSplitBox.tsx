@@ -12,9 +12,14 @@ import AuthContext from "../context/authContext";
 interface BillSplitBoxParams {
   query: BillSplitParams[];
   queryCallback: (value: BillSplitParams) => void;
+  queryChildren?: JSX.Element[];
 }
 
-const BillSplitBox = ({ query, queryCallback }: BillSplitBoxParams) => {
+const BillSplitBox = ({
+  query,
+  queryCallback,
+  queryChildren,
+}: BillSplitBoxParams) => {
   const { role } = useContext(AuthContext);
   const [filterTags, setFilterTags] = useState<TagParams>({ name: "All" });
 
@@ -60,6 +65,7 @@ const BillSplitBox = ({ query, queryCallback }: BillSplitBoxParams) => {
               value={value}
               callback={queryCallback}
               key={value.name}
+              children={queryChildren}
             />
           ))}
         </div>

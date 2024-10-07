@@ -89,6 +89,41 @@ export const AmountUserAttribute = () => {
   );
 };
 
+export const ProgressBarAttribute = () => {
+  const { user_amount } = useContext(BillSplitCardContext);
+  const userAlreadyPaid = user_amount.filter(
+    ({ amount }) => amount === 0
+  ).length;
+  const userTotal = user_amount.length;
+
+  const styleProgressBar = {
+    width: `${userAlreadyPaid / userTotal}%`,
+  };
+
+  const styleProgressContainer = {
+    width: "8vw",
+  };
+
+  return (
+    <div className="d-flex gap--sm flex-center">
+      <p className="my-text text-bold">
+        {`${userAlreadyPaid / userTotal}%`}
+      </p>
+      <div className="progress" style={styleProgressContainer}>
+        <div
+          className="progress-bar bg-success"
+          role="progressbar"
+          style={styleProgressBar}
+          aria-valuemin={0}
+          aria-valuenow={userAlreadyPaid}
+          aria-valuemax={userTotal}
+        >
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const BillSplitCard = ({ value, callback, children }: BillSplitCardParams) => {
   const { tag, name } = value;
 
@@ -130,10 +165,7 @@ const BillSplitCard = ({ value, callback, children }: BillSplitCardParams) => {
         <div className="d-flex align-items-center gap--l">
           <BillSplitCardContext.Provider value={value}>
             {typeof children === "undefined"
-              ? renderChildren([
-                  <HostAttribute />,
-                  <PriceAttribute />,
-                ])
+              ? renderChildren([<HostAttribute />, <PriceAttribute />])
               : renderChildren(children)}
           </BillSplitCardContext.Provider>
         </div>
