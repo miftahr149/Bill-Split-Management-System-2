@@ -1,4 +1,4 @@
-import "../assets/css/createBillSplit.css";
+import "../assets/css/billSplitForm.css"
 import plusIcon from "../assets/img/plus-small.png";
 
 import Navbar from "../components/navbar";

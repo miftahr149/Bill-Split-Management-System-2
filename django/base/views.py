@@ -74,6 +74,8 @@ class BillSplitView(APIView):
       data = data.filter(host=request.user, status='Reject')
     elif handle == 'host':
       data = data.filter(host=request.user, status='Ongoing')
+    elif handle == 'all':
+      data = data.all()
     else:
       response_dict = {
         'message': 'handle doesnt exist'

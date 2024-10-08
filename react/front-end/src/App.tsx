@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import Home from "./pages/home";
 import BillSplitForm from "./pages/billSplitForm";
 import NotFound from "./pages/notFound";
+import PayBillSplit from "./pages/payBillSplit";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
@@ -26,6 +27,7 @@ function App() {
               path="/bill-split/create/"
               element={<PrivateRoute component={<BillSplitForm />} />}
             />
+            <Route path="/pay-bill-split/:id" element={<PayBillSplit />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/404" element={<NotFound />} />

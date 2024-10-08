@@ -10,16 +10,16 @@ import {
   APIFetch,
   tryCatchFetch,
 } from "../utility/myapi";
+import {
+  HostAttribute,
+  AmountUserAttribute,
+  ProgressBarAttribute,
+} from "../components/billSplitAttribute";
 import { ChoiceBox, ChoiceElement } from "../components/choice";
 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { UserProfileContext } from "../context/userProfileContext";
-import {
-  HostAttribute,
-  AmountUserAttribute,
-  ProgressBarAttribute
-} from "../components/billSplitCard";
 
 const Home = () => {
   const { authTokens, username, role } = useContext(AuthContext);
@@ -56,7 +56,7 @@ const Home = () => {
     const dict: DictParams = {
       ongoing: {
         queryCallback: ({ id }) => {
-          navigate(`/bill-split/edit/${id}`);
+          navigate(`/pay-bill-split/${id}`);
         },
         queryChildren: undefined,
       },
