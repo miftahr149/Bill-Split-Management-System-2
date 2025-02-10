@@ -12,7 +12,7 @@ import { ignoreFirstRender } from "../utility/utility";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loginFunction, authTokens } = useContext(AuthContext);
+  const { loginFunction, isUserValid } = useContext(AuthContext);
   const [isInvalidLogin, setIsInvalidLogin] = useState(false);
   const navigate = useNavigate();
 
@@ -29,9 +29,8 @@ const Login = () => {
   };
 
   ignoreFirstRender(() => {
-    const { access, refresh } = authTokens;
-    if (access && refresh) navigate("/");
-  }, [authTokens]);
+    if (isUserValid) navigate("/");
+  }, [isUserValid]);
 
   return (
     <div className="login pages d-flex justify-content-center align-items-center">
