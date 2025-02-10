@@ -6,7 +6,7 @@ import LoginField from "../components/login/loginField";
 import LoginErrorAlert from "../components/login/loginErrorAlert";
 
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { ignoreFirstRender } from "../utility/utility";
 
 const Login = () => {
@@ -65,6 +65,9 @@ const Login = () => {
               value="Login"
             />
           </div>
+          <Link to="/register" className="text">
+            Don't have any account yet? register
+          </Link>
         </form>
       </div>
     </div>

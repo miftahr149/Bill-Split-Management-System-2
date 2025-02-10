@@ -5,6 +5,7 @@ import Home from "./pages/home";
 import BillSplitForm from "./pages/billSplitForm";
 import NotFound from "./pages/notFound";
 import PayBillSplit from "./pages/payBillSplit";
+import Register from "./pages/register";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
@@ -29,6 +30,7 @@ function App() {
             />
             <Route path="/pay-bill-split/:id" element={<PayBillSplit />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element = {<Register />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/404" element={<NotFound />} />
           </Routes>
