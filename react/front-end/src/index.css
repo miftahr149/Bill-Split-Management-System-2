@@ -189,4 +189,8 @@
   .display-mobile {
     display: None;
   }
+
+  .content-view {
+    padding: 5vw 15vh;
+  }
 }

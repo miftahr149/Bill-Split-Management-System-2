@@ -1,4 +1,4 @@
-import "../assets/css/billSplitForm.css"
+import "../assets/css/billSplitForm.css";
 import plusIcon from "../assets/img/plus-small.png";
 
 import Navbar from "../components/navbar";
@@ -153,7 +153,7 @@ const BillSplitFormContent = ({
     <>
       <div className="pages d-flex flex-column">
         <Navbar title="Create Bill Split" />
-        <main className="main text-color-white flex-grow-1 d-flex flex-column gap--l">
+        <main className="content-view text-color-white flex-grow-1 d-flex flex-column gap--l">
           <Element title="Bill Split Name">
             <Input
               value={name}

@@ -1,33 +1,13 @@
 import "../assets/css/login.css";
 import favicon from "../assets/img/favicon.png";
-import { useState, useContext, useEffect } from "react";
+
 import AuthContext from "../context/authContext";
+import LoginField from "../components/login/loginField";
+import LoginErrorAlert from "../components/login/loginErrorAlert";
+
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import alertImage from "../assets/img/alert.png";
-
-interface LoginFieldParams {
-  name: string;
-  type: string;
-  callback: (value: string) => void;
-}
-
-const LoginField = ({ name, type, callback }: LoginFieldParams) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    callback(e.target.value);
-  };
-
-  return (
-    <div className="field d-flex flex-column">
-      <label htmlFor={name}>{name[0].toUpperCase() + name.slice(1)}</label>
-      <input
-        type={type}
-        name={name}
-        placeholder={name}
-        onChange={handleChange}
-      />
-    </div>
-  );
-};
+import { ignoreFirstRender } from "../utility/utility";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -37,15 +17,14 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    setIsAlreadySubmit(true);
-    loginFunction({ username: username, password: password })(e);
+    e.preventDefault();
+    loginFunction({ username: username, password: password });
   };
 
-  useEffect(() => {
-    if (isUserValid) {
-      console.log("navigating to home page");
-      navigate("/");
-    }
+  ignoreFirstRender(() => {
+    const { access, refresh } = authTokens;
+    setIsAlreadySubmit(() => true);
+    if (access && refresh) navigate("/");
   }, [authTokens]);
 
   return (
@@ -64,17 +43,7 @@ const Login = () => {
         </div>
 
         {!isUserValid && isAlreadySubmit && (
-          <div className="login-alert d-flex">
-            <div className="d-flex justify-content-center align-items-center">
-              <img src={alertImage} alt="" className="img img-small" />
-            </div>
-            <div className="d-flex flex-column justify-content-center">
-              <p className="my-text">Warning!!</p>
-              <p className="my-text text-bold">
-                Incorect Username or Password
-              </p>
-            </div>
-          </div>
+          <LoginErrorAlert message="Incorrect username or password" />
         )}
 
         <form

@@ -27,17 +27,22 @@ const PayBillSplitContent = ({ data }: BuyBillSplitParams) => {
     );
 
     if (typeof find === "undefined") {
-      console.log("can't find the user amount bill")
+      console.log("can't find the user amount bill");
       return 0;
-    } 
+    }
 
     return find.amount;
   };
 
+  const handleSubmit = () => {};
+
   return (
-    <div className="pages text-color-white d-flex flex-column">
+    <form
+      className="pages text-color-white d-flex flex-column"
+      onSubmit={handleSubmit}
+    >
       <Navbar title={data?.name} />
-      <main className="box main d-flex flex-column gap--l flex-grow-1">
+      <main className="content-view box d-flex flex-column gap--l flex-grow-1">
         <div className="d-flex flex-column gap flex-grow-1">
           <h2 className="my-header text-color-primary-green">Description</h2>
           <p className="my-text">{data?.description}</p>
@@ -45,15 +50,24 @@ const PayBillSplitContent = ({ data }: BuyBillSplitParams) => {
         <div className="d-flex flex-column gap flex-grow-1">
           <h2 className="my-header text-color-primary-green">Pay</h2>
           <p className="my-text">Bill to Pay: RM {getBillAmount()}</p>
+          <input type="file" name="" id="" />
         </div>
         <button className="btn btn-success">Pay Bill</button>
       </main>
-    </div>
+    </form>
   );
 };
 
 const PayBillSplit = () => {
-  const [billSplitData, setBillSplitData] = useState<BillSplitParams>();
+  const [billSplitData, setBillSplitData] = useState<BillSplitParams>({
+    id: 0,
+    name: "",
+    host: { username: "" },
+    description: "",
+    tag: [],
+    user_amount: [],
+    status: "Ongoing",
+  });
   const { id } = useParams();
   const { authTokens, username } = useContext(AuthContext);
   const navigate = useNavigate();

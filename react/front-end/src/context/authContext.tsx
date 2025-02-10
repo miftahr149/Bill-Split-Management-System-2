@@ -20,9 +20,7 @@ interface AuthContextParams {
   authTokens: AuthTokensParams;
   username: string;
   role: string;
-  loginFunction: (
-    userData: userDataParams
-  ) => (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  loginFunction: (userData: userDataParams) => void;
   isUserValid: boolean;
   logoutFunction: () => void;
   updateToken: () => void;
@@ -40,10 +38,7 @@ const AuthContext = createContext<AuthContextParams>({
   role: "",
   username: "",
   loginFunction: (userData: userDataParams) => {
-    return async (e: React.FormEvent<HTMLFormElement>) => {
-      e;
-      userData;
-    };
+    userData;
   },
   isUserValid: true,
   logoutFunction: () => {},
@@ -52,10 +47,10 @@ const AuthContext = createContext<AuthContextParams>({
 
 export const AuthProvider = ({ children }: AuthProviderParams) => {
   const initRole = () => {
-    const userData = localStorage.getItem("user")
+    const userData = localStorage.getItem("user");
     if (userData === null) return "";
     return JSON.parse(userData as string).role;
-  }
+  };
 
   const [username, setUsername] = useState(
     localStorage.getItem("user")
@@ -73,30 +68,26 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     Boolean(localStorage.getItem("authTokens"))
   );
 
-  const [role, setRole] = useState<string>(initRole)
+  const [role, setRole] = useState<string>(initRole);
 
   const loginFunction = (userData: userDataParams) => {
-    return async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      tryCatchFetch(async () => {
-        const data = await APIFetch({
-          URL: setBackendURL("token/"),
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        });
-
-        setAuthTokens(data);
-        setUsername(userData.username);
-        setLocalStorage(data);
-        setRole(initRole)
-        setIsUserValid(true);
-        console.log("Login Successful");
+    tryCatchFetch(async () => {
+      const data = await APIFetch({
+        URL: setBackendURL("token/"),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
       });
-    };
+
+      setIsUserValid(() => true);
+      setAuthTokens(data);
+      setUsername(userData.username);
+      setLocalStorage(data);
+      setRole(initRole);
+      console.log("Login Successful");
+    });
   };
 
   const logoutFunction = () => {
@@ -104,7 +95,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     setAuthTokens(nullAuthTokens);
     setUsername("");
     setRole("");
-    
+
     localStorage.removeItem("authTokens");
     localStorage.removeItem("user");
   };
