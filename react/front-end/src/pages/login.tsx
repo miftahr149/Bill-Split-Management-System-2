@@ -12,18 +12,24 @@ import { ignoreFirstRender } from "../utility/utility";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loginFunction, authTokens, isUserValid } = useContext(AuthContext);
-  const [isAlreadySubmit, setIsAlreadySubmit] = useState(false);
+  const { loginFunction, authTokens } = useContext(AuthContext);
+  const [isInvalidLogin, setIsInvalidLogin] = useState(false);
   const navigate = useNavigate();
+
+  const handleInvalidLogin = () => {
+    setIsInvalidLogin(() => true);
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loginFunction({ username: username, password: password });
+    loginFunction(
+      { username: username, password: password },
+      handleInvalidLogin
+    );
   };
 
   ignoreFirstRender(() => {
     const { access, refresh } = authTokens;
-    setIsAlreadySubmit(() => true);
     if (access && refresh) navigate("/");
   }, [authTokens]);
 
@@ -42,7 +48,7 @@ const Login = () => {
           </div>
         </div>
 
-        {!isUserValid && isAlreadySubmit && (
+        {isInvalidLogin && (
           <LoginErrorAlert message="Incorrect username or password" />
         )}
 

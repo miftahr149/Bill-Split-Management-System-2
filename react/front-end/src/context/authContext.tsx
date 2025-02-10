@@ -6,6 +6,8 @@ interface AuthProviderParams {
   children: JSX.Element[] | JSX.Element;
 }
 
+type invalidLoginType = () => void;
+
 interface userDataParams {
   username: string;
   password: string;
@@ -20,7 +22,10 @@ interface AuthContextParams {
   authTokens: AuthTokensParams;
   username: string;
   role: string;
-  loginFunction: (userData: userDataParams) => void;
+  loginFunction: (
+    userData: userDataParams,
+    invalidLogin?: invalidLoginType
+  ) => void;
   isUserValid: boolean;
   logoutFunction: () => void;
   updateToken: () => void;
@@ -70,7 +75,10 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
 
   const [role, setRole] = useState<string>(initRole);
 
-  const loginFunction = (userData: userDataParams) => {
+  const loginFunction = (
+    userData: userDataParams,
+    invalidLogin: invalidLoginType = () => {}
+  ) => {
     tryCatchFetch(async () => {
       const data = await APIFetch({
         URL: setBackendURL("token/"),
@@ -79,6 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
+        errorCallback: invalidLogin,
       });
 
       setIsUserValid(() => true);
