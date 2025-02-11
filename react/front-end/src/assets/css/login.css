@@ -54,6 +54,7 @@
       color: rgb(var(--secondary-alert-color-rgb));
       padding: 0.8rem 0.5rem;
       justify-content: space-evenly;
+      text-wrap: pretty;
       gap: 1rem;
     }
   }
