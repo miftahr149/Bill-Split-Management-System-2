@@ -131,7 +131,7 @@ const Home = () => {
 
         <HandleBillSplitBox />
       </main>
-    </div>
+  </div>
   );
 };
 

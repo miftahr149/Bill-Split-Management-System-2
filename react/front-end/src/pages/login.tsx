@@ -1,9 +1,9 @@
 import "../assets/css/login.css";
-import favicon from "../assets/img/favicon.png";
 
 import AuthContext from "../context/authContext";
 import LoginField from "../components/login/loginField";
 import LoginErrorAlert from "../components/login/loginErrorAlert";
+import LoginHeader from "../components/login/loginHeader";
 
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -35,22 +35,10 @@ const Login = () => {
   return (
     <div className="login pages d-flex justify-content-center align-items-center">
       <div className="form d-flex flex-column">
-        <div className="header-box d-flex box">
-          <div className="flex-grow-1 d-flex align-items-center justify-content-center">
-            <img src={favicon} alt="" className="img img--round" />
-          </div>
-          <div className="text-box d-flex justify-content-center">
-            <h1 className="my-header my-header--sm">
-              Bill Split Management System
-            </h1>
-            <p className="my-text">Login Page</p>
-          </div>
-        </div>
-
+        <LoginHeader title="Login Page" />
         {isInvalidLogin && (
           <LoginErrorAlert message="Incorrect username or password" />
         )}
-
         <form
           className="body-box box d-flex flex-column"
           method="POST"
@@ -58,16 +46,20 @@ const Login = () => {
         >
           <LoginField name="username" type="text" callback={setUsername} />
           <LoginField name="password" type="password" callback={setPassword} />
-          <div className="button-box d-flex justify-content-center align-items-end flex-grow-1">
-            <input
-              className="flex-grow-1 btn btn-success"
-              type="submit"
-              value="Login"
-            />
+          <div className="button-box flex-grow-1">
+            <div className="d-flex flex-center">
+              <input
+                className="flex-grow-1 btn btn-success"
+                type="submit"
+                value="Login"
+              />
+            </div>
+            <div className="d-flex flex-center">
+              <Link to="/register" className="my-text my-text--sm">
+                Don't have any account yet? register
+              </Link>
+            </div>
           </div>
-          <Link to="/register" className="text">
-            Don't have any account yet? register
-          </Link>
         </form>
       </div>
     </div>
