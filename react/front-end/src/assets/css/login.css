@@ -2,7 +2,7 @@
   background-color: rgb(var(--secondary-green-color-rgb));
 
   & .form {
-    min-width: min(500px, 80%);
+    width: min(500px, 80%);
     background-color: white;
     border-radius: var(--border-sm);
     margin: 1rem;

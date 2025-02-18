@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from typing import TypedDict
 from . import models 
+from django.contrib.auth.models import User
 
 class UserDict(TypedDict):
   username: str
@@ -21,6 +22,10 @@ class BillSplitDict(TypedDict):
   description: str
   user_amount: list[UserAmountDict]
   status: str
+
+class RegisterUserDict(TypedDict):
+  username: str
+  password: str
 
 class TokenObtainPairSerializer(TokenObtainPairSerializer):
   @classmethod
@@ -57,8 +62,6 @@ class TagSerializer(serializers.ModelSerializer):
   class Meta:
     model = models.Tag
     fields = ['name']
-
-
 
 class UserAmountSerializer(serializers.ModelSerializer):
   user = UserSerializer()
@@ -126,3 +129,20 @@ class BillSplitSerializer(serializers.ModelSerializer):
                                        **user_amount_data)
     instance.save()
     return instance
+
+class RegisterUserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = ['username', 'password']
+    extra_kwargs = {'password': {'write_only': True}}
+  
+  def create(self, validated_data: RegisterUserDict):
+    registered_user = User.objects.create_user(
+      username=validated_data.get('username'),
+      password=validated_data.get('password')
+    )
+    return registered_user
+
+class RetrieveUsernameSerializer(serliazers.ModelSerializer):
+  
+  

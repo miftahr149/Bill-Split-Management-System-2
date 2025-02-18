@@ -4,11 +4,13 @@ import LoginField from "../components/login/loginField";
 import LoginErrorAlert from "../components/login/loginErrorAlert";
 import AuthContext from "../context/authContext";
 
-import { useState } from "react";
+import { ignoreFirstRender } from "../utility/utility";
+
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const checkNumber = (str: string) => /^[0-9]$/.test(str);
-const checkAlphabet = (str: string) => /^[a-zA-Z]$/.test(str);
+const checkNumber = (ch: string) => /^[0-9]$/.test(ch);
+const checkAlphabet = (ch: string) => /^[a-zA-Z]$/.test(ch);
 
 const checkFirstCharNumber = (username: string) => checkNumber(username[0]);
 
@@ -19,10 +21,20 @@ const checkSpecialCharacter = (username: string) => {
   return specialChar.length > 0;
 };
 
+const checkNumberinString = (str: string) => {
+  const number = str.split('').filter((ch) => checkNumber(ch));
+  return number.length > 0;
+}
+
 const checkCapitalAlphabet = (password: string) => {
   const capitalAlphabet = password.split("").filter((ch) => /^[A-Z]$/.test(ch));
+  console.log(capitalAlphabet);
   return capitalAlphabet.length > 0;
 };
+
+const isEmpty = (str: string) => {
+  return str.trim().length === 0;
+}
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -30,19 +42,32 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [isUsernameValid, setIsUsernameValid] = useState(true);
+  const [isUsernameEmpty, setIsUsernameEmpty] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
+
+  const isValidInformation = () => {
+    const validInformation = isUsernameValid && isPasswordValid && isConfirmPasswordValid;
+    const emptyInformation = isEmpty(username) || isEmpty(password) || isEmpty(confirmPassword);
+    return validInformation && !emptyInformation;
+  };
 
   const checkUsername = () => {
     const isFirstCharNumber = checkFirstCharNumber(username);
     const isSpecialCharacter = checkSpecialCharacter(username);
     setIsUsernameValid(() => !isFirstCharNumber && !isSpecialCharacter);
+    setIsUsernameEmpty(() => username == "")
   };
 
   const checkPassword = () => {
     const isCapitalAlphabet = checkCapitalAlphabet(password);
+    const isNumber = checkNumberinString(password);
     const isSpecialCharacter = checkSpecialCharacter(password);
-    const isNumber = checkNumber(password);
+
+    console.log(isCapitalAlphabet);
+    console.log(isSpecialCharacter);
+    console.log(isNumber);
+
     setIsPasswordValid(
       () => isCapitalAlphabet && isNumber && !isSpecialCharacter
     );
@@ -54,7 +79,20 @@ const Register = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
   };
+
+  ignoreFirstRender(() => {
+    checkUsername();
+  }, [username])
+
+  ignoreFirstRender(() => {
+    checkPassword();
+  }, [password]);
+
+  ignoreFirstRender(() => {
+    checkConfirmPassword();
+  }, [confirmPassword]);
 
   return (
     <div className="d-flex pages login justify-content-center align-items-center">
@@ -72,6 +110,10 @@ const Register = () => {
           <LoginErrorAlert message="Confirm Password should be the same as password" />
         )}
 
+        {isUsernameEmpty && (
+          <LoginErrorAlert message="Username is empty, please fill in the username field" />
+        )}
+
         <form
           method="POST"
           onSubmit={handleSubmit}
@@ -81,21 +123,18 @@ const Register = () => {
             name="Username"
             type="text"
             callback={setUsername}
-            onBlur={checkUsername}
           />
 
           <LoginField
             name="Password"
             type="password"
             callback={setPassword}
-            onBlur={checkPassword}
           />
 
           <LoginField
             name="Confirm Password"
             type="password"
             callback={setConfirmPassword}
-            onBlur={checkConfirmPassword}
           />
 
           <div className="button-box flex-grow-1">
@@ -104,6 +143,7 @@ const Register = () => {
                 type="submit"
                 className="flex-grow-1 btn btn-success"
                 value="Register"
+                disabled={!isValidInformation()}
               />
             </div>
             <div className="d-flex flex-center">

@@ -16,6 +16,7 @@ urlpatterns = [
        name='billSplit'),
   path('tag', views.TagsView.as_view(), name='tag'),
   path('getUsers', views.GetUsersView.as_view(), name='get_user'),
+  path('registerUser', views.UserRegisterView.as_view(), name='register_user')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

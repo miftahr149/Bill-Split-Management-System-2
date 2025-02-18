@@ -164,3 +164,6 @@ class GetUsersView(generics.ListAPIView):
   permission_classes = [IsAuthenticated]
   queryset = models.User.objects.all()
   serializer_class = serializer.UserSerializer
+
+class UserRegisterView(generics.CreateAPIView):
+  serializer_class = serializer.RegisterUserSerializer

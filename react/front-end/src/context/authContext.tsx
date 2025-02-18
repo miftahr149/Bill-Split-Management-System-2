@@ -29,6 +29,7 @@ interface AuthContextParams {
   isUserValid: boolean;
   logoutFunction: () => void;
   updateToken: () => void;
+  register: (username: string, password: string, callback?: () => void) => void;
 }
 
 const nullAuthTokens = { refresh: "", access: "" };
@@ -48,6 +49,9 @@ const AuthContext = createContext<AuthContextParams>({
   isUserValid: true,
   logoutFunction: () => {},
   updateToken: () => {},
+  register: (username: string, password: string, callback?: () => void) => {
+    username; password; callback;
+  },
 });
 
 export const AuthProvider = ({ children }: AuthProviderParams) => {
@@ -131,14 +135,29 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     });
   };
 
+  const register = (username: string, password: string, callback?: () => void) => {
+    tryCatchFetch(async () => {
+      await APIFetch({
+        URL: setBackendURL("register"),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({username: username, password: password})
+      });
+      callback?.();
+    }) 
+  }
+
   const contextData = {
     authTokens: authTokens,
     username: username,
     role: role,
     loginFunction: loginFunction,
-    isUserValid: isUserValid,
     logoutFunction: logoutFunction,
+    isUserValid: isUserValid,
     updateToken: updateToken,
+    register: register,
   };
 
   // For Every 3 minutes, refresh user token
