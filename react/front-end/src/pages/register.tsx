@@ -5,8 +5,9 @@ import LoginErrorAlert from "../components/login/loginErrorAlert";
 import AuthContext from "../context/authContext";
 
 import { ignoreFirstRender } from "../utility/utility";
-
-import { useState, useEffect } from "react";
+import { tryCatchFetch, APIFetch, setBackendURL } from "../utility/myapi";
+import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 const checkNumber = (ch: string) => /^[0-9]$/.test(ch);
@@ -22,9 +23,9 @@ const checkSpecialCharacter = (username: string) => {
 };
 
 const checkNumberinString = (str: string) => {
-  const number = str.split('').filter((ch) => checkNumber(ch));
+  const number = str.split("").filter((ch) => checkNumber(ch));
   return number.length > 0;
-}
+};
 
 const checkCapitalAlphabet = (password: string) => {
   const capitalAlphabet = password.split("").filter((ch) => /^[A-Z]$/.test(ch));
@@ -34,7 +35,7 @@ const checkCapitalAlphabet = (password: string) => {
 
 const isEmpty = (str: string) => {
   return str.trim().length === 0;
-}
+};
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -42,13 +43,19 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [isUsernameValid, setIsUsernameValid] = useState(true);
+  const [isUsernameNotUse, setIsUsernameNotUse] = useState(true);
   const [isUsernameEmpty, setIsUsernameEmpty] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
 
-  const isValidInformation = () => {
-    const validInformation = isUsernameValid && isPasswordValid && isConfirmPasswordValid;
-    const emptyInformation = isEmpty(username) || isEmpty(password) || isEmpty(confirmPassword);
+  const navigate = useNavigate();
+  const { register } = useContext(AuthContext);
+
+  const checkValidInformation = () => {
+    const validInformation =
+      isUsernameValid && isPasswordValid && isConfirmPasswordValid && isUsernameNotUse;
+    const emptyInformation =
+      isEmpty(username) || isEmpty(password) || isEmpty(confirmPassword);
     return validInformation && !emptyInformation;
   };
 
@@ -56,7 +63,7 @@ const Register = () => {
     const isFirstCharNumber = checkFirstCharNumber(username);
     const isSpecialCharacter = checkSpecialCharacter(username);
     setIsUsernameValid(() => !isFirstCharNumber && !isSpecialCharacter);
-    setIsUsernameEmpty(() => username == "")
+    setIsUsernameEmpty(() => username == "");
   };
 
   const checkPassword = () => {
@@ -77,14 +84,33 @@ const Register = () => {
     setIsConfirmPasswordValid(() => password == confirmPassword);
   };
 
+  const checkUsernameTaken = () => {
+    tryCatchFetch(async () => {
+      const data = await APIFetch({
+        URL: setBackendURL("isUsernameValid"),
+        method: "POST",
+        body: JSON.stringify({ username: username }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(data);
+      setIsUsernameNotUse(() => data);
+    });
+  };
+
+  const handleSuccessRegister = () => {
+    navigate("/registersuccess");
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    register(username, password, handleSuccessRegister);
   };
 
   ignoreFirstRender(() => {
     checkUsername();
-  }, [username])
+  }, [username]);
 
   ignoreFirstRender(() => {
     checkPassword();
@@ -114,6 +140,10 @@ const Register = () => {
           <LoginErrorAlert message="Username is empty, please fill in the username field" />
         )}
 
+        {!isUsernameNotUse && (
+          <LoginErrorAlert message="Username is already taken" />
+        )}
+
         <form
           method="POST"
           onSubmit={handleSubmit}
@@ -123,13 +153,10 @@ const Register = () => {
             name="Username"
             type="text"
             callback={setUsername}
+            onBlur={checkUsernameTaken}
           />
 
-          <LoginField
-            name="Password"
-            type="password"
-            callback={setPassword}
-          />
+          <LoginField name="Password" type="password" callback={setPassword} />
 
           <LoginField
             name="Confirm Password"
@@ -143,7 +170,7 @@ const Register = () => {
                 type="submit"
                 className="flex-grow-1 btn btn-success"
                 value="Register"
-                disabled={!isValidInformation()}
+                disabled={!checkValidInformation()}
               />
             </div>
             <div className="d-flex flex-center">

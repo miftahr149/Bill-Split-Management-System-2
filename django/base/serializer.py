@@ -143,6 +143,4 @@ class RegisterUserSerializer(serializers.ModelSerializer):
     )
     return registered_user
 
-class RetrieveUsernameSerializer(serliazers.ModelSerializer):
-  
   

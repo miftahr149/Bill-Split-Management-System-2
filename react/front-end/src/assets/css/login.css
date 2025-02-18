@@ -58,6 +58,15 @@
       gap: 1rem;
     }
   }
+
+  & .success-register {
+    gap: var(--gap);
+    width: auto;
+
+    & .success-message {
+      width: 60%;
+    }
+  }
 }
 
 

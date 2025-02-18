@@ -15,6 +15,7 @@ from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.viewsets import ViewSet
 
 # Create your views here.
 class TokenObtainPairView(TokenObtainPairView):
@@ -167,3 +168,11 @@ class GetUsersView(generics.ListAPIView):
 
 class UserRegisterView(generics.CreateAPIView):
   serializer_class = serializer.RegisterUserSerializer
+
+class CheckValidUsernameView(ViewSet):
+
+  def retrieve(self, request: Request):
+    username = request.data.get('username')
+    query = models.User.objects.filter(username=username)
+    return Response(query.count() == 0, status=status.HTTP_200_OK)
+      

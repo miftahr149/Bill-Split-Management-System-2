@@ -138,13 +138,14 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
   const register = (username: string, password: string, callback?: () => void) => {
     tryCatchFetch(async () => {
       await APIFetch({
-        URL: setBackendURL("register"),
+        URL: setBackendURL("registerUser"),
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({username: username, password: password})
       });
+      await (async () => loginFunction({username, password}))()
       callback?.();
     }) 
   }
