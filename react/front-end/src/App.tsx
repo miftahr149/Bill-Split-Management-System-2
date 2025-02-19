@@ -7,6 +7,7 @@ import NotFound from "./pages/notFound";
 import PayBillSplit from "./pages/payBillSplit";
 import Register from "./pages/register";
 import SuccessRegister from "./pages/successregister";
+import Register2 from "./pages/register2";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
@@ -35,6 +36,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route path="/404" element={<NotFound />} />
             <Route path="/registersuccess" element={<SuccessRegister />} />
+            <Route path="/register2" element={<Register2 />} />
           </Routes>
         </Router>
       </UserProfileProvider>
