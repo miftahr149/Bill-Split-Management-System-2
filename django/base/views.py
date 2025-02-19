@@ -166,9 +166,6 @@ class GetUsersView(generics.ListAPIView):
   queryset = models.User.objects.all()
   serializer_class = serializer.UserSerializer
 
-class Test(generics.CreateAPIView):
-  serializer_class = serializer.RegisterUserSerializer
-
 class UserRegisterView(APIView):
   
   def post(self, request: Request):
