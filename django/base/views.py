@@ -166,8 +166,22 @@ class GetUsersView(generics.ListAPIView):
   queryset = models.User.objects.all()
   serializer_class = serializer.UserSerializer
 
-class UserRegisterView(generics.CreateAPIView):
+class Test(generics.CreateAPIView):
   serializer_class = serializer.RegisterUserSerializer
+
+class UserRegisterView(APIView):
+  
+  def post(self, request: Request):
+    new_user_serializer = serializer.RegisterUserSerializer(data=request.data)
+
+    if new_user_serializer.is_valid():
+      new_user_serializer.save()
+      new_user_object = models.User.objects.get(username=request.data.get('username'))
+      profile_image = models.UserProfileImage(user=new_user_object)
+      profile_image.save()
+      return Response({}, status=status.HTTP_200_OK)
+    return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CheckValidUsernameView(ViewSet):
 
