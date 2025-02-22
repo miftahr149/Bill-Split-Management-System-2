@@ -1,5 +1,4 @@
-import { isEmpty } from "../utility/registerUtility";
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { useState } from "react";
 
 type SetStatusFieldType = (
@@ -49,9 +48,9 @@ export const RegisterContextProvider = ({
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [isUsernameValid, setIsUsernameValid] = useState(true);
-  const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
 
   const setStatusField: SetStatusFieldType = (value, field) => {
     if (field == "username") setIsUsernameValid(() => value);
@@ -60,11 +59,14 @@ export const RegisterContextProvider = ({
   };
 
   const checkValidInformation = () => {
+    console.log("isUsernameValid: ", isUsernameValid);
+    console.log("isPasswordValid:", isPasswordValid);
+    console.log("isConfirmPasswordvalid: ", isConfirmPasswordValid);
+    console.log("username: ", username);
+
     const validInformation =
       isUsernameValid && isPasswordValid && isConfirmPasswordValid;
-    const emptyInformation =
-      isEmpty(username) || isEmpty(password) || isEmpty(confirmPassword);
-    return validInformation && emptyInformation;
+    return validInformation;
   };
 
   const data: RegisterContextParams = {
@@ -77,6 +79,10 @@ export const RegisterContextProvider = ({
     checkValidInformation: checkValidInformation,
     setStatusField: setStatusField
   };
+
+  useEffect(() => {
+    checkValidInformation(); 
+  }, [username, password, confirmPassword]);
 
   return (
     <RegisterContext.Provider value={data}>{children}</RegisterContext.Provider>

@@ -1,11 +1,13 @@
 import { createContext } from "react";
 
 export interface LoginFieldContextParams {
-  incrementNumError: () => void;
-  decrementNumError: () => void;
+  addError: (errorName: string) => void;
+  removeError: (errorName: string) => void;
+  isUserInput: boolean;
 }
 
 export const LoginFieldContext = createContext<LoginFieldContextParams>({
-  incrementNumError: () => {},
-  decrementNumError: () => {}
+  addError: (errorName: string) => {errorName},
+  removeError: (errorName: string) => {errorName},
+  isUserInput: false,
 });

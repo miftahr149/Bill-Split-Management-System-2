@@ -7,35 +7,53 @@ import { useState, useEffect } from "react";
 interface LoginFieldParams {
   name: string;
   type: string;
-  callback: (value: string) => void;
+  callback: (value: string, errorArray?: string[]) => void;
   onBlur?: () => void;
-  children?: JSX.Element[] | JSX.Element
+  children?: JSX.Element[] | JSX.Element;
 }
 
-const LoginField = ({ name, type, callback, onBlur, children }: LoginFieldParams) => {
-  const [numError, setNumError] = useState(0);
+const LoginField = ({
+  name,
+  type,
+  callback,
+  onBlur,
+  children,
+}: LoginFieldParams) => {
+  const [isUserInput, setIsUserInput] = useState(false);
+  const [errorArray, setArrayError] = useState<string[]>([]);
+  const [fieldValue, setFieldValue] = useState("");
 
-  const incrementNumError = () => setNumError((prevState) => prevState + 1);
-  const decrementNumError = () => setNumError((prevState) => prevState - 1);
+  const addError = (errorName: string) => {
+    setArrayError((currentState) => {
+      return [...currentState, errorName];
+    });
+  };
+
+  const removeError = (errorName: string) => {
+    setArrayError((currentState) => {
+      return currentState.filter((value) => value != errorName);
+    });
+  };
 
   const data: LoginFieldContextParams = {
-    incrementNumError: incrementNumError,
-    decrementNumError: decrementNumError,
+    addError: addError,
+    removeError: removeError,
+    isUserInput: isUserInput,
   };
 
   const setStyle = () => {
-    return numError == 0
-      ? "field d-flex flex-column"
-      : "field field--error d-flex flex-column";
+    if (errorArray.length == 0 || !isUserInput) return "field d-flex flex-column";
+    return "field field--error d-flex flex-column";
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    callback(e.target.value);
+    setIsUserInput(() => true);
+    setFieldValue(() => e.target.value);
   };
 
   useEffect(() => {
-    console.log(numError);
-  }, [numError])
+    callback(fieldValue, errorArray);
+  }, [fieldValue, errorArray]);
 
   return (
     <LoginFieldContext.Provider value={data}>

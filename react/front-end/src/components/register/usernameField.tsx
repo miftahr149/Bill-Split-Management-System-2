@@ -1,7 +1,6 @@
 import LoginField from "../login/loginField";
 import LoginFieldError from "../login/loginFieldError";
 
-import { ignoreFirstRender } from "../../utility/utility";
 import {
   checkFirstCharNumber,
   checkSpecialCharacter,
@@ -25,7 +24,6 @@ const UsernameField = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log(data);
       setIsUsernameNotUse(() => data);
     });
   };
@@ -36,25 +34,26 @@ const UsernameField = () => {
     return !isFirstCharNumber && !isSpecialCharacter;
   };
 
-  ignoreFirstRender(() => {
-    setStatusField(checkUsername(), "username");
-  }, [username]);
+  const handleCallback = (value: string, errorArray?: string[]) => {
+    setUsername(value);
+    setStatusField(errorArray?.length == 0, "username");
+  }
 
   return (
     <LoginField
       name="username"
       type="text"
-      callback={setUsername}
+      callback={handleCallback}
       onBlur={checkUsernameTaken}
     >
-      <LoginFieldError trigger={() => !isUsernameNotUse}>
+      <LoginFieldError value={!isUsernameNotUse}>
         Username is already taken, please use another
       </LoginFieldError>
-      <LoginFieldError trigger={() => !checkUsername()}>
+      <LoginFieldError value={!checkUsername()}>
         Username can't have number in the first character and Special Character
         (@, /, etc)
       </LoginFieldError>
-      <LoginFieldError trigger={() => isEmpty(username)}>
+      <LoginFieldError value={isEmpty(username)}>
         Username is empty, please fill in the username field
       </LoginFieldError>
     </LoginField>

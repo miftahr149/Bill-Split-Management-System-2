@@ -1,7 +1,6 @@
 import LoginField from "../login/loginField";
 import LoginFieldError from "../login/loginFieldError";
 
-import { ignoreFirstRender } from "../../utility/utility";
 import { RegisterContext } from "../../context/registerContext";
 import { useContext } from "react";
 
@@ -12,17 +11,18 @@ const ConfirmPasswordField = () => {
     return password == confirmPassword;
   };
 
-  ignoreFirstRender(() => {
-    setStatusField(checkConfirmPassword(), "confirm password");
-  }, [confirmPassword]);
+  const handleCallback = (value: string, arrayError?: string[]) => {
+    setConfirmPassword(value);
+    setStatusField(arrayError?.length == 0, "confirm password");
+  }
 
   return (
     <LoginField
       name="Confirm Password"
       type="password"
-      callback={setConfirmPassword}
+      callback={handleCallback}
     >
-      <LoginFieldError trigger={() => !checkConfirmPassword()}>
+      <LoginFieldError value={!checkConfirmPassword()}>
         Confirm Password should be the same as password
       </LoginFieldError>
     </LoginField>

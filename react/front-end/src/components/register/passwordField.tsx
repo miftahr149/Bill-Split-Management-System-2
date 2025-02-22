@@ -1,11 +1,11 @@
 import LoginField from "../login/loginField";
 import LoginFieldError from "../login/loginFieldError";
 
-import { ignoreFirstRender } from "../../utility/utility";
 import {
   checkNumberinString,
   checkSpecialCharacter,
   checkCapitalAlphabet,
+  isEmpty
 } from "../../utility/registerUtility";
 import { RegisterContext } from "../../context/registerContext";
 import { useContext } from "react";
@@ -20,18 +20,23 @@ const PasswordField = () => {
     return isCapitalAlphabet && isNumber && !isSpecialCharacter;
   };
 
-  ignoreFirstRender(() => {
-    setStatusField(checkPassword(), "password");
-  }, [password])
+  const handleCallback = (value: string, arrayError?: string[]) => {
+    console.log(arrayError?.length);
+    setPassword(value);
+    setStatusField(arrayError?.length == 0, "password");
+  }
 
   return (
     <LoginField
       name="password"
       type="password"
-      callback={setPassword}
+      callback={handleCallback}
     >
-      <LoginFieldError trigger={() => !checkPassword()}>
+      <LoginFieldError value={!checkPassword()}>
         Password should have atleast number and capital letter
+      </LoginFieldError>
+      <LoginFieldError value={isEmpty(password)} >
+        Please enter your password
       </LoginFieldError>
     </LoginField>
   );

@@ -1,32 +1,26 @@
 import { LoginFieldContext } from "../../context/loginFieldContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 interface LoginFieldErrorParams {
-  trigger: () => boolean;
+  value: boolean;
   children: string;
 }
 
-const LoginFieldError = ({trigger, children}: LoginFieldErrorParams) => {
-  const [isError, setIsError] = useState(trigger);
-  const { incrementNumError, decrementNumError } = useContext(LoginFieldContext);
+const LoginFieldError = ({ value, children }: LoginFieldErrorParams) => {
+  const { addError, removeError, isUserInput } = useContext(LoginFieldContext);
 
   useEffect(() => {
-    setIsError((prevState) => {
-      const triggerResult = trigger();
-      if (prevState == triggerResult) return prevState;
-      if (triggerResult) incrementNumError();
-      else decrementNumError();
-      return triggerResult;
-    });
-  })
+    if (value) addError(children);
+    else removeError(children);
+  }, [value, isUserInput]);
 
   return (
     <>
-      {isError && (
+      {value && isUserInput && (
         <p className="error-message my-text my-text--sm">{children}</p>
       )}
     </>
-  )
-}
+  );
+};
 
 export default LoginFieldError;
