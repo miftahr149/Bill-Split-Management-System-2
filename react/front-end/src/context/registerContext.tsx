@@ -1,4 +1,4 @@
-import { createContext, useEffect } from "react";
+import { createContext } from "react";
 import { useState } from "react";
 
 type SetStatusFieldType = (
@@ -21,6 +21,7 @@ interface RegisterContextProviderParams {
   children: JSX.Element[] | JSX.Element;
 }
 
+/** a Context to handle registration state  */
 export const RegisterContext = createContext<RegisterContextParams>({
   username: "",
   password: "",
@@ -41,6 +42,9 @@ export const RegisterContext = createContext<RegisterContextParams>({
   checkValidInformation: () => false,
 });
 
+/** a provider component that give registration state and function to its children
+ *  @param {RegisterContextProviderParams} children - the react component that will handle registration
+ */
 export const RegisterContextProvider = ({
   children,
 }: RegisterContextProviderParams) => {
@@ -52,18 +56,20 @@ export const RegisterContextProvider = ({
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
 
+  /** a function set status of field in registration
+   *  @param {boolean} value - the current status of a field
+   *  @param {string} field - the field ("username", "password", or "confirm password")
+   */
   const setStatusField: SetStatusFieldType = (value, field) => {
     if (field == "username") setIsUsernameValid(() => value);
     else if (field == "password") setIsPasswordValid(() => value);
     else setIsConfirmPasswordValid(() => value);
   };
 
+  /** a function to check whether all the field is correct or not
+   *  @returns {boolean} - true if all fields have the valid information, otherwise false
+   */
   const checkValidInformation = () => {
-    console.log("isUsernameValid: ", isUsernameValid);
-    console.log("isPasswordValid:", isPasswordValid);
-    console.log("isConfirmPasswordvalid: ", isConfirmPasswordValid);
-    console.log("username: ", username);
-
     const validInformation =
       isUsernameValid && isPasswordValid && isConfirmPasswordValid;
     return validInformation;
@@ -77,12 +83,8 @@ export const RegisterContextProvider = ({
     setPassword: (value) => setPassword(() => value),
     setConfirmPassword: (value) => setConfirmPassword(() => value),
     checkValidInformation: checkValidInformation,
-    setStatusField: setStatusField
+    setStatusField: setStatusField,
   };
-
-  useEffect(() => {
-    checkValidInformation(); 
-  }, [username, password, confirmPassword]);
 
   return (
     <RegisterContext.Provider value={data}>{children}</RegisterContext.Provider>

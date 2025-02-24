@@ -1,10 +1,13 @@
 import alertImage from "../../assets/img/alert.png"
 
-interface LoginErrorAlertType {
+interface LoginErrorAlertParams {
   message: string
 }
 
-const LoginErrorAlert = ({message} : LoginErrorAlertType) => {
+/** display error
+ *  @param {LoginErrorAlertParams} message - the message of the error 
+ */
+const AuthErrorAlert = ({message} : LoginErrorAlertParams) => {
   return (
     <div className="login-alert d-flex">
       <div className="d-flex justify-content-center align-items-center">
@@ -18,4 +21,4 @@ const LoginErrorAlert = ({message} : LoginErrorAlertType) => {
   );
 };
 
-export default LoginErrorAlert
+export default AuthErrorAlert;

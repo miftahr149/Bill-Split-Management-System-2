@@ -1,15 +1,16 @@
-import LoginField from "../login/loginField";
-import LoginFieldError from "../login/loginFieldError";
+import AuthField from "../authField";
+import AuthFieldError from "../authFieldError";
 
 import {
   checkNumberinString,
   checkSpecialCharacter,
   checkCapitalAlphabet,
   isEmpty
-} from "../../utility/registerUtility";
-import { RegisterContext } from "../../context/registerContext";
+} from "../../../utility/registerUtility";
+import { RegisterContext } from "../../../context/registerContext";
 import { useContext } from "react";
 
+/** the extends of AuthField for providing password field in registration features */
 const PasswordField = () => {
   const { password, setPassword, setStatusField } = useContext(RegisterContext);
 
@@ -27,18 +28,18 @@ const PasswordField = () => {
   }
 
   return (
-    <LoginField
+    <AuthField
       name="password"
       type="password"
       callback={handleCallback}
     >
-      <LoginFieldError value={!checkPassword()}>
+      <AuthFieldError value={!checkPassword()}>
         Password should have atleast number and capital letter
-      </LoginFieldError>
-      <LoginFieldError value={isEmpty(password)} >
+      </AuthFieldError>
+      <AuthFieldError value={isEmpty(password)} >
         Please enter your password
-      </LoginFieldError>
-    </LoginField>
+      </AuthFieldError>
+    </AuthField>
   );
 };
 

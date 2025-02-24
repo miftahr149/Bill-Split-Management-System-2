@@ -1,14 +1,16 @@
 import "../assets/css/login.css";
 
 import AuthContext from "../context/authContext";
-import LoginField from "../components/login/loginField";
-import LoginErrorAlert from "../components/login/loginErrorAlert";
-import LoginHeader from "../components/login/loginHeader";
+import AuthField from "../components/authorization/authField";
+import AuthErrorAlert from "../components/authorization/authErrorAlert";
+import AuthHeader from "../components/authorization/authHeader";
+import AuthButtonBox from "../components/authorization/authButtonBox";
 
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ignoreFirstRender } from "../utility/utility";
 
+/** render a page to allow user access to the web application by login */
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,8 +22,7 @@ const Login = () => {
     setIsInvalidLogin(() => true);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     loginFunction(
       { username: username, password: password },
       handleInvalidLogin
@@ -35,32 +36,19 @@ const Login = () => {
   return (
     <div className="login pages d-flex justify-content-center align-items-center">
       <div className="form d-flex flex-column">
-        <LoginHeader title="Login Page" />
+        <AuthHeader title="Login Page" />
         {isInvalidLogin && (
-          <LoginErrorAlert message="Incorrect username or password" />
+          <AuthErrorAlert message="Incorrect username or password" />
         )}
-        <form
-          className="body-box box d-flex flex-column"
-          method="POST"
-          onSubmit={handleSubmit}
-        >
-          <LoginField name="username" type="text" callback={setUsername} />
-          <LoginField name="password" type="password" callback={setPassword} />
-          <div className="button-box flex-grow-1">
-            <div className="d-flex flex-center">
-              <input
-                className="flex-grow-1 btn btn-success"
-                type="submit"
-                value="Login"
-              />
-            </div>
-            <div className="d-flex flex-center">
-              <Link to="/register" className="my-text my-text--sm">
-                Don't have any account yet? register
-              </Link>
-            </div>
-          </div>
-        </form>
+        <div className="body-box box d-flex flex-column">
+          <AuthField name="username" type="text" callback={setUsername} />
+          <AuthField name="password" type="password" callback={setPassword} />
+          <AuthButtonBox msg="Login" onClick={handleSubmit}>
+            <Link to="/authorization/register" className="my-text my-text--sm">
+              Don't have account? register
+            </Link>
+          </AuthButtonBox>
+        </div>
       </div>
     </div>
   );

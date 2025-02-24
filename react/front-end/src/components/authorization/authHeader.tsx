@@ -1,10 +1,13 @@
 import favicon from "../../assets/img/favicon.png"
 
-interface LoginHeaderType {
+interface AuthHeaderParams {
   title: string;
 }
 
-const LoginHeader = ({ title }: LoginHeaderType) => {
+/** Display header for the authentication pages 
+ *  @param {AuthHeaderParams} title - the title of this pages
+ */
+const AuthHeader = ({ title }: AuthHeaderParams) => {
   return (
     <div className="header-box d-flex box">
       <div className="flex-grow-1 d-flex align-items-center justify-content-center">
@@ -20,4 +23,4 @@ const LoginHeader = ({ title }: LoginHeaderType) => {
   );
 };
 
-export default LoginHeader;
+export default AuthHeader;

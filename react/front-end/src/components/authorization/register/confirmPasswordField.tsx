@@ -1,9 +1,10 @@
-import LoginField from "../login/loginField";
-import LoginFieldError from "../login/loginFieldError";
+import AuthField from "../authField";
+import AuthFieldError from "../authFieldError";
 
-import { RegisterContext } from "../../context/registerContext";
+import { RegisterContext } from "../../../context/registerContext";
 import { useContext } from "react";
 
+/** the extends of AuthField for providing Confirm Password field in registration features */
 const ConfirmPasswordField = () => {
   const { confirmPassword, password, setConfirmPassword, setStatusField } = useContext(RegisterContext);
 
@@ -17,15 +18,15 @@ const ConfirmPasswordField = () => {
   }
 
   return (
-    <LoginField
+    <AuthField
       name="Confirm Password"
       type="password"
       callback={handleCallback}
     >
-      <LoginFieldError value={!checkConfirmPassword()}>
+      <AuthFieldError value={!checkConfirmPassword()}>
         Confirm Password should be the same as password
-      </LoginFieldError>
-    </LoginField>
+      </AuthFieldError>
+    </AuthField>
   );
 };
 

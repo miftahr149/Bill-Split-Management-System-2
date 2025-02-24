@@ -1,15 +1,16 @@
-import LoginField from "../login/loginField";
-import LoginFieldError from "../login/loginFieldError";
+import AuthField from "../authField";
+import AuthFieldError from "../authFieldError";
 
 import {
   checkFirstCharNumber,
   checkSpecialCharacter,
   isEmpty
-} from "../../utility/registerUtility";
-import { RegisterContext } from "../../context/registerContext";
-import { tryCatchFetch, APIFetch, setBackendURL } from "../../utility/myapi";
+} from "../../../utility/registerUtility";
+import { RegisterContext } from "../../../context/registerContext";
+import { tryCatchFetch, APIFetch, setBackendURL } from "../../../utility/myapi";
 import { useContext, useState } from "react";
 
+/** the extends of AutField for providing username field in registration features */
 const UsernameField = () => {
   const { username, setUsername, setStatusField } = useContext(RegisterContext);
   const [isUsernameNotUse, setIsUsernameNotUse] = useState(true);
@@ -40,23 +41,23 @@ const UsernameField = () => {
   }
 
   return (
-    <LoginField
+    <AuthField
       name="username"
       type="text"
       callback={handleCallback}
       onBlur={checkUsernameTaken}
     >
-      <LoginFieldError value={!isUsernameNotUse}>
+      <AuthFieldError value={!isUsernameNotUse}>
         Username is already taken, please use another
-      </LoginFieldError>
-      <LoginFieldError value={!checkUsername()}>
+      </AuthFieldError>
+      <AuthFieldError value={!checkUsername()}>
         Username can't have number in the first character and Special Character
         (@, /, etc)
-      </LoginFieldError>
-      <LoginFieldError value={isEmpty(username)}>
+      </AuthFieldError>
+      <AuthFieldError value={isEmpty(username)}>
         Username is empty, please fill in the username field
-      </LoginFieldError>
-    </LoginField>
+      </AuthFieldError>
+    </AuthField>
   );
 };
 

@@ -29,16 +29,20 @@ interface AuthContextParams {
   isUserValid: boolean;
   logoutFunction: () => void;
   updateToken: () => void;
-  register: (username: string, password: string, callback?: () => void) => void;
+  register: (userData: userDataParams, callback?: () => void) => void;
 }
 
 const nullAuthTokens = { refresh: "", access: "" };
 
+/** setup the local storage based on the authTokens
+ *  @param {AuthTokensParams} authToken - the JWT token of user
+ */
 const setLocalStorage = (authToken: AuthTokensParams) => {
   localStorage.setItem("authTokens", JSON.stringify(authToken));
   localStorage.setItem("user", JSON.stringify(jwtDecode(authToken.access)));
 };
 
+/** Context that handle the authentication process */
 const AuthContext = createContext<AuthContextParams>({
   authTokens: nullAuthTokens,
   role: "",
@@ -49,11 +53,15 @@ const AuthContext = createContext<AuthContextParams>({
   isUserValid: true,
   logoutFunction: () => {},
   updateToken: () => {},
-  register: (username: string, password: string, callback?: () => void) => {
-    username; password; callback;
+  register: (userData: userDataParams, callback?: () => void) => {
+    userData
+    callback;
   },
 });
 
+/** Provide the state and function of authentiation to its children
+ *  @param {AuthProviderParams} children - the children that will be use the state and the function
+ */
 export const AuthProvider = ({ children }: AuthProviderParams) => {
   const initRole = () => {
     const userData = localStorage.getItem("user");
@@ -79,6 +87,10 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
 
   const [role, setRole] = useState<string>(initRole);
 
+  /** a function to perform login
+   *  @param {userDataParams} userData - consist of username and password of a user
+   *  @param {userDataParams} invalidLogin - function that will be called whenever login failed
+   */
   const loginFunction = (
     userData: userDataParams,
     invalidLogin: invalidLoginType = () => {}
@@ -103,6 +115,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     });
   };
 
+  /** a function to perform logout  */
   const logoutFunction = () => {
     setIsUserValid(false);
     setAuthTokens(nullAuthTokens);
@@ -113,6 +126,7 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     localStorage.removeItem("user");
   };
 
+  /** a function to update tokens  */
   const updateToken = async () => {
     console.log("Updating Token");
     const URL = setBackendURL("token/refresh");
@@ -135,20 +149,24 @@ export const AuthProvider = ({ children }: AuthProviderParams) => {
     });
   };
 
-  const register = (username: string, password: string, callback?: () => void) => {
+  /** a function to register new user  */
+  const register = (
+    userData: userDataParams,
+    callback?: () => void
+  ) => {
     tryCatchFetch(async () => {
       await APIFetch({
         URL: setBackendURL("registerUser"),
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({username: username, password: password})
+        body: JSON.stringify(userData),
       });
-      await (async () => loginFunction({username, password}))()
+      await (async () => loginFunction(userData))();
       callback?.();
-    }) 
-  }
+    });
+  };
 
   const contextData = {
     authTokens: authTokens,

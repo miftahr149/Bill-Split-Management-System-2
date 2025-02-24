@@ -12,7 +12,7 @@ const PrivateRoute = ({ component: RouteComponent }: PrivateRouteParam) => {
   // Checking whether both user's access and refresh token is none (a.k.a haven't sign up yet)
 
   if (!isUserValid) {
-    return <Navigate to="/login/" />;
+    return <Navigate to="/authorization/login/" />;
   }
 
   return RouteComponent;

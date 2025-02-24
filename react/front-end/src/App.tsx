@@ -1,18 +1,18 @@
 import "./index.css";
 
-import Login from "./pages/login";
 import Home from "./pages/home";
 import BillSplitForm from "./pages/billSplitForm";
 import NotFound from "./pages/notFound";
 import PayBillSplit from "./pages/payBillSplit";
-import SuccessRegister from "./pages/successregister";
-import Register from "./pages/register";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
 import { UserProfileProvider } from "./context/userProfileContext";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import SuccessRegister from "./pages/successregister";
 
 function App() {
   return (
@@ -30,11 +30,13 @@ function App() {
               element={<PrivateRoute component={<BillSplitForm />} />}
             />
             <Route path="/pay-bill-split/:id" element={<PayBillSplit />} />
-            <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/404" element={<NotFound />} />
-            <Route path="/registersuccess" element={<SuccessRegister />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/authorization" >
+              <Route path="/authorization/login" element={<Login />} />
+              <Route path="/authorization/register" element={<Register />} />
+              <Route path="/authorization/successregister" element={<SuccessRegister />} />
+            </Route>
           </Routes>
         </Router>
       </UserProfileProvider>
