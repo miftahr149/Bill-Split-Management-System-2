@@ -5,9 +5,8 @@ import menuIcon from "../assets/img/menu.png";
 
 import AuthContext from "../context/authContext";
 
-import { Link } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
-import { getImage } from "../utility/myapi";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { UserProfileContext } from "../context/userProfileContext";
 
 interface NavbarParams {
@@ -109,13 +108,10 @@ const Menu = ({ children, isActive }: MenuParams) => {
 const Navbar = ({ title }: NavbarParams) => {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const {getImage} = useContext(UserProfileContext);
-  const { logoutFunction, authTokens, username } = useContext(AuthContext);
+  const { logoutFunction, username } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleMenuClick = () => setIsMenuActive(!isMenuActive);
-
-  useEffect(() => {
-
-  }, [authTokens]);
 
   return (
     <nav className="navbar-box text-color-white">
@@ -129,7 +125,7 @@ const Navbar = ({ title }: NavbarParams) => {
 
         <div className="gap d-flex">
           <ImageButton
-            handleClick={() => {}}
+            handleClick={() => {navigate("/profile")}}
             src={getImage(username)}
             alt="Profile"
             imageRound={true}

@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import SuccessRegister from "./pages/successregister";
+import Profile from "./pages/profile";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               path="/bill-split/create/"
               element={<PrivateRoute component={<BillSplitForm />} />}
             />
+            <Route path="/profile" element={<PrivateRoute component={<Profile />} />} />
             <Route path="/pay-bill-split/:id" element={<PayBillSplit />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/404" element={<NotFound />} />
