@@ -2,12 +2,31 @@ import "../assets/css/profile.css";
 import Navbar from "../components/navbar";
 import AuthContext from "../context/authContext";
 import { UserProfileContext } from "../context/userProfileContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { APIFetch, setBackendURL, tryCatchFetch } from "../utility/myapi";
 
 const Profile = () => {
   const { getImage } = useContext(UserProfileContext);
   const { username } = useContext(AuthContext);
+
+  const testAPI = () => {
+    tryCatchFetch(async () => {
+      const data = await APIFetch({
+        URL: setBackendURL("getUserProfileInfo"),
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify({username: username})
+      });
+      console.log(data);
+    })
+  }
+
+  useEffect(() => {
+    testAPI();
+  }, [])
 
   return (
     <div className="pages d-flex flex-column">

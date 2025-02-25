@@ -187,3 +187,24 @@ class CheckValidUsernameView(ViewSet):
     query = models.User.objects.filter(username=username)
     return Response(query.count() == 0, status=status.HTTP_200_OK)
       
+class UserProfileView(ViewSet):
+
+  def retrieve(self, request: Request):
+    username = request.data.get('username')
+
+    try:
+      user = models.User.objects.get(username=username)
+    except models.User.DoesNotExist:
+      return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+    bank_data = models.BankData.objects.filter(owner=user)
+    try:
+      telegram_info = models.TelegramInfo.objects.get(user=user)
+    except models.TelegramInfo.DoesNotExist:
+      telegram_info = models.TelegramInfo(user=user, telegram_username="")
+
+    return Response({
+      "bank_info": serializer.BankDataSerializer(bank_data, many=True).data,
+      "telegram_info": serializer.TelegramInfoSerializer(telegram_info).data,
+      "email": user.email 
+    }, status=status.HTTP_200_OK)

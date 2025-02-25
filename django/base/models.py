@@ -61,3 +61,7 @@ class UserAmount(models.Model):
   receipt = models.FileField(upload_to='receipt/', blank=True)
   bill_split = models.ForeignKey(BillSplit, related_name='user_amount',
                                  on_delete=models.CASCADE, null=True)
+
+class TelegramInfo(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  telegram_username = models.CharField(max_length=50)

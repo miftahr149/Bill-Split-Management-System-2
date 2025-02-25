@@ -18,6 +18,7 @@ urlpatterns = [
   path('getUsers', views.GetUsersView.as_view(), name='get_user'),
   path('registerUser', views.UserRegisterView.as_view(), name='register_user'),
   path('isUsernameValid', views.CheckValidUsernameView.as_view({'post':'retrieve'})),
+  path('getUserProfileInfo', views.UserProfileView.as_view({'post':'retrieve'}))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

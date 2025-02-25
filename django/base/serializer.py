@@ -143,4 +143,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
     )
     return registered_user
 
-  
+class BankDataSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.BankData
+    fields = "__all__"
+
+class TelegramInfoSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.TelegramInfo
+    fields = ['telegram_username']
