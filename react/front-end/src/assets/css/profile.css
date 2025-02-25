@@ -1,0 +1,14 @@
+.info {
+  & .info-header {
+    --color-rgb: var(--primary-green-color-rgb);
+    color: rgb(var(--color-rgb));
+  }
+
+  & .info-block {
+    --radius-size: var(--border-sm);
+    --border-color: white;
+  
+    border-radius: var(--radius-size);
+    border: 1px solid var(--border-color);
+  }
+}
