@@ -2,19 +2,18 @@ import { useState } from "react"
 import TopLayer from "./topLayer"
 
 interface TopLayerButtonParams {
-  message: string
   title: string
   children: JSX.Element | JSX.Element[]
   className?: string
 }
 
-const TopLayerButton = ({message, children, className, title}: TopLayerButtonParams) => {
+const TopLayerButton = ({ children, className, title}: TopLayerButtonParams) => {
   const [isTopLayerActive, setIsToplayerActive] = useState(false)
   const toggleTopLayer = () => setIsToplayerActive((prevState) => !prevState);
 
   return (
     <>
-      <button onClick={toggleTopLayer} className={className}>{message}</button>
+      <button onClick={toggleTopLayer} className={className}>{title}</button>
       <TopLayer value={isTopLayerActive}>
         <div className="top-layer-page d-flex">
           <div className="left">
