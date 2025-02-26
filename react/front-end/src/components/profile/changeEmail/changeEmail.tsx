@@ -1,4 +1,7 @@
 import TopLayerButton from "../../topLayerButton";
+import PageRouting from "./pageRouting";
+import PageRoute from "./pageRoute";
+import ChangeEmailPage from "./changeEmailPage";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import { ChangeEmailContextParams } from "../../../context/changeEmailContext";
 import { useState } from "react";
@@ -22,10 +25,13 @@ const ChangeEmailButton = () => {
   }
 
   return (
-
-    <TopLayerButton title="Change Email">
-      <></>
-    </TopLayerButton>
+    <ChangeEmailContext.Provider value={data}>
+      <TopLayerButton title="Change Email">
+        <PageRouting trigger={pageState}>
+          <PageRoute value={0} component={<ChangeEmailPage />} />
+        </PageRouting>
+      </TopLayerButton>
+    </ChangeEmailContext.Provider>
   );
 };
 
