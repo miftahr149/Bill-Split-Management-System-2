@@ -2,3 +2,4 @@
 /django/.env
 react/front-end/src/pages/test.tsx
 /django/testme
+react/front-end/src/assets/css/test.css

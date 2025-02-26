@@ -1,0 +1,35 @@
+import { useState } from "react"
+import TopLayer from "./topLayer"
+
+interface TopLayerButtonParams {
+  message: string
+  title: string
+  children: JSX.Element | JSX.Element[]
+  className?: string
+}
+
+const TopLayerButton = ({message, children, className, title}: TopLayerButtonParams) => {
+  const [isTopLayerActive, setIsToplayerActive] = useState(false)
+  const toggleTopLayer = () => setIsToplayerActive((prevState) => !prevState);
+
+  return (
+    <>
+      <button onClick={toggleTopLayer} className={className}>{message}</button>
+      <TopLayer value={isTopLayerActive}>
+        <div className="top-layer-page d-flex">
+          <div className="left">
+            <button className="exit my-3 mx-4" onClick={toggleTopLayer}>
+              <i className="bi bi-x fs-1" />
+            </button>
+          </div>
+          <div className="right flex-grow-1 mt-4">
+            <h1 className="my-text fs-1 text-center">{title}</h1>
+            {children}
+          </div>
+        </div>
+      </TopLayer>
+    </>
+  )
+}
+
+export default TopLayerButton;

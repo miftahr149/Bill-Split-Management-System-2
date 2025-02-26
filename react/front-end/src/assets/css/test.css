@@ -1,17 +1,14 @@
-.wrapper {
-  display: flex;
-  border: 1px solid white;
-  gap: 1rem;
-  overflow-x: auto;
-  justify-content: end;
+.exit {
+  --bg-color: transparent;
+  --color: white;
+  --border-style: 0;
+  background-color: var(--bg-color);
+  color: var(--color);
+  border: var(--border-style);
+}
 
-  & .element {
-    display: flex;
-    flex: 0 0 auto;
-    height: 50px;
-    text-align: center;
-    align-items: center;
-    border: 1px solid white;
-    padding: 5px;
-  }
+.top-layer-page {
+  width: 80vw;
+  height: 70vh;
+  background-color: rgb(var(--default-pages-bg-color-rgb))
 }

@@ -6,12 +6,14 @@ interface TopLayerParams {
 }
 
 const TopLayer = ({ value, children }: TopLayerParams) => {
-  const setClass = () => {
-    const defaultClass = "top-layer flex-center text-color-white";
-    return value ? defaultClass : defaultClass + " none";
-  };
-
-  return <div className={setClass()}>{children}</div>;
+  
+  return (
+    <>
+      {value && (
+        <div className="top-layer flex-center text-color-white">{children}</div>
+      )}
+    </>
+  );
 };
 
 export default TopLayer

@@ -4,6 +4,7 @@ import Home from "./pages/home";
 import BillSplitForm from "./pages/billSplitForm";
 import NotFound from "./pages/notFound";
 import PayBillSplit from "./pages/payBillSplit";
+import TestPage from "./pages/test";
 
 import PrivateRoute from "./utility/privateRoute";
 import { AuthProvider } from "./context/authContext";
@@ -39,6 +40,7 @@ function App() {
               <Route path="/authorization/register" element={<Register />} />
               <Route path="/authorization/successregister" element={<SuccessRegister />} />
             </Route>
+            <Route path="/test" element={<TestPage />} />
           </Routes>
         </Router>
       </UserProfileProvider>
