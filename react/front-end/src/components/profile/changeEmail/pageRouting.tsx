@@ -1,7 +1,7 @@
 import PageRoutingContext from "../../../context/pageRoutingContext"
 
 interface PageRoutingParams {
-  children: JSX.Element | JSX.Element,
+  children: JSX.Element | JSX.Element[],
   trigger: number
 }
 

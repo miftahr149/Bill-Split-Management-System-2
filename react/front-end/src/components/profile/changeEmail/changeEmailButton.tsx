@@ -3,6 +3,7 @@ import { TopLayerCallbackType } from "../../topLayerButton";
 import PageRouting from "./pageRouting";
 import PageRoute from "./pageRoute";
 import ChangeEmailPage from "./changeEmailPage";
+import CodeVerificationPage from "./CodeVerificationPage";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import { ChangeEmailContextParams } from "../../../context/changeEmailContext";
 import { useState, useEffect } from "react";
@@ -38,6 +39,7 @@ const ChangeEmailButton = () => {
       <TopLayerButton title="Change Email" onExit={onExit}>
         <PageRouting trigger={pageState}>
           <PageRoute value={0} component={<ChangeEmailPage />} />
+          <PageRoute value={1} component={<CodeVerificationPage />} />
         </PageRouting>
       </TopLayerButton>
     </ChangeEmailContext.Provider>
