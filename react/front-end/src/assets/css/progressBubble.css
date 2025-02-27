@@ -1,0 +1,15 @@
+.bubble-progress {
+  --size: 40px;
+  --border-line: 2px solid;
+  --border-color: white;
+  --background-color: transparent;
+  border-radius: var(--border-round);
+  height: var(--size);
+  width: var(--size);
+  border: var(--border-line) var(--border-color);
+  background-color: var(--background-color);
+}
+
+.bubble-progress--complete {
+  --background-color: white;
+}

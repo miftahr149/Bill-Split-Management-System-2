@@ -7,8 +7,8 @@ interface PageRouteParams {
 }
 
 const PageRoute = ({ value, component }: PageRouteParams) => {
-  const trigger = useContext(PageRoutingContext);
-  return <>{value == trigger && component}</>;
+  const {pageState} = useContext(PageRoutingContext);
+  return <>{value == pageState && component}</>;
 };
 
 export default PageRoute;
