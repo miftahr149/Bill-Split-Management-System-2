@@ -1,4 +1,5 @@
 import ProgressBubble from "./progressBubble";
+import CodeVerificationField from "./CodeVerificationField";
 
 const dummyEmail = "AsepKesepian2@gmail.com";
 
@@ -18,6 +19,7 @@ const CodeVerificationPage = () => {
         The verification code is sent to {sensorEmail(dummyEmail)}. Please enter
         your verification code here
       </p>
+      <CodeVerificationField numDigit={4} />
       <ProgressBubble />
     </div>
   );

@@ -8,10 +8,17 @@
 }
 
 .top-layer-page {
-  --min-width: 80vw;
+  --min-width: 90vw;
   --min-height: 70vh;
   
   width: var(--min-width);
   min-height: var(--min-height);
   background-color: rgb(var(--default-pages-bg-color-rgb))
+}
+
+@media screen and (min-width: 576px) {
+  .top-layer-page {
+    --min-width: 80vw
+
+  }
 }

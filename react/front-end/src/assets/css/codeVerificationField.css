@@ -1,0 +1,5 @@
+.code-verification {
+  --size: min(4rem, 10vw);
+  width: var(--size);
+  height: var(--size);
+}

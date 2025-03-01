@@ -1,4 +1,4 @@
-
+import "../assets/css/topLayerButton.css"
 import { useState } from "react";
 import TopLayer from "./topLayer";
 
@@ -34,7 +34,7 @@ const TopLayerButton = ({
         <div className="top-layer-page d-flex">
           <div className="left">
             <button className="exit my-3 mx-4" onClick={handleExit}>
-              <i className="bi bi-x fs-1" />
+              <i className="bi bi-x fs-2" />
             </button>
           </div>
           <div className="right flex-grow-1 mt-4 d-flex flex-column">
