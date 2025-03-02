@@ -1,0 +1,10 @@
+.change-email-page {
+  --margin-size: var(--space-sm); 
+  margin: var(--margin-size);
+}
+
+@media screen and (min-width: 576px) {
+  .code-verification-page {
+    --margin-size: var(--space-l);
+  }
+}

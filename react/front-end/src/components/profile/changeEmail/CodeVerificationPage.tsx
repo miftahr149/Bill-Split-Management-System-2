@@ -14,12 +14,14 @@ const CodeVerificationPage = () => {
   };
 
   return (
-    <div className="d-flex flex-column m-5 px-5 flex-grow-1 gap-4">
-      <p className="fs-3">
-        The verification code is sent to {sensorEmail(dummyEmail)}. Please enter
-        your verification code here
-      </p>
-      <CodeVerificationField numDigit={4} />
+    <div className="change-email-page d-flex flex-column flex-grow-1">
+      <div className="d-flex flex-column justify-content-center flex-grow-1 gap-4">
+        <p className="fs-5">
+          The verification code is sent to {sensorEmail(dummyEmail)}. Please
+          enter your verification code here
+        </p>
+        <CodeVerificationField numDigit={4} />
+      </div>
       <ProgressBubble />
     </div>
   );

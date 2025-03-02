@@ -31,16 +31,16 @@ const TopLayerButton = ({
         {title}
       </button>
       <TopLayer value={isTopLayerActive}>
-        <div className="top-layer-page d-flex">
-          <div className="left">
+        <div className="top-layer-page d-flex flex-column">
+          <div className="header d-flex">
             <button className="exit my-3 mx-4" onClick={handleExit}>
               <i className="bi bi-x fs-2" />
             </button>
+            <div className="d-flex align-items-center flex-grow-1">
+              <h1 className="my-text fs-1 text-center flex-grow-1">{title}</h1>
+            </div>
           </div>
-          <div className="right flex-grow-1 mt-4 d-flex flex-column">
-            <h1 className="my-text fs-1 text-center">{title}</h1>
-            {children}
-          </div>
+          <div className="d-flex flex-column flex-grow-1">{children}</div>
         </div>
       </TopLayer>
     </>

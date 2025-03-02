@@ -39,6 +39,15 @@
   --font-size: 1.2rem;
   --font-size-l: 1.8rem;
 
+  /* spacing-size */
+  --space-scale: 3rem;
+  --space-0: 0;
+  --space-xs: calc(var(--space-scale) * 0.25);
+  --space-sm: calc(var(--space-scale) * 0.5);
+  --space: var(--space-scale);
+  --space-l: calc(var(--space-scale) * 1.5);
+  --space-xl: calc(var(--space-scale) * 3); 
+
   /* gap */
   --gap: 1rem;
   --gap-sm: 0.5rem;
