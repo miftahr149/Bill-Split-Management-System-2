@@ -5,6 +5,7 @@ import PageRoute from "./pageRoute";
 import NewEmailPage from "./newEmailPage";
 import CodeVerificationPage from "./CodeVerificationPage";
 import ChangeEmailContext from "../../../context/changeEmailContext";
+import SuccessChangeEmailPage from "./SuccessChangeEmailPage";
 import { ChangeEmailContextParams } from "../../../context/changeEmailContext";
 import { useState, useEffect } from "react";
 
@@ -32,7 +33,7 @@ const ChangeEmailButton = () => {
 
   useEffect(() => {
     console.log(pageState);
-  }, [pageState]);
+  }, [pageState])
 
   return (
     <ChangeEmailContext.Provider value={data}>
@@ -40,6 +41,7 @@ const ChangeEmailButton = () => {
         <PageRouting trigger={pageState}>
           <PageRoute value={0} component={<NewEmailPage />} />
           <PageRoute value={1} component={<CodeVerificationPage />} />
+          <PageRoute value={2} component={<SuccessChangeEmailPage />} />
         </PageRouting>
       </TopLayerButton>
     </ChangeEmailContext.Provider>
