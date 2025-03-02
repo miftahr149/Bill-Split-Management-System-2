@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 
 interface CodeVerificationFieldParams {
   numDigit: number;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const createArray = (numDigit: number) => {
@@ -13,7 +14,7 @@ const createArray = (numDigit: number) => {
   return array;
 };
 
-const CodeVerificationField = ({ numDigit }: CodeVerificationFieldParams) => {
+const CodeVerificationField = ({ numDigit, onSubmit }: CodeVerificationFieldParams) => {
   const [code, setCode] = useState("");
   const createRefElementArray = () => {
     return createArray(numDigit).map(() => useRef<HTMLInputElement>(null));
@@ -96,13 +97,12 @@ const CodeVerificationField = ({ numDigit }: CodeVerificationFieldParams) => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Hello World");
-  };
+  useEffect(() => {
+    refElementArray[0].current?.focus();
+  }, [])
 
   return (
-    <form onSubmit={handleSubmit} className="d-flex flex-column gap-4">
+    <form onSubmit={onSubmit} className="d-flex flex-column gap-4">
       <div className="d-flex gap-2 justify-content-center">
         {createArray(numDigit).map((value) => (
           <input

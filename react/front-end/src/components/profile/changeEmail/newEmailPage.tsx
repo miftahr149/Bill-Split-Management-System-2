@@ -10,22 +10,35 @@ const NewEmailPage = () => {
   const { incrementPageState, setIsSentEmailChange } =
     useContext(ChangeEmailContext);
 
-  const handleClick = () => {
+
+  const checkValidEmail = () => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(newEmail);
+  }
+
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     incrementPageState();
     setIsSentEmailChange(true);
   };
 
   return (
-    <div className="change-email-page d-flex flex-column flex-grow-1 flex-grow-1">
-      <div className="d-flex flex-column justify-content-center flex-grow-1 gap-4">
+    <div className="change-email-page d-flex flex-column flex-grow-1">
+      <form
+        className="d-flex flex-column justify-content-center flex-grow-1 gap-4"
+        onSubmit={handleSubmit}
+      >
         <div className="d-flex flex-column">
           <label className="fs-2">New Email Address</label>
           <Input callback={setNewEmail} className="text-input my-text" />
         </div>
-        <button className="btn btn-success p-2 fs-4" onClick={handleClick}>
-          Change Email Address
-        </button>
-      </div>
+        <input
+          type="submit"
+          className="btn btn-success p-2 fs-4"
+          value="Submit"
+          disabled={!checkValidEmail()}
+        />
+      </form>
       <ProgressBubble />
     </div>
   );

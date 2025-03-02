@@ -1,9 +1,14 @@
 import ProgressBubble from "./progressBubble";
 import CodeVerificationField from "./CodeVerificationField";
+import ChangeEmailContext from "../../../context/changeEmailContext";
+import { useContext, useEffect } from "react";
 
 const dummyEmail = "AsepKesepian2@gmail.com";
 
 const CodeVerificationPage = () => {
+  
+  const { incrementPageState } = useContext(ChangeEmailContext);
+  
   const sensorEmail = (email: string) => {
     const [emailName, domainName] = email.split("@");
     const sensorEmailNameArray = emailName.split("").map((value, index) => {
@@ -13,6 +18,10 @@ const CodeVerificationPage = () => {
     return sensorEmailNameArray.join("") + "@" + domainName;
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    incrementPageState();
+  }
+
   return (
     <div className="change-email-page d-flex flex-column flex-grow-1">
       <div className="d-flex flex-column justify-content-center flex-grow-1 gap-4">
@@ -20,7 +29,7 @@ const CodeVerificationPage = () => {
           The verification code is sent to {sensorEmail(dummyEmail)}. Please
           enter your verification code here
         </p>
-        <CodeVerificationField numDigit={4} />
+        <CodeVerificationField numDigit={4} onSubmit={handleSubmit} />
       </div>
       <ProgressBubble />
     </div>
