@@ -1,7 +1,7 @@
-import TopLayerButton from "../../topLayerButton";
-import { TopLayerCallbackType } from "../../topLayerButton";
-import PageRouting from "./pageRouting";
-import PageRoute from "./pageRoute";
+import TopLayerButton from "../../topLayer/topLayerButton";
+import { TopLayerCallbackType } from "../../topLayer/topLayerButton";
+import PageRouting from "../../pageContentRouting/pageRouting";
+import PageRoute from "../../pageContentRouting/pageRoute";
 import NewEmailPage from "./newEmailPage";
 import CodeVerificationPage from "./CodeVerificationPage";
 import ChangeEmailContext from "../../../context/changeEmailContext";
@@ -15,29 +15,38 @@ const ChangeEmailButton = () => {
 
   const decrementPageState = () => {
     setPageState((prevState) => (prevState == 0 ? prevState : prevState - 1));
-  }
+  };
 
   const incrementPageState = () => {
     setPageState((prevState) => prevState + 1);
-  }
+  };
 
   const onExit: TopLayerCallbackType = () => {
-    setPageState(() => 0);
-  }
+    setPageState(() => (pageState === 1 ? 1 : 0));
+  };
 
   const data: ChangeEmailContextParams = {
     incrementPageState: incrementPageState,
     decrementPageState: decrementPageState,
-    setIsSentEmailChange: (value) => setIsSentEmailChange(() => value)
-  }
+    setIsSentEmailChange: (value) => setIsSentEmailChange(() => value),
+  };
+
+  const setButtonAttribute = () => {
+    const className = isSentEmailChange ? "btn btn-primary" : "btn btn-success";
+    const buttonName = isSentEmailChange ? "Continue" : "Change Email";
+    return {
+      className: className,
+      buttonName: buttonName,
+    };
+  };
 
   useEffect(() => {
     console.log(pageState);
-  }, [pageState])
+  }, [pageState]);
 
   return (
     <ChangeEmailContext.Provider value={data}>
-      <TopLayerButton title="Change Email" onExit={onExit}>
+      <TopLayerButton onExit={onExit} title="Change Email" {...setButtonAttribute()}>
         <PageRouting trigger={pageState}>
           <PageRoute value={0} component={<NewEmailPage />} />
           <PageRoute value={1} component={<CodeVerificationPage />} />

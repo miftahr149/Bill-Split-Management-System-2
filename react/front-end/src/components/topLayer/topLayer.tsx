@@ -1,4 +1,4 @@
-import "../assets/css/topLayer.css"
+import "../../assets/css/topLayer.css"
 
 interface TopLayerParams {
   value: boolean;

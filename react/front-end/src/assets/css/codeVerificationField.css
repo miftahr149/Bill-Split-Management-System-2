@@ -3,3 +3,15 @@
   width: var(--size);
   height: var(--size);
 }
+
+.code-reset {
+  --size: min(4rem, 10vw);
+  --font-size: min(2rem, 5vw);
+
+  border: 0;
+  width: var(--size);
+  height: var(--size);
+  font-size: var(--font-size);
+  color: white;
+  background-color: transparent;
+}

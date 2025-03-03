@@ -2,7 +2,7 @@ import "../../../assets/css/changeEmail.css";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import Input from "../../Input";
 import { useContext, useState } from "react";
-import ProgressBubble from "./progressBubble";
+import ProgressBubble from "../../pageContentRouting/progressBubble";
 
 const NewEmailPage = () => {
   const [newEmail, setNewEmail] = useState("");

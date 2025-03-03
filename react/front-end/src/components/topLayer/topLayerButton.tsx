@@ -1,4 +1,4 @@
-import "../assets/css/topLayerButton.css"
+import "../../assets/css/topLayerButton.css"
 import { useState } from "react";
 import TopLayer from "./topLayer";
 
@@ -6,6 +6,7 @@ export type TopLayerCallbackType = (topLayerActive?: boolean) => void;
 
 interface TopLayerButtonParams {
   title: string;
+  buttonName: string;
   children: JSX.Element | JSX.Element[];
   className?: string;
   onExit?: TopLayerCallbackType;
@@ -16,6 +17,7 @@ const TopLayerButton = ({
   className,
   title,
   onExit,
+  buttonName
 }: TopLayerButtonParams) => {
   const [isTopLayerActive, setIsToplayerActive] = useState(false);
   const toggleTopLayer = () => setIsToplayerActive((prevState) => !prevState);
@@ -28,7 +30,7 @@ const TopLayerButton = ({
   return (
     <>
       <button onClick={toggleTopLayer} className={className}>
-        {title}
+        {buttonName}
       </button>
       <TopLayer value={isTopLayerActive}>
         <div className="top-layer-page d-flex flex-column">

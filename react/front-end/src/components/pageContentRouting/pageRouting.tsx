@@ -1,4 +1,4 @@
-import PageRoutingContext from "../../../context/pageRoutingContext"
+import PageRoutingContext from "../../context/pageRoutingContext"
 import React from "react"
 
 interface PageRoutingParams {

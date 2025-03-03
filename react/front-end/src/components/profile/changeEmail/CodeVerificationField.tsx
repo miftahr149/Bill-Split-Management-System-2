@@ -1,27 +1,28 @@
 import "../../../assets/css/codeVerificationField.css";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
+import ChangeEmailContext from "../../../context/changeEmailContext";
 
 interface CodeVerificationFieldParams {
   numDigit: number;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const createArray = (numDigit: number) => {
-  let array = [];
-  for (let i = 0; i < numDigit; i++) {
-    array.push(i);
-  }
-  return array;
-};
+const CodeVerificationField = ({
+  numDigit,
+  onSubmit,
+}: CodeVerificationFieldParams) => {
+  const createArray = () =>
+    Array.from({ length: numDigit }, (_, index) => index);
 
-const CodeVerificationField = ({ numDigit, onSubmit }: CodeVerificationFieldParams) => {
-  const [code, setCode] = useState("");
   const createRefElementArray = () => {
-    return createArray(numDigit).map(() => useRef<HTMLInputElement>(null));
+    return createArray().map(() => useRef<HTMLInputElement>(null));
   };
-
+  
+  const [code, setCode] = useState("");
   const refElementArray = createRefElementArray();
   const refSubmitButton = useRef<HTMLInputElement>(null);
+  const { setIsSentEmailChange } = useContext(ChangeEmailContext)
+
 
   const checkValidDigit = (value: string) => {
     const array = value.split("");
@@ -62,6 +63,10 @@ const CodeVerificationField = ({ numDigit, onSubmit }: CodeVerificationFieldPara
     }
   };
 
+  const handleAbort = () => {
+    setIsSentEmailChange(false);
+  }
+
   const deleteCodeIndex = (
     e: React.KeyboardEvent<HTMLInputElement>,
     index: number
@@ -99,12 +104,12 @@ const CodeVerificationField = ({ numDigit, onSubmit }: CodeVerificationFieldPara
 
   useEffect(() => {
     refElementArray[0].current?.focus();
-  }, [])
+  }, []);
 
   return (
     <form onSubmit={onSubmit} className="d-flex flex-column gap-4">
       <div className="d-flex gap-2 justify-content-center">
-        {createArray(numDigit).map((value) => (
+        {createArray().map((value) => (
           <input
             className="code-verification text-center"
             key={value}
@@ -113,13 +118,14 @@ const CodeVerificationField = ({ numDigit, onSubmit }: CodeVerificationFieldPara
             onKeyDown={(e) => handleKeyDown(e, value)}
           />
         ))}
+        <button type="button" className="code-reset bi bi-x-square" onClick={handleReset} />
       </div>
       <div className="d-flex gap-2">
         <input
           className="btn btn-danger mx-2 flex-grow-1"
           type="button"
-          value="Reset"
-          onClick={handleReset}
+          value="Abort"
+          onClick={handleAbort}
         />
         <input
           className="btn btn-success mx-2 flex-grow-1"

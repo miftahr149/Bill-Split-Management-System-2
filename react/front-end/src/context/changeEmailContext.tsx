@@ -9,7 +9,7 @@ export interface ChangeEmailContextParams {
 const ChangeEmailContext = createContext<ChangeEmailContextParams>({
   incrementPageState: () => {},
   decrementPageState: () => {},
-  setIsSentEmailChange: (value) => {value}
+  setIsSentEmailChange: (value) => {value},
 });
 
 export default ChangeEmailContext;

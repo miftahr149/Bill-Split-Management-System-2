@@ -4,7 +4,7 @@ import plusIcon from "../assets/img/plus-small.png";
 import Navbar from "../components/navbar";
 import Input from "../components/Input";
 import TextArea from "../components/textarea";
-import TopLayer from "../components/topLayer";
+import TopLayer from "../components/topLayer/topLayer";
 
 import TagSearchBox from "../components/tagSearchBox";
 import UserSearchBox from "../components/userSearchBox";

@@ -1,6 +1,6 @@
-import "../../../assets/css/progressBubble.css"
+import "../../assets/css/progressBubble.css"
 import { useContext } from "react"
-import PageRoutingContext from "../../../context/pageRoutingContext"
+import PageRoutingContext from "../../context/pageRoutingContext"
 
 const ProgressBubble = () => {
   const {pageState, numPage} = useContext(PageRoutingContext);
