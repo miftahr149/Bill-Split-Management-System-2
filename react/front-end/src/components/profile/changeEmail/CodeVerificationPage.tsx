@@ -1,14 +1,16 @@
 import ProgressBubble from "../../pageContentRouting/progressBubble";
 import CodeVerificationField from "./CodeVerificationField";
 import ChangeEmailContext from "../../../context/changeEmailContext";
+import PageRoutingContext from "../../../context/pageRoutingContext";
 import { useContext } from "react";
 
 const dummyEmail = "AsepKesepian2@gmail.com";
 
 const CodeVerificationPage = () => {
   
-  const { incrementPageState, setIsSentEmailChange } = useContext(ChangeEmailContext);
-  
+  const { setIsSentEmailChange } = useContext(ChangeEmailContext);
+  const { incrementPageState } = useContext(PageRoutingContext);
+
   const sensorEmail = (email: string) => {
     const [emailName, domainName] = email.split("@");
     const sensorEmailNameArray = emailName.split("").map((value, index) => {

@@ -1,21 +1,19 @@
 import "../../../assets/css/changeEmail.css";
 import ChangeEmailContext from "../../../context/changeEmailContext";
+import PageRoutingContext from "../../../context/pageRoutingContext";
 import Input from "../../Input";
 import { useContext, useState } from "react";
 import ProgressBubble from "../../pageContentRouting/progressBubble";
 
 const NewEmailPage = () => {
   const [newEmail, setNewEmail] = useState("");
-
-  const { incrementPageState, setIsSentEmailChange } =
-    useContext(ChangeEmailContext);
-
+  const { setIsSentEmailChange } = useContext(ChangeEmailContext);
+  const { incrementPageState } = useContext(PageRoutingContext);
 
   const checkValidEmail = () => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(newEmail);
-  }
-
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     incrementPageState();
