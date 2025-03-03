@@ -1,9 +1,8 @@
 import "../../../assets/css/changeEmail.css";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import PageRoutingContext from "../../../context/pageRoutingContext";
-import Input from "../../Input";
 import { useContext, useState } from "react";
-import ProgressBubble from "../../pageContentRouting/progressBubble";
+import ProgressBubble from "../../topLayer/pageContentRouting/progressBubble";
 
 const NewEmailPage = () => {
   const [newEmail, setNewEmail] = useState("");
@@ -28,7 +27,11 @@ const NewEmailPage = () => {
       >
         <div className="d-flex flex-column">
           <label className="fs-2">New Email Address</label>
-          <Input callback={setNewEmail} className="text-input my-text" />
+          <input
+            type="email"
+            onChange={(e) => setNewEmail(() => e.target.value)}
+            className="text-input my-text"
+          />
         </div>
         <input
           type="submit"

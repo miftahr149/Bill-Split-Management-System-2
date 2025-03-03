@@ -1,4 +1,5 @@
-import ProgressBubble from "../../pageContentRouting/progressBubble";
+import "../../../assets/css/changeEmail.css"
+import ProgressBubble from "../../topLayer/pageContentRouting/progressBubble";
 import CodeVerificationField from "./CodeVerificationField";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import PageRoutingContext from "../../../context/pageRoutingContext";

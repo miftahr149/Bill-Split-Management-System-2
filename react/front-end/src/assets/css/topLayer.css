@@ -8,3 +8,40 @@
   height: 100vh;
   z-index: 10;
 }
+
+.top-layer-page {
+  --width: max(60vw, 400px);
+  --height: clamp(500px, 70vh, 550px);
+  --margin-size: var(--space-sm);
+  
+  width: var(--width);
+  height: var(--height);
+  background-color: rgb(var(--default-pages-bg-color-rgb));
+  margin: var(--margin-size);
+
+  & .exit {
+    --bg-color: transparent;
+    --color: white;
+    --border-style: 0;
+    
+    background-color: var(--bg-color);
+    color: var(--color);
+    border: var(--border-style);
+  }
+
+  & .bubble-progress {
+    --size: 30px;
+    --border-line: 2px solid;
+    --border-color: white;
+    --background-color: transparent;
+    border-radius: var(--border-round);
+    height: var(--size);
+    width: var(--size);
+    border: var(--border-line) var(--border-color);
+    background-color: var(--background-color);
+  }
+  
+  & .bubble-progress--complete {
+    --background-color: white;
+  }
+}

@@ -1,7 +1,7 @@
 import TopLayerButton from "../../topLayer/topLayerButton";
-import PageRouting from "../../pageContentRouting/pageRouting";
+import PageRouting from "../../topLayer/pageContentRouting/pageRouting";
 import { OnExitCallback } from "../../../context/pageRoutingContext";
-import PageRoute from "../../pageContentRouting/pageRoute";
+import PageRoute from "../../topLayer/pageContentRouting/pageRoute";
 import NewEmailPage from "./newEmailPage";
 import CodeVerificationPage from "./CodeVerificationPage";
 import ChangeEmailContext from "../../../context/changeEmailContext";

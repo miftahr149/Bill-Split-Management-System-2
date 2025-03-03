@@ -1,5 +1,5 @@
 import "../../../assets/css/changeEmail.css"
-import ProgressBubble from "../../pageContentRouting/progressBubble";
+import ProgressBubble from "../../topLayer/pageContentRouting/progressBubble";
 import successImage from "../../../assets/img/success.png";
 
 const SuccessChangeEmailPage = () => {
