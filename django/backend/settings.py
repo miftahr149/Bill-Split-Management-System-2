@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'base',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    'testme2'
+    'codeverification'
 ]
 
 MIDDLEWARE = [
