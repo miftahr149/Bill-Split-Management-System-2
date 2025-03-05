@@ -12,10 +12,6 @@ import { useState } from "react";
 const ChangeEmailButton = () => {
   const [isSentEmailChange, setIsSentEmailChange] = useState(false);
 
-  const handleExit: OnExitCallback = ({changePageState, pageState}) => {
-    changePageState(pageState === 1 ? 1 : 0);
-  } 
-
   const data: ChangeEmailContextParams = {
     setIsSentEmailChange: (value) => setIsSentEmailChange(() => value),
   };
@@ -32,7 +28,7 @@ const ChangeEmailButton = () => {
   return (
     <ChangeEmailContext.Provider value={data}>
       <TopLayerButton {...setButtonAttribute()}>
-        <PageRouting title="Change Email" onExit={handleExit}>
+        <PageRouting title="Change Email" initial={isSentEmailChange ? 1 : 0}>
           <PageRoute value={0} component={<NewEmailPage />} />
           <PageRoute value={1} component={<CodeVerificationPage />} />
           <PageRoute value={2} component={<SuccessChangeEmailPage />} />

@@ -1,6 +1,7 @@
 import "../assets/css/profile.css";
 import Navbar from "../components/navbar";
 import AuthContext from "../context/authContext";
+import ChangeEmailButton from "../components/profile/changeEmail/changeEmailButton";
 import { UserProfileContext } from "../context/userProfileContext";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -75,7 +76,7 @@ const Profile = () => {
           <div className="info-block d-flex align-items-center px-3 py-2 gap-5">
             <i className="bi bi-envelope-fill fs-1" />
             <p className="my-text fs-2 flex-grow-1">{email}</p>
-            <button className="btn btn-success">Change Email</button>
+            <ChangeEmailButton />
           </div>
         </div>
       </main>
