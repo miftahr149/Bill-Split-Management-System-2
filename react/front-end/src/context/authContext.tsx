@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { createContext, useState, useEffect } from "react";
 import { APIFetch, setBackendURL, tryCatchFetch } from "../utility/myapi";
 
 interface AuthProviderParams {

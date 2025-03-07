@@ -9,7 +9,6 @@ const ProgressBubble = () => {
     let bubbleComponentArray: JSX.Element[] = [];
     for (let i = 0; i < numPage; i++) {
       let style = "bubble-progress";
-      console.log(pageState);
       if (i <= pageState) {
         style = style + " bubble-progress--complete";
       }

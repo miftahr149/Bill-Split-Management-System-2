@@ -3,11 +3,14 @@ import ChangeEmailContext from "../../../context/changeEmailContext";
 import PageRoutingContext from "../../../context/pageRoutingContext";
 import { useContext, useState } from "react";
 import ProgressBubble from "../../topLayer/pageContentRouting/progressBubble";
+import { APIFetch, setAuthorization, setBackendURL, tryCatchFetch } from "../../../utility/myapi";
+import AuthContext from "../../../context/authContext";
 
 const NewEmailPage = () => {
   const [newEmail, setNewEmail] = useState("");
   const { setIsSentEmailChange } = useContext(ChangeEmailContext);
   const { incrementPageState } = useContext(PageRoutingContext);
+  const { authTokens } = useContext(AuthContext);
 
   const checkValidEmail = () => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,8 +18,23 @@ const NewEmailPage = () => {
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    incrementPageState();
-    setIsSentEmailChange(true);
+    e.preventDefault();
+    tryCatchFetch(async () => {
+      console.log("Generating Code Verification");
+      
+      const data = await APIFetch({
+        URL: setBackendURL("code-verification/generate"),
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: setAuthorization(authTokens.access)
+        },
+        body: JSON.stringify({new_email: newEmail})
+      })
+      console.log(data);
+      incrementPageState();
+      setIsSentEmailChange(true);
+    })
   };
 
   return (
