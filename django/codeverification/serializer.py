@@ -1,7 +1,10 @@
 from . import models
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
-class CodeVericationSerializer(serializers.ModelSerializer):
+class CodeVerificationSerializer(serializers.ModelSerializer):
+  code_verification = serializers.CharField(required=False)
+
   class Meta:
     model = models.CodeVerification
-    fields = ['code_verification']
+    fields = '__all__'
