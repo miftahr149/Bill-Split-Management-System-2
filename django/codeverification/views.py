@@ -28,11 +28,10 @@ class GenerateCodeVerificationView(APIView):
     _serializer = CodeVerificationSerializer(data=data)
 
     if _serializer.is_valid(raise_exception=True):
-      print('serializer is valid')
       _serializer.save()
       
       return Response({
-        'code_verification': _serializer.data['code_verification']
+        'code_verification': _serializer.data['code_verification'],
       }, status=status.HTTP_200_OK)
     
     print('fail to generate code verification')
