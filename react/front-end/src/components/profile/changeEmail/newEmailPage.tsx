@@ -1,16 +1,22 @@
 import "../../../assets/css/changeEmail.css";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import PageRoutingContext from "../../../context/pageRoutingContext";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import ProgressBubble from "../../topLayer/pageContentRouting/progressBubble";
-import { APIFetch, setAuthorization, setBackendURL, tryCatchFetch } from "../../../utility/myapi";
+import {
+  APIFetch,
+  setAuthorization,
+  setBackendURL,
+  tryCatchFetch,
+} from "../../../utility/myapi";
 import AuthContext from "../../../context/authContext";
+import { SendEmail, ChangeNewEmailType } from "../../../utility/SendEmail";
 
 const NewEmailPage = () => {
-  const [newEmail, setNewEmail] = useState("");
-  const { setIsSentEmailChange } = useContext(ChangeEmailContext);
+  const { setIsSentEmailChange, email, newEmail, setNewEmail } =
+    useContext(ChangeEmailContext);
   const { incrementPageState } = useContext(PageRoutingContext);
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens, username } = useContext(AuthContext);
 
   const checkValidEmail = () => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -21,20 +27,30 @@ const NewEmailPage = () => {
     e.preventDefault();
     tryCatchFetch(async () => {
       console.log("Generating Code Verification");
-      
+
       const data = await APIFetch({
         URL: setBackendURL("code-verification/generate"),
         method: "post",
         headers: {
           "Content-Type": "application/json",
-          Authorization: setAuthorization(authTokens.access)
+          Authorization: setAuthorization(authTokens.access),
         },
-        body: JSON.stringify({new_email: newEmail})
-      })
-      console.log(data);
+        body: JSON.stringify({ new_email: newEmail }),
+      });
+
+      const sendEmail = new SendEmail<ChangeNewEmailType>().setTemplateID(
+        import.meta.env.VITE_EMAILJS_CHANGE_EMAIL_TEMPLATE_ID
+      );
+      const sendResult = await sendEmail.send({
+        username: username,
+        toEmail: email === "" ? newEmail : email,
+        newEmail: newEmail,
+        verificationCode: data.code_verification
+      });
+      
       incrementPageState();
       setIsSentEmailChange(true);
-    })
+    });
   };
 
   return (
@@ -47,7 +63,7 @@ const NewEmailPage = () => {
           <label className="fs-2">New Email Address</label>
           <input
             type="email"
-            onChange={(e) => setNewEmail(() => e.target.value)}
+            onChange={(e) => setNewEmail(e.target.value)}
             className="text-input my-text"
           />
         </div>

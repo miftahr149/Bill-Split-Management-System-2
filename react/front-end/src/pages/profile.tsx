@@ -76,7 +76,7 @@ const Profile = () => {
           <div className="info-block d-flex align-items-center px-3 py-2 gap-5">
             <i className="bi bi-envelope-fill fs-1" />
             <p className="my-text fs-2 flex-grow-1">{email}</p>
-            <ChangeEmailButton />
+            <ChangeEmailButton email={email} />
           </div>
         </div>
       </main>

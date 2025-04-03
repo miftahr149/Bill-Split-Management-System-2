@@ -9,10 +9,18 @@ import SuccessChangeEmailPage from "./SuccessChangeEmailPage";
 import { ChangeEmailContextParams } from "../../../context/changeEmailContext";
 import { useState } from "react";
 
-const ChangeEmailButton = () => {
+interface ChangeEmailButtonType {
+  email: string;
+}
+
+const ChangeEmailButton = ({email}: ChangeEmailButtonType) => {
   const [isSentEmailChange, setIsSentEmailChange] = useState(false);
+  const [newEmail, setNewEmail] = useState("");
 
   const data: ChangeEmailContextParams = {
+    email: email,
+    newEmail: newEmail,
+    setNewEmail: (newEmail) => setNewEmail(newEmail),
     setIsSentEmailChange: (value) => setIsSentEmailChange(() => value),
   };
 
