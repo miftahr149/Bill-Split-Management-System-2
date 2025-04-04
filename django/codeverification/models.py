@@ -15,3 +15,8 @@ class CodeVerification(models.Model):
   
   def __str__(self) -> str:
     return self.user.username
+  
+  def change_email(self) -> None:
+    self.user.email = self.new_email
+    self.user.save()
+    self.delete()
