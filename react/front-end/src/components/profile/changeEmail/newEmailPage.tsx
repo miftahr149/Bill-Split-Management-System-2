@@ -1,7 +1,7 @@
 import "../../../assets/css/changeEmail.css";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import PageRoutingContext from "../../../context/pageRoutingContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ProgressBubble from "../../topLayer/pageContentRouting/progressBubble";
 import {
   APIFetch,
@@ -13,7 +13,8 @@ import AuthContext from "../../../context/authContext";
 import { SendEmail, ChangeNewEmailType } from "../../../utility/SendEmail";
 
 const NewEmailPage = () => {
-  const { setIsSentEmailChange, email, newEmail, setNewEmail } =
+  const [newEmail, setNewEmail] = useState("");
+  const { setIsSentEmailChange, email, setToEmail } =
     useContext(ChangeEmailContext);
   const { incrementPageState } = useContext(PageRoutingContext);
   const { authTokens, username } = useContext(AuthContext);
@@ -38,16 +39,19 @@ const NewEmailPage = () => {
         body: JSON.stringify({ new_email: newEmail }),
       });
 
+      const toEmail = email === "" ? newEmail : email;
+
       const sendEmail = new SendEmail<ChangeNewEmailType>().setTemplateID(
         import.meta.env.VITE_EMAILJS_CHANGE_EMAIL_TEMPLATE_ID
       );
       const sendResult = await sendEmail.send({
         username: username,
-        toEmail: email === "" ? newEmail : email,
+        toEmail: toEmail,
         newEmail: newEmail,
         verificationCode: data.code_verification
       });
       
+      setToEmail(toEmail);
       incrementPageState();
       setIsSentEmailChange(true);
     });
