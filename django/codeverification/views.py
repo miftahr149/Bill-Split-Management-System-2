@@ -51,10 +51,20 @@ class VerifyCodeVerification(APIView):
     try:
       serializer = VerifyCodeVerificationSerializer(data=data)
       if serializer.is_valid(raise_exception=True):
-        record = serializer.save()
-        record.delete()
+        record: CodeVerification = serializer.save()
+        record.change_email()
         return Response({'message': 'Success'}, status=status.HTTP_200_OK)
       return Response({'message': 'Error'}, status=status.HTTP_400_BAD_REQUEST)
     except CodeVerification.DoesNotExist:
       return Response({'message': 'Invalid Code Verification'}, 
                       status=status.HTTP_400_BAD_REQUEST)
+
+class IsSendCodeVerification(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request: Request):
+    try:
+      record = CodeVerification.objects.get(user=request.user)
+      return Response({'is_send': True}, status=status.HTTP_200_OK)
+    except CodeVerification.DoesNotExist:
+      return Response({'is_send': False}, status=status.HTTP_200_OK)
