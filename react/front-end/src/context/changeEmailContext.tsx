@@ -2,15 +2,15 @@ import { createContext } from "react";
 
 export interface ChangeEmailContextParams {
   email: string;
-  newEmail: string;
-  setNewEmail: (newEmail: string) => void;
+  toEmail: string;
+  setToEmail: (toEmail: string) => void;
   setIsSentEmailChange: (value: boolean) => void;
 }
 
 const ChangeEmailContext = createContext<ChangeEmailContextParams>({
   email: "",
-  newEmail: "",
-  setNewEmail: (value) => {value},
+  toEmail: "",
+  setToEmail: (value) => {value},
   setIsSentEmailChange: (value) => {value},
 });
 
