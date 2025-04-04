@@ -4,7 +4,7 @@ import ChangeEmailContext from "../../../context/changeEmailContext";
 
 interface CodeVerificationFieldParams {
   numDigit: number;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>, code: string) => void;
 }
 
 const CodeVerificationField = ({
@@ -107,7 +107,7 @@ const CodeVerificationField = ({
   }, []);
 
   return (
-    <form onSubmit={onSubmit} className="d-flex flex-column gap-4">
+    <form onSubmit={(e) => onSubmit(e, code)} className="d-flex flex-column gap-4">
       <div className="d-flex gap-2 justify-content-center">
         {createArray().map((value) => (
           <input
