@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from . models import CodeVerification
-from . serializer import CodeVerificationSerializer
+from . serializer import CodeVerificationSerializer, VerifyCodeVerificationSerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Request, Response
@@ -38,4 +38,23 @@ class GenerateCodeVerificationView(APIView):
     return Response({
       'message': 'fail to generate code verification'
     }, status=status.HTTP_400_BAD_REQUEST)
+
+class VerifyCodeVerification(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def post(self, request: Request) -> Response:
+    data = {
+      'user': request.user.username,
+      **request.data
+    }
     
+    try:
+      serializer = VerifyCodeVerificationSerializer(data=data)
+      if serializer.is_valid(raise_exception=True):
+        record = serializer.save()
+        record.delete()
+        return Response({'message': 'Success'}, status=status.HTTP_200_OK)
+      return Response({'message': 'Error'}, status=status.HTTP_400_BAD_REQUEST)
+    except CodeVerification.DoesNotExist:
+      return Response({'message': 'Invalid Code Verification'}, 
+                      status=status.HTTP_400_BAD_REQUEST)
