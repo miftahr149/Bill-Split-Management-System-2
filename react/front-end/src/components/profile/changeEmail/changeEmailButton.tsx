@@ -1,26 +1,32 @@
 import TopLayerButton from "../../topLayer/topLayerButton";
 import PageRouting from "../../topLayer/pageContentRouting/pageRouting";
-import { OnExitCallback } from "../../../context/pageRoutingContext";
 import PageRoute from "../../topLayer/pageContentRouting/pageRoute";
 import NewEmailPage from "./newEmailPage";
 import CodeVerificationPage from "./CodeVerificationPage";
 import ChangeEmailContext from "../../../context/changeEmailContext";
 import SuccessChangeEmailPage from "./SuccessChangeEmailPage";
 import { ChangeEmailContextParams } from "../../../context/changeEmailContext";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { APIFetch, setAuthorization, setBackendURL, tryCatchFetch } from "../../../utility/myapi";
+import AuthContext from "../../../context/authContext";
 
 interface ChangeEmailButtonType {
   email: string;
 }
 
+interface IsSendType {
+  is_send: boolean;
+}
+
 const ChangeEmailButton = ({email}: ChangeEmailButtonType) => {
   const [isSentEmailChange, setIsSentEmailChange] = useState(false);
-  const [newEmail, setNewEmail] = useState("");
+  const [toEmail, setToEmail] = useState("");
+  const { authTokens } = useContext(AuthContext);
 
   const data: ChangeEmailContextParams = {
     email: email,
-    newEmail: newEmail,
-    setNewEmail: (newEmail) => setNewEmail(newEmail),
+    toEmail: toEmail,
+    setToEmail: (toEmail) => setToEmail(toEmail),
     setIsSentEmailChange: (value) => setIsSentEmailChange(() => value),
   };
 
@@ -32,6 +38,20 @@ const ChangeEmailButton = ({email}: ChangeEmailButtonType) => {
       buttonName: buttonName,
     };
   };
+
+  useEffect(() => {
+    tryCatchFetch(async () => {
+      const { is_send } : IsSendType = await APIFetch({
+        URL: setBackendURL("code-verification/is-send"),
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: setAuthorization(authTokens.access)
+        }
+      })
+      setIsSentEmailChange(is_send);
+    })
+  }, [])
 
   return (
     <ChangeEmailContext.Provider value={data}>
