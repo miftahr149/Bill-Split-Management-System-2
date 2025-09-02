@@ -2,6 +2,10 @@
 
 :root {
   /* color */
+  --primary-color-rgb: 119, 176, 170;
+  --primary-color: rgb(var(--primary-color-rgb));
+  
+  
   --primary-alert-color-rgb: 244,136,136;
   --secondary-alert-color-rgb: 218,31,56;
   
@@ -47,6 +51,9 @@
   --space: var(--space-scale);
   --space-l: calc(var(--space-scale) * 1.5);
   --space-xl: calc(var(--space-scale) * 3); 
+
+  /* Temp */
+  --auth-page-name-font-size: calc(1.1rem + 1vw);
 
   /* gap */
   --gap: 1rem;
