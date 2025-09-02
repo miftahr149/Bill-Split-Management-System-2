@@ -1,4 +1,4 @@
-import "../assets/css/login.css";
+import "../assets/css/authentication.css";
 import AuthHeader from "../components/authorization/authHeader";
 import UsernameField from "../components/authorization/register/usernameField";
 import PasswordField from "../components/authorization/register/passwordField";
@@ -11,7 +11,7 @@ import { RegisterContextProvider } from "../context/registerContext";
 const Register = () => {
   return (
     <RegisterContextProvider>
-      <div className="d-flex pages login justify-content-center align-items-center">
+      <div className="d-flex pages auth-page justify-content-center align-items-center">
         <div className="form d-flex flex-column">
           <AuthHeader title="Register Page" />
           <div className="body-box box d-flex flex-column">

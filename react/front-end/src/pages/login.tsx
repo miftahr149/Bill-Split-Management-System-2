@@ -1,4 +1,4 @@
-import "../assets/css/login.css";
+import "../assets/css/authentication.css";
 
 import AuthContext from "../context/authContext";
 import AuthField from "../components/authorization/authField";
@@ -10,7 +10,7 @@ import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ignoreFirstRender } from "../utility/utility";
 
-/** render a page to allow user access to the web application by login */
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +34,7 @@ const Login = () => {
   }, [isUserValid]);
 
   return (
-    <div className="login pages d-flex justify-content-center align-items-center">
+    <div className="auth-page pages d-flex justify-content-center align-items-center">
       <div className="form d-flex flex-column">
         <AuthHeader title="Login Page" />
         {isInvalidLogin && (
